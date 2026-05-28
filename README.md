@@ -8,75 +8,81 @@
 [![GitHub forks](https://img.shields.io/github/forks/laoshan-song/Awesome-LLM-Interview?style=social)](https://github.com/laoshan-song/Awesome-LLM-Interview)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/laoshan-song/Awesome-LLM-Interview/pulls)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![持续更新](https://img.shields.io/badge/持续更新-每日-green.svg)]()
+[![持续更新](https://img.shields.io/badge/每日更新-进行中-brightgreen.svg)]()
 
 </div>
 
 ---
 
-## 📖 这是什么？
+## 这个仓库是什么？
 
-本仓库系统整理了 **LLM / NLP 算法岗位面试**所需的核心知识点，涵盖大模型原理、训练技巧、推理优化、工程部署等方向。
+**一句话**：你备战大模型面试时，希望有人帮你把所有核心知识点整理清楚——这个仓库就是干这个的。
 
-> 💡 每个知识点力求用**最清晰的语言**解释，附上原始论文、视频讲解与面试高频考点。
+涵盖的方向：
+- 🔤 **基础**：Tokenization、Transformer 架构、位置编码
+- ⚙️ **训练**：预训练、SFT、RLHF、DPO、LoRA
+- 🚀 **推理**：KV Cache、量化、解码策略、vLLM
+- 🏗️ **工程**：MoE、RAG、Agent
 
-**如果对你有帮助，欢迎点个 ⭐ Star！**
-**如果你也在备战大模型面试，欢迎提 PR 一起完善！** 👇
+每篇笔记包含：**面试高频考点 + 核心原理 + 原始论文 + 视频讲解**。
+
+> 如果你觉得有用，点个 ⭐ Star 是对我最大的鼓励！
 
 ---
 
 ## 📚 知识点目录
 
 ### 🔤 基础篇
-| 编号 | 主题 | 状态 |
-|------|------|------|
-| 01 | [LLM 核心名词解释](./notes/01_名词解释.md) | ✅ 已完成 |
-| 02 | [分词算法（BPE / WordPiece / SentencePiece）](./notes/02_分词算法.md) | ✅ 已完成 |
-| 03 | [Transformer 架构详解](./notes/03_Transformer架构.md) | ✅ 已完成 |
-| 04 | [位置编码（RoPE / ALiBi / sinusoidal）](./notes/04_位置编码.md) | ✅ 已完成 |
+
+| 编号 | 主题 | 最近更新 |
+|------|------|----------|
+| 01 | [LLM 核心名词解释](./notes/01_名词解释.md) | 补全 Token / Attention / KV Cache 等 30+ 核心术语 |
+| 02 | [分词算法（BPE / WordPiece / SentencePiece）](./notes/02_分词算法.md) | 添加 Karpathy 视频 + 3 篇原始论文链接 |
+| 03 | [Transformer 架构详解](./notes/03_Transformer架构.md) | 添加 3Blue1Brown 可视化视频 + 原版论文 |
+| 04 | [位置编码（RoPE / ALiBi / sinusoidal）](./notes/04_位置编码.md) | 补充 RoPE / ALiBi 论文 + 外推方案对比表 |
 
 ### ⚙️ 训练篇
-| 编号 | 主题 | 状态 |
-|------|------|------|
-| 05 | [预训练 vs 微调 vs RLHF](./notes/05_预训练与微调.md) | ✅ 已完成 |
-| 06 | [SFT 有监督微调](./notes/06_SFT.md) | ✅ 已完成 |
-| 07 | [RLHF / DPO / PPO 对比](./notes/07_RLHF_DPO_PPO.md) | ✅ 已完成 |
-| 08 | [LoRA 及参数高效微调](./notes/08_LoRA与PEFT.md) | ✅ 已完成 |
+
+| 编号 | 主题 | 最近更新 |
+|------|------|----------|
+| 05 | [预训练 vs 微调 vs RLHF](./notes/05_预训练与微调.md) | 补充 InstructGPT / LIMA 论文 + 三阶段流程图 |
+| 06 | [SFT 有监督微调](./notes/06_SFT.md) | 补充数据质量 vs 数量分析 + loss 计算细节 |
+| 07 | [RLHF / DPO / PPO 对比](./notes/07_RLHF_DPO_PPO.md) | 添加李沐 InstructGPT 精读视频 + DPO 推导 |
+| 08 | [LoRA 及参数高效微调](./notes/08_LoRA与PEFT.md) | 添加 Yannic Kilcher 论文精读视频 + QLoRA |
 
 ### 🚀 推理与优化篇
-| 编号 | 主题 | 状态 |
-|------|------|------|
-| 09 | [KV Cache 原理与优化](./notes/09_KV_Cache.md) | ✅ 已完成 |
-| 10 | [量化（INT8 / INT4 / GPTQ）](./notes/10_量化.md) | ✅ 已完成 |
-| 11 | [解码策略（Greedy / Beam / Sampling）](./notes/11_解码策略.md) | ✅ 已完成 |
-| 12 | [推理加速（vLLM / PagedAttention）](./notes/12_推理加速.md) | ✅ 已完成 |
+
+| 编号 | 主题 | 最近更新 |
+|------|------|----------|
+| 09 | [KV Cache 原理与优化](./notes/09_KV_Cache.md) | 补充显存占用计算公式 + GQA / PagedAttention |
+| 10 | [量化（INT8 / INT4 / GPTQ）](./notes/10_量化.md) | 补充 GPTQ / AWQ / SmoothQuant 三篇论文 |
+| 11 | [解码策略（Greedy / Beam / Sampling）](./notes/11_解码策略.md) | 补充 Top-p 原始论文 + 场景使用建议表 |
+| 12 | [推理加速（vLLM / PagedAttention）](./notes/12_推理加速.md) | 补充 Flash Attention / 投机采样 4 篇论文 |
 
 ### 🏗️ 工程篇
-| 编号 | 主题 | 状态 |
-|------|------|------|
-| 13 | [MoE 混合专家模型](./notes/13_MoE.md) | ✅ 已完成 |
-| 14 | [RAG 检索增强生成](./notes/14_RAG.md) | ✅ 已完成 |
-| 15 | [Agent 与工具调用](./notes/15_Agent.md) | ✅ 已完成 |
+
+| 编号 | 主题 | 最近更新 |
+|------|------|----------|
+| 13 | [MoE 混合专家模型](./notes/13_MoE.md) | 补充 Mixtral / Switch Transformer 论文 |
+| 14 | [RAG 检索增强生成](./notes/14_RAG.md) | 添加 IBM RAG 视频 + Self-RAG 论文 |
+| 15 | [Agent 与工具调用](./notes/15_Agent.md) | 补充 ReAct / Toolformer 原始论文 |
 
 ---
 
-## 🤝 如何贡献
+## 🤝 欢迎一起完善
 
-这个仓库欢迎所有人参与共建！你可以：
+学一个人的笔记，不如一群人共同维护一份高质量知识库。
 
-- 📝 **补充内容**：发现哪个知识点讲得不够清楚？提 PR 完善它
-- 🐛 **纠错**：发现错误？提 Issue 告诉我
-- ➕ **新增主题**：有重要知识点没有覆盖？提 PR 新增一篇
-- ⭐ **Star 支持**：觉得有用就点个 Star，让更多人看到
+你可以贡献：
+- 📝 **完善某个知识点**的讲解（更清晰的例子、更准确的描述）
+- 🎬 **推荐优质视频**（B 站 / YouTube 都欢迎）
+- 📄 **补充新的论文**（最新进展、重要综述）
+- 🌟 **新增知识点**（Flash Attention 3、DeepSeek 架构……）
 
-**贡献步骤：**
 ```bash
-# 1. Fork 本仓库
-# 2. 创建你的分支
+# Fork → 新建分支 → 修改 → PR
 git checkout -b feat/your-topic
-# 3. 提交你的内容
-git commit -m "新增：xxx 知识点"
-# 4. 推送并发起 PR
+git commit -m "补充：xxx 知识点 / 添加：xxx 视频"
 git push origin feat/your-topic
 ```
 
@@ -86,17 +92,18 @@ git push origin feat/your-topic
 
 | 更新内容 |
 |----------|
-| 🎉 仓库初始化，完成核心名词解释 |
-| 📚 补全基础篇、训练篇、推理优化篇、工程篇全部知识点 |
-| 📄 为每篇添加原始论文链接（arxiv） |
-| 🎬 添加 Karpathy、3Blue1Brown 等视频讲解资源 |
+| 🎉 初始化仓库，完成 LLM 核心名词解释 |
+| 📚 补全 15 篇核心知识点（基础 / 训练 / 推理 / 工程） |
+| 📄 为所有知识点补充原始论文 arxiv 链接 |
+| 🎬 添加 Karpathy / 3Blue1Brown / 李沐等优质视频资源 |
+| 🗂️ 重构目录结构，笔记统一移至 notes/ 文件夹 |
 
 ---
 
 <div align="center">
 
-如果这个仓库对你有帮助，请给一个 ⭐ Star 支持一下！
+**⭐ Star 一下，下次面试前不慌 ⭐**
 
-**一个人走得快，一群人走得远。欢迎 PR 共建！🚀**
+*一个人走得快，一群人走得远。欢迎 PR 共建！*
 
 </div>
