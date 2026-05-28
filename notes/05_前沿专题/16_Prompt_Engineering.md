@@ -157,4 +157,7 @@ prompt = """
 
 ## 延伸阅读与视频
 
-> 欢迎 PR 补充优质资源
+| 平台 | 标题 | 说明 |
+|------|------|------|
+| 📺 B站 | [从RAG到Deep Research：GRPO训练、混合检索、记忆管理](https://www.bilibili.com/video/BV1mT421j7Xe/) | 1.3万播放，包含Chain-of-Thought提示工程实战 |
+| 📺 B站 | [面试官问：LangChain和LangGraph分别适合什么场景？](https://www.bilibili.com/video/BV1AT421w7Pt/) | 1.2万播放，Prompt设计与框架选型 |

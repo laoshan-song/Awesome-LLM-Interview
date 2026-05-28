@@ -177,7 +177,16 @@ Community Reports
 | HyDE (Gao et al., 2022) | [arxiv.org/abs/2212.10496](https://arxiv.org/abs/2212.10496) |
 | RAPTOR (Sarthi et al., 2024) | [arxiv.org/abs/2401.18059](https://arxiv.org/abs/2401.18059) |
 | RAG Survey 2024 | [arxiv.org/abs/2312.10997](https://arxiv.org/abs/2312.10997) |
+| LightRAG: Simple and Fast Graph-based RAG (2024) | [arxiv.org/abs/2410.05779](https://arxiv.org/abs/2410.05779) |
+| HippoRAG: Neurobiologically Inspired Long-Term Memory (2024) | [arxiv.org/abs/2405.14831](https://arxiv.org/abs/2405.14831) |
+| HippoRAG 2: From RAG to Memory (2025) | [arxiv.org/abs/2505.03842](https://arxiv.org/abs/2505.03842) |
 
 ## 延伸阅读与视频
 
-> 欢迎 PR 补充优质资源
+| 平台 | 标题 | 说明 |
+|------|------|------|
+| 📺 B站 | [AI知识图谱GraphRAG是怎么回事？](https://www.bilibili.com/video/BV1Vf421X72h/) | 13万播放，B站最受欢迎的GraphRAG讲解 |
+| 📺 B站 | [面试官：什么场景下必须用GraphRAG？而不是RAG？](https://www.bilibili.com/video/BV1vT421k7z9/) | 3.2万播放，场景选型角度讲透两者差异 |
+| 📺 B站 | [15分钟跑通GraphRAG完整流程：从知识图谱构建到问答](https://www.bilibili.com/video/BV1Hm421x7ma/) | 6959播放，实战演示GraphRAG完整链路 |
+| 📺 B站 | [使用Python构建RAG系统——用代码还原RAG系统的每个细节](https://www.bilibili.com/video/BV1sb421C7VD/) | 15万播放，代码级还原RAG系统实现 |
+| 📺 B站 | [RAG优化：17种RAG方案，谁才是RAG最佳选择？](https://www.bilibili.com/video/BV1jT421q7qf/) | 1.1万播放，全面对比高级RAG改进方案 |

@@ -91,4 +91,8 @@ Answer: 北京今天晴朗，气温 25°C
 
 ## 延伸阅读与视频
 
-> 视频链接持续更新中，欢迎 PR 补充优质资源
+| 平台 | 标题 | 说明 |
+|------|------|------|
+| 📺 B站 | [挑战19分钟搞定LangGraph快速入门与原理剖析](https://www.bilibili.com/video/BV1sC411w7f5/) | 2万播放，Agent编排框架快速上手 |
+| 📺 B站 | [90分钟手撸企业级Agent多智能体（LangGraph+MCP+RAG）](https://www.bilibili.com/video/BV1jw4m1i7sm/) | 3.7万播放，从0到1的Agent工程实战 |
+| 📺 B站 | [【吴恩达】LangChain+LangGraph大模型教程（官方授权）](https://www.bilibili.com/video/BV1Vr421k7oK/) | 8万播放，权威Agent开发入门课程 |

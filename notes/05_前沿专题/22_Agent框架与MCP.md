@@ -286,7 +286,17 @@ if __name__ == "__main__":
 | MCP 官网 | [modelcontextprotocol.io](https://modelcontextprotocol.io) |
 | ReAct 原始论文 (Yao et al., 2022) | [arxiv.org/abs/2210.03629](https://arxiv.org/abs/2210.03629) |
 | Magentic-One 论文 (2024) | [arxiv.org/abs/2411.04468](https://arxiv.org/abs/2411.04468) |
+| MCPAgentBench: Benchmark for LLM Agent MCP Tool Use (2025) | [arxiv.org/abs/2512.24565](https://arxiv.org/abs/2512.24565) |
+| Beyond Individual Intelligence: Multi-Agent Survey (2026) | [arxiv.org/abs/2605.14892](https://arxiv.org/abs/2605.14892) |
+| Agentic Reasoning for Large Language Models — Survey (2026) | [arxiv.org/abs/2601.12538](https://arxiv.org/abs/2601.12538) |
+| Orchard: Open-Source Agentic Modeling Framework (ACL 2026) | [arxiv.org/abs/2605.15040](https://arxiv.org/abs/2605.15040) |
 
 ## 延伸阅读与视频
 
-> 欢迎 PR 补充优质资源
+| 平台 | 标题 | 说明 |
+|------|------|------|
+| 📺 B站 | [挑战19分钟搞定LangGraph快速入门与原理剖析](https://www.bilibili.com/video/BV1sC411w7f5/) | 2万播放，LangGraph核心概念快速上手 |
+| 📺 B站 | [【吴恩达】LangChain+LangGraph大模型教程（官方授权汉化）](https://www.bilibili.com/video/BV1Vr421k7oK/) | 8万播放，吴恩达课程，权威入门首选 |
+| 📺 B站 | [面试官问：LangChain和LangGraph分别适合什么场景？](https://www.bilibili.com/video/BV1AT421w7Pt/) | 1.2万播放，面试向选型对比 |
+| 📺 B站 | [LangGraph接入MCP工具：为什么需要？如何接入？](https://www.bilibili.com/video/BV1sM411H7qZ/) | 1.2万播放，MCP与LangGraph集成实战 |
+| 📺 B站 | [90分钟手撸企业级Agent多智能体（LangGraph+MCP+RAG）](https://www.bilibili.com/video/BV1jw4m1i7sm/) | 3.7万播放，从0到1的多智能体实战 |

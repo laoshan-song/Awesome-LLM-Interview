@@ -207,4 +207,7 @@ def min_k_prob(model, text, k=0.2):
 
 ## 延伸阅读与视频
 
-> 欢迎 PR 补充优质资源
+| 平台 | 标题 | 说明 |
+|------|------|------|
+| 📺 B站 | [浙江大学《大模型原理与技术》6-2 RAG知识检索](https://www.bilibili.com/video/BV1fT421q7vk/) | 1.3万播放，学术视角的评估与检索讲解 |
+| 📺 B站 | [大模型SFT/RAG调优效率翻倍！自动生成测试集+自动化评估](https://www.bilibili.com/video/BV1rT421q7xD/) | 1.4万播放，评估工程化实践 |
