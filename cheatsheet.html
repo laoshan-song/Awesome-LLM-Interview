@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LLM 面试速记 | Awesome-LLM-Interview</title>
+  <style>
+    :root {
+      --bg: #0f1117;
+      --bg2: #1a1d2e;
+      --bg3: #252840;
+      --accent: #7c6af7;
+      --accent2: #5eead4;
+      --accent3: #f472b6;
+      --text: #e2e8f0;
+      --text2: #94a3b8;
+      --border: #2d3154;
+      --green: #4ade80;
+      --yellow: #fbbf24;
+      --red: #f87171;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--bg); color: var(--text); font-family: 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif; min-height: 100vh; }
+
+    /* ── Header ── */
+    header {
+      background: linear-gradient(135deg, #1a1d2e 0%, #252840 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 24px 40px;
+      display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; z-index: 100;
+      backdrop-filter: blur(10px);
+    }
+    .logo { font-size: 1.4rem; font-weight: 700; }
+    .logo span { color: var(--accent); }
+    .header-meta { font-size: 0.85rem; color: var(--text2); }
+    .github-link {
+      background: var(--accent); color: #fff; padding: 8px 16px; border-radius: 8px;
+      text-decoration: none; font-size: 0.85rem; font-weight: 600;
+      transition: opacity .2s;
+    }
+    .github-link:hover { opacity: .85; }
+
+    /* ── Layout ── */
+    .layout { display: flex; min-height: calc(100vh - 80px); }
+    nav {
+      width: 220px; flex-shrink: 0;
+      background: var(--bg2); border-right: 1px solid var(--border);
+      padding: 24px 0; position: sticky; top: 80px;
+      height: calc(100vh - 80px); overflow-y: auto;
+    }
+    nav h3 { font-size: 0.7rem; letter-spacing: .1em; text-transform: uppercase;
+              color: var(--text2); padding: 0 20px 8px; }
+    nav a {
+      display: block; padding: 8px 20px; color: var(--text2); text-decoration: none;
+      font-size: 0.88rem; border-left: 3px solid transparent;
+      transition: all .15s;
+    }
+    nav a:hover, nav a.active { color: var(--accent); border-left-color: var(--accent); background: rgba(124,106,247,.08); }
+    .nav-section { margin-bottom: 16px; }
+
+    main { flex: 1; padding: 40px; max-width: 900px; }
+
+    /* ── Section header ── */
+    .section-header {
+      display: flex; align-items: center; gap: 12px;
+      margin-bottom: 24px; margin-top: 48px;
+    }
+    .section-header:first-child { margin-top: 0; }
+    .section-icon { width: 36px; height: 36px; border-radius: 10px;
+                    display: flex; align-items: center; justify-content: center;
+                    font-size: 1.1rem; }
+    .section-title { font-size: 1.3rem; font-weight: 700; }
+    .section-count { font-size: 0.8rem; color: var(--text2); margin-left: auto;
+                     background: var(--bg3); padding: 3px 10px; border-radius: 20px; }
+
+    /* ── QA Card ── */
+    .qa-card {
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: 12px; margin-bottom: 12px; overflow: hidden;
+      transition: border-color .2s;
+    }
+    .qa-card:hover { border-color: var(--accent); }
+    .qa-question {
+      padding: 16px 20px; cursor: pointer;
+      display: flex; align-items: flex-start; gap: 12px;
+      user-select: none;
+    }
+    .qa-q-badge {
+      flex-shrink: 0; width: 24px; height: 24px; border-radius: 6px;
+      background: var(--accent); color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.75rem; font-weight: 700; margin-top: 1px;
+    }
+    .qa-q-text { flex: 1; font-size: 0.95rem; font-weight: 600; line-height: 1.5; }
+    .qa-chevron {
+      flex-shrink: 0; color: var(--text2); transition: transform .25s;
+      font-size: 0.9rem; margin-top: 2px;
+    }
+    .qa-card.open .qa-chevron { transform: rotate(180deg); }
+    .qa-answer {
+      display: none; padding: 0 20px 16px 56px;
+      font-size: 0.9rem; line-height: 1.75; color: var(--text);
+      border-top: 1px solid var(--border);
+    }
+    .qa-card.open .qa-answer { display: block; padding-top: 14px; }
+
+    /* Answer formatting */
+    .qa-answer code {
+      background: var(--bg3); color: var(--accent2);
+      padding: 2px 6px; border-radius: 4px; font-size: 0.85em;
+      font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    }
+    .qa-answer pre {
+      background: var(--bg3); border: 1px solid var(--border);
+      border-radius: 8px; padding: 14px 16px; margin: 12px 0;
+      overflow-x: auto; font-size: 0.83rem; line-height: 1.6;
+      font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    }
+    .qa-answer strong { color: var(--accent2); }
+    .qa-answer table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 0.85rem; }
+    .qa-answer th { background: var(--bg3); color: var(--accent); padding: 8px 12px; text-align: left; border: 1px solid var(--border); }
+    .qa-answer td { padding: 7px 12px; border: 1px solid var(--border); }
+    .qa-answer tr:nth-child(even) td { background: rgba(255,255,255,.02); }
+
+    /* Tags */
+    .tag { display: inline-block; padding: 2px 8px; border-radius: 20px; font-size: 0.72rem;
+            font-weight: 600; margin-left: 8px; }
+    .tag-hot { background: rgba(248,113,113,.15); color: var(--red); border: 1px solid rgba(248,113,113,.3); }
+    .tag-2026 { background: rgba(124,106,247,.15); color: var(--accent); border: 1px solid rgba(124,106,247,.3); }
+    .tag-hard { background: rgba(251,191,36,.15); color: var(--yellow); border: 1px solid rgba(251,191,36,.3); }
+
+    /* Progress bar */
+    .progress-bar { background: var(--bg3); border-radius: 4px; height: 4px; margin-top: 8px; }
+    .progress-fill { height: 100%; border-radius: 4px; background: linear-gradient(90deg, var(--accent), var(--accent2)); }
+
+    /* Tip box */
+    .tip-box {
+      background: rgba(94,234,212,.06); border: 1px solid rgba(94,234,212,.25);
+      border-radius: 8px; padding: 12px 16px; margin: 12px 0;
+      font-size: 0.88rem; color: var(--accent2);
+    }
+    .tip-box::before { content: '💡 '; }
+
+    /* Search */
+    .search-bar {
+      width: 100%; background: var(--bg2); border: 1px solid var(--border);
+      border-radius: 10px; padding: 12px 16px; color: var(--text);
+      font-size: 0.95rem; margin-bottom: 32px; outline: none;
+      transition: border-color .2s;
+    }
+    .search-bar:focus { border-color: var(--accent); }
+
+    /* Expand all btn */
+    .top-controls { display: flex; gap: 10px; margin-bottom: 20px; }
+    .ctrl-btn {
+      background: var(--bg3); border: 1px solid var(--border);
+      color: var(--text2); padding: 7px 14px; border-radius: 8px;
+      cursor: pointer; font-size: 0.83rem; transition: all .2s;
+    }
+    .ctrl-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* Footer */
+    footer { text-align: center; padding: 40px; color: var(--text2); font-size: 0.82rem;
+             border-top: 1px solid var(--border); }
+
+    @media (max-width: 768px) {
+      nav { display: none; }
+      main { padding: 20px; }
+      header { padding: 16px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div>
+    <div class="logo">LLM 面试<span>速记</span></div>
+    <div class="header-meta">49 道高频考题 · 覆盖 7 大模块 · 持续更新</div>
+  </div>
+  <a class="github-link" href="https://github.com/laoshan-song/Awesome-LLM-Interview" target="_blank">⭐ GitHub</a>
+</header>
+
+<div class="layout">
+  <nav id="sidebar">
+    <div class="nav-section">
+      <h3>快速导航</h3>
+      <a href="#transformer">🔧 Transformer &amp; Attention</a>
+      <a href="#position">📍 位置编码</a>
+      <a href="#kvcache">⚡ KV Cache &amp; 推理优化</a>
+      <a href="#rlhf">🎯 RLHF &amp; 对齐训练</a>
+      <a href="#lora">🔬 LoRA &amp; 参数高效微调</a>
+      <a href="#distributed">🌐 分布式训练</a>
+      <a href="#eval">📊 大模型评估</a>
+    </div>
+  </nav>
+
+  <main>
+    <input class="search-bar" type="text" id="searchInput" placeholder="🔍 搜索考题（如：KV Cache、RLHF、LoRA...）" oninput="filterQA()">
+
+    <div class="top-controls">
+      <button class="ctrl-btn" onclick="expandAll()">展开全部</button>
+      <button class="ctrl-btn" onclick="collapseAll()">收起全部</button>
+      <button class="ctrl-btn" onclick="filterTag('hot')">🔥 高频</button>
+      <button class="ctrl-btn" onclick="filterTag('2026')">🚀 2026前沿</button>
+    </div>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- Section 1: Transformer                      -->
+    <!-- ═══════════════════════════════════════════ -->
+    <div id="transformer">
+      <div class="section-header">
+        <div class="section-icon" style="background:rgba(124,106,247,.2)">🔧</div>
+        <div class="section-title">Transformer &amp; Attention</div>
+        <span class="section-count">8 题</span>
+      </div>
+
+      <div class="qa-card" data-tags="hot">
+        <div class="qa-question" onclick="toggleCard(this)">
+          <div class="qa-q-badge">Q</div>
+          <div class="qa-q-text">Self-Attention 的计算公式是什么？为什么要除以 √d_k？<span class="tag tag-hot">高频</span></div>
+          <div class="qa-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          公式：<code>Attention(Q,K,V) = softmax(QK^T / √d_k) · V</code><br><br>
+          <strong>为什么除以 √d_k：</strong>若 Q、K 各分量独立均值为 0、方差为 1，则点积 qᵀk 的方差为 d_k。除以 √d_k 使方差归一化为 1，防止 softmax 输入过大导致梯度消失（注意力分布极端集中到少数 token）。
+        </div>
+      </div>
+
+      <div class="qa-card" data-tags="hot">
+        <div class="qa-question" onclick="toggleCard(this)">
+          <div class="qa-q-badge">Q</div>
+          <div class="qa-q-text">Multi-Head Attention 的作用？参数量和单头相比如何？<span class="tag tag-hot">高频</span></div>
+          <div class="qa-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          多头注意力将 d_model 切分为 h 个子空间，每头维度 <code>d_k = d_model/h</code>，独立学习不同类型依赖（句法、语义、指代等），再 Concat 后线性变换。<br><br>
+          总参数量与单头基本等同（4 个 d_model×d_model 矩阵），但捕获了更丰富的特征表示。
+        </div>
+      </div>
+
+      <div class="qa-card" data-tags="hot">
+        <div class="qa-question" onclick="toggleCard(this)">
+          <div class="qa-q-badge">Q</div>
+          <div class="qa-q-text">Self-Attention 的时间和空间复杂度是多少？<span class="tag tag-hot">高频</span></div>
+          <div class="qa-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          <table>
+            <tr><th>维度</th><th>复杂度</th><th>瓶颈</th></tr>
+            <tr><td>时间</td><td>O(n²·d)</td><td>n 为序列长度，d 为维度</td></tr>
+            <tr><td>空间</td><td>O(n²)</td><td>注意力矩阵是 n×n 的</td></tr>
+          </table>
+          FlashAttention 通过分块（Tiling）计算将显存从 O(n²) 降至 O(n)，是长序列场景的核心优化。
+        </div>
+      </div>
+
+      <div class="qa-card" data-tags="">
+        <div class="qa-question" onclick="toggleCard(this)">
+          <div class="qa-q-badge">Q</div>
+          <div class="qa-q-text">Pre-LN 和 Post-LN 有什么区别？LLaMA 用的是哪种？</div>
+          <div class="qa-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          <strong>Post-LN（原始 Transformer）</strong>：LayerNorm 在残差相加后，训练容易不稳定，需要精心 warmup。<br>
+          <strong>Pre-LN</strong>：LayerNorm 在子层之前，梯度流更稳定，收敛更快。<br><br>
+          LLaMA 使用 Pre-LN，并将 LayerNorm 替换为 <strong>RMSNorm</strong>（去掉均值中心化，省 7% 计算量，性能相当）。
+        </div>
+      </div>
+
+      <div class="qa-card" data-tags="hot">
+        <div class="qa-question" onclick="toggleCard(this)">
+          <div class="qa-q-badge">Q</div>
+          <div class="qa-q-text">GQA 和 MQA 是什么？LLaMA 2 为什么用 GQA？<span class="tag tag-hot">高频</span></div>
+          <div class="qa-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          <table>
+            <tr><th>方案</th><th>K/V 数量</th><th>KV Cache</th></tr>
+            <tr><td>MHA</td><td>H 套（每头独立）</td><td>最大</td></tr>
+            <tr><td>MQA</td><td>1 套（所有头共享）</td><td>最小</td></tr>
+            <tr><td><strong>GQA</strong></td><td>G 套（每组共享）</td><td>折中</td></tr>
+          </table>
+          LLaMA 2 70B 用 GQA，推理时 KV Cache 显存减少约 8 倍，吞吐量显著提升，精度损失极小。
+        </div>
+      </div>
+
+      <div class="qa-card" data-tags="hot">
+        <div class="qa-question" onclick="toggleCard(this)">
+          <div class="qa-q-badge">Q</div>
+          <div class="qa-q-text">Flash Attention 的核心优化思想是什么？<span class="tag tag-hot">高频</span></div>
+          <div class="qa-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          标准 Attention 需要将完整 N×N 注意力矩阵写入 HBM（显存），IO 成为瓶颈。<br><br>
+          FlashAttention 核心：<strong>Tiling（分块）</strong>——将 Q/K/V 切成小块，在 GPU SRAM（片上高速缓存）中完成计算，通过 Online Softmax 保证数值正确性，反向传播用重计算避免存储中间结果。<br><br>
+          结果：HBM 访问复杂度从 O(N²) 降至 O(N²/M)，显存从 O(N²) 降至 O(N)，同时更快。
+        </div>
+      </div>
+
+      <div class="qa-card" data-tags="">
+        <div class="qa-question" onclick="toggleCard(this)">
+          <div class="qa-q-badge">Q</div>
+          <div class="qa-q-text">Encoder-only / Decoder-only / Encoder-Decoder 三种架构各适合什么任务？</div>
+          <div class="qa-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          <table>
+            <tr><th>架构</th><th>代表</th><th>注意力</th><th>适合任务</th></tr>
+            <tr><td>Encoder-only</td><td>BERT</td><td>双向</td><td>分类、NER、句对匹配</td></tr>
+            <tr><td>Decoder-only</td><td>GPT/LLaMA</td><td>Causal Mask</td><td>对话、续写（当前主流）</td></tr>
+            <tr><td>Encoder-Decoder</td><td>T5/BART</td><td>双向+交叉</td><td>翻译、摘要 Seq2Seq</td></tr>
+          </table>
+          Decoder-only 在 Scaling Law 下表现最优，且统一了预训练和生成任务。
+        </div>
+      </div>
+
+      <div class="qa-card" data-tags="">
+        <div class="qa-question" onclick="toggleCard(this)">
+          <div class="qa-q-badge">Q</div>
+          <div class="qa-q-text">SwiGLU 激活函数的公式是什么？为什么比 ReLU 效果好？</div>
+          <div class="qa-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          <code>FFN(x) = (xW₁ ⊙ σ(xW₁)) · xW₃</code>（Swish + GLU 门控）<br><br>
+          优于 ReLU 的原因：引入了<strong>门控机制</strong>，提供更平滑的非线性和梯度，允许负值通过（不像 ReLU 硬截断）。代价是需要 3 个权重矩阵，FFN 隐藏层通常设为 2/3×4d 以保持参数量不变。LLaMA、Qwen、DeepSeek 均采用 SwiGLU。
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- Section 2: 位置编码                          -->
+    <!-- ═══════════════════════════════════════════ -->
+    <div id="position">
+      <div class="section-header">
+        <div class="section-icon" style="background:rgba(94,234,212,.2)">📍</div>
+        <div class="section-title">位置编码</div>
+        <span class="section-count">5 题</span>
+      </div>
+
+      <div class="qa-card" data-tags="hot">
+        <div class="qa-question" onclick="toggleCard(this)">
+          <div class="qa-q-badge">Q</div>
+          <div class="qa-q-text">RoPE 旋转位置编码的基本原理是什么？<span class="tag tag-hot">高频</span></div>
+          <div class="qa-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          RoPE 对 Q 和 K 向量按位置 m/n 分别乘以旋转矩阵 R_m 和 R_n，使得内积 q_m·k_n <strong>只依赖相对位置 (m-n)</strong>，从而以绝对位置编码的实现方式达到相对位置编码的效果。<br><br>
+          高维向量被拆分成 d/2 对，每对按不同频率 <code>θᵢ = 10000^(-2i/d)</code> 旋转。<br><br>
+          <div class="tip-box">被 LLaMA、Qwen、Mistral 等主流模型采用。苏剑林（苏神）提出。</div>
+        </div>
+      </div>
+
+      <div class="qa-card" data-tags="hot">
+        <div class="qa-question" onclick="toggleCard(this)">
+          <div class="qa-q-badge">Q</div>
+          <div class="qa-q-text">RoPE 在超长序列上为什么失效？有哪些扩展方法？<span class="tag tag-hot">高频</span></div>
+          <div class="qa-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          <strong>失效原因</strong>：训练时只见过 [0, L_train] 范围内的旋转角度，超出范围后角度分布发生偏移，注意力计算异常。<br><br>
+          <table>
+            <tr><th>方法</th><th>思路</th><th>使用模型</th></tr>
+            <tr><td>位置插值 (PI)</td><td>位置 index 等比压缩到训练范围</td><td>Meta 方案</td></tr>
+            <tr><td>NTK-aware</td><td>修改旋转基底 base，高低频差异化缩放</td><td>通用扩展</td></tr>
+            <tr><td><strong>YaRN</strong></td><td>混合策略 + 注意力温度调整</td><td>LLaMA 3 (128K+)</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="qa-card" data-tags="">
+        <div class="qa-question" onclick="toggleCard(this)">
+          <div class="qa-q-badge">Q</div>
+          <div class="qa-q-text">RoPE 和 ALiBi 位置编码各有什么优劣？</div>
+          <div class="qa-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          <strong>ALiBi</strong>：对远距离 token 施加线性惩罚，天然支持外推，无需额外参数，但下游性能略逊。<br>
+          <strong>RoPE</strong>：捕获更精细的旋转相位信息，性能更好，但外推性差需要 PI/YaRN 额外处理。<br><br>
+          当前主流开源模型（LLaMA、Qwen）以 RoPE 为主；ALiBi 见于 BLOOM 等模型。
+        </div>
+      </div>
+
+      <div class="qa-card" data-tags="">
+        <div class="qa-question" onclick="toggleCard(this)">
+          <div class="qa-q-badge">Q</div>
+          <div class="qa-q-text">LLaMA 3 为什么把 RoPE 的 base 从 10000 改为 500000？</div>
+          <div class="qa-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          RoPE 的 base 控制旋转频率，<strong>base 越大，低频维度旋转越慢</strong>，编码更长距离位置关系的"容量"越大。增大 base 后，模型不需要遇到极端旋转角度就能区分远距离位置，配合 YaRN 微调，将有效上下文从 8K 扩展到 128K。
+        </div>
+      </div>
+
+      <div class="qa-card" data-tags="">
+        <div class="qa-question" onclick="toggleCard(this)">
+          <div class="qa-q-badge">Q</div>
+          <div class="qa-q-text">绝对位置编码（Sinusoidal）和相对位置编码的根本区别是什么？</div>
+          <div class="qa-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          <strong>绝对位置编码</strong>（sin/cos 或可学习）直接把位置信息加到 token 表示，Attention 计算无法直接反映两个 token 的相对距离。<br><br>
+          <strong>相对位置编码</strong>（RoPE、ALiBi、T5 Bias）让注意力分数显式依赖相对位置 (m-n)，在长度泛化和长文本处理时更有优势。
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- Section 3: KV Cache & 推理优化              -->
+    <!-- ═══════════════════════════════════════════ -->
+    <div id="kvcache">
+      <div class="section-header">
+        <div class="section-icon" style="background:rgba(251,191,36,.2)">⚡</div>
+        <div class="section-title">KV Cache &amp; 推理优化</div>
+        <span class="section-count">6 题</span>
+      </div>
+
+      <div class="qa-card" data-tags="hot">
+        <div class="qa-question" onclick="toggleCard(this)">
+          <div class="qa-q-badge">Q</div>
+          <div class="qa-q-text">KV Cache 的原理是什么？会带来什么问题？<span class="tag tag-hot">高频</span></div>
+          <div class="qa-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          Decoder 自回归生成第 t 个 token 时，需要前 t-1 个 token 的 Key 和 Value 参与注意力计算。KV Cache 将历史 K/V 缓存，每步只计算当前 token 的 Q，从 O(n²) 降至 O(n)。<br><br>
+          <strong>代价</strong>：显存随序列长度线性增长。LLaMA2-7B FP16 下，2K 序列 KV Cache 约 1GB，长上下文 + 大 batch 场景压力极大。
+        </div>
+      </div>
+
+      <div class="qa-card" data-tags="hot">
+        <div class="qa-question" onclick="toggleCard(this)">
+          <div class="qa-q-badge">Q</div>
+          <div class="qa-q-text">PagedAttention（vLLM）解决了什么问题？核心思想是什么？<span class="tag tag-hot">高频</span></div>
+          <div class="qa-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          <strong>问题</strong>：传统 KV Cache 需要预分配连续最大长度的显存，造成严重内存碎片。<br><br>
+          <strong>PagedAttention 核心</strong>：借鉴操作系统虚拟内存分页，将 KV Cache 切成固定大小的物理 Block，通过 Block Table 维护逻辑-物理映射，按需分配。支持 Copy-on-Write 实现 <strong>Prefix Sharing</strong>（多请求共享系统 prompt 的 KV Block）。<br><br>
+          实测吞吐量较 HuggingFace 提升 <strong>2-4 倍</strong>。
+        </div>
+      </div>
+
+      <div class="qa-card" data-tags="hot">
+        <div class="qa-question" onclick="toggleCard(this)">
+          <div class="qa-q-badge">Q</div>
+          <div class="qa-q-text">Speculative Decoding（投机解码）为什么能加速推理？<span class="tag tag-hot">高频</span></div>
+          <div class="qa-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          LLM 推理是 Memory-Bound 操作，<strong>生成 1 个 token 和并行验证 k 个 token 的时延几乎相同</strong>（瓶颈在权重加载带宽，不在计算量）。<br><br>
+          流程：小草稿模型快速生成 k 个候选 → 大目标模型并行验证 → 接受匹配的 token，从第一个拒绝处重采样。<br><br>
+          高接受率（α≈0.8）时理论加速比约 <strong>2-3 倍</strong>。Medusa、EAGLE 等用额外解码 Head 替代草稿模型。
+        </div>
+      </div>
+
+      <div class="qa-card" data-tags="hot">
+        <div class="qa-question" onclick="toggleCard(this)">
+          <div class="qa-q-badge">Q</div>
+          <div class="qa-q-text">量化主流方案有哪些？INT4 和 INT8 的核心区别是什么？<span class="tag tag-hot">高频</span></div>
+          <div class="qa-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          <table>
+            <tr><th>方案</th><th>核心思路</th></tr>
+            <tr><td>GPTQ</td><td>逐层 PTQ，Hessian 矩阵补偿量化误差</td></tr>
+            <tr><td>AWQ</td><td>激活感知，保护显著权重不量化</td></tr>
+            <tr><td>FP8</td><td>H100 原生支持，精度损失极小，DeepSeek-V3 生产使用</td></tr>
+          </table>
+          <strong>INT8</strong>：精度损失小，适合大多数场景；<strong>INT4</strong>：显存节省 75%（vs FP16），但对激活异常值（Outlier）敏感，需要分组量化或混合精度。
+        </div>
+      </div>
+
+      <div class="qa-card" data-tags="">
+        <div class="qa-question" onclick="toggleCard(this)">
+          <div class="qa-q-badge">Q</div>
+          <div class="qa-q-text">Continuous Batching 是什么？相比 Static Batching 有何优势？</div>
+          <div class="qa-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          <strong>Static Batching</strong>：等待 batch 内最长序列完成才整体出队，短序列完成后 GPU 空转。<br><br>
+          <strong>Continuous Batching</strong>（iteration-level scheduling）：每个解码步骤检查哪些序列已完成，立即移出并插入新请求，动态调度。<br><br>
+          在实际服务（请求长度差异大）中吞吐量提升可达<strong>数倍</strong>。
+        </div>
+      </div>
+
+      <div class="qa-card" data-tags="hot 2026">
+        <div class="qa-question" onclick="toggleCard(this)">
+          <div class="qa-q-badge">Q</div>
+          <div class="qa-q-text">MoE 架构的优势和训练难点是什么？<span class="tag tag-hot">高频</span><span class="tag tag-2026">前沿</span></div>
+          <div class="qa-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          <strong>优势</strong>：FFN 层替换为 N 个专家，每个 token 只激活 Top-K（通常 K=2）个专家（稀疏激活），使参数量大幅增加而实际计算量基本不变。如 Mixtral 8×7B 总参数 47B，激活参数约 13B。<br><br>
+          <strong>训练难点</strong>：专家坍塌（Expert Collapse）——部分专家长期不被选中，需要加辅助<strong>负载均衡 Loss</strong> 确保均匀使用；分布式推理时需将全部专家加载进显存，通信开销大。
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- Section 4: RLHF & 对齐                      -->
+    <!-- ═══════════════════════════════════════════ -->
+    <div id="rlhf">
+      <div class="section-header">
+        <div class="section-icon" style="background:rgba(244,114,182,.2)">🎯</div>
+        <div class="section-title">RLHF &amp; 对齐训练</div>
+        <span class="section-count">6 题</span>
+      </div>
+
+      <div class="qa-card" data-tags="hot">
+        <div class="qa-question" onclick="toggleCard(this)">
+          <div class="qa-q-badge">Q</div>
+          <div class="qa-q-text">RLHF 的完整训练流程是什么？<span class="tag tag-hot">高频</span></div>
+          <div class="qa-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          三个阶段：<br><br>
+          <strong>① SFT</strong>：在高质量指令-回复对上有监督微调预训练模型。<br><br>
+          <strong>② 奖励模型训练（RM）</strong>：用人类偏好标注（哪个回复更好）以 Bradley-Terry 模型训练：<code>Loss = -E[log σ(r(x,y_w) - r(x,y_l))]</code><br><br>
+          <strong>③ PPO 强化学习</strong>：以奖励模型分数为信号，用 PPO 优化策略，同时加入 KL 惩罚防止偏离 SFT 参考模型：<code>reward = r(x,y) - β·KL[π_θ || π_ref]</code>
+        </div>
+      </div>
+
+      <div class="qa-card" data-tags="hot">
+        <div class="qa-question" onclick="toggleCard(this)">
+          <div class="qa-q-badge">Q</div>
+          <div class="qa-q-text">PPO 在 RLHF 中涉及哪四个模型？各自作用是什么？<span class="tag tag-hot">高频</span></div>
+          <div class="qa-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          <table>
+            <tr><th>模型</th><th>是否冻结</th><th>作用</th></tr>
+            <tr><td>Actor（策略）</td><td>否（被优化）</td><td>生成回复的模型，初始化自 SFT</td></tr>
+            <tr><td>Critic（价值）</td><td>否</td><td>估计状态价值 V(s)，计算 GAE 优势</td></tr>
+            <tr><td>Reward Model</td><td>是</td><td>为每个回复打分</td></tr>
+            <tr><td>Reference Model</td><td>是</td><td>SFT 模型，计算 KL 散度惩罚</td></tr>
+          </table>
+          四个模型同时在显存中，是 PPO 显存压力大的主因。
+        </div>
+      </div>
+
+      <div class="qa-card" data-tags="hot">
+        <div class="qa-question" onclick="toggleCard(this)">
+          <div class="qa-q-badge">Q</div>
+          <div class="qa-q-text">DPO 与 PPO/RLHF 的核心区别是什么？<span class="tag tag-hot">高频</span></div>
+          <div class="qa-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          DPO 发现 RLHF 最优策略有<strong>闭合解</strong>，将奖励函数隐式参数化为策略本身，直接从偏好数据优化：<br><br>
+          <code>Loss = -E[log σ(β·log(π_θ(y_w|x)/π_ref(y_w|x)) - β·log(π_θ(y_l|x)/π_ref(y_l|x)))]</code><br><br>
+          <strong>区别</strong>：无需显式训练奖励模型，只需两个模型（策略+参考），离线学习，训练更稳定简单。<strong>代价</strong>：无法在线更新偏好数据，可能存在分布偏移。
+        </div>
+      </div>
+
+      <div class="qa-card" data-tags="2026">
+        <div class="qa-question" onclick="toggleCard(this)">
+          <div class="qa-q-badge">Q</div>
+          <div class="qa-q-text">GRPO 和 PPO 的区别是什么？DeepSeek-R1 为什么用 GRPO？<span class="tag tag-2026">前沿</span></div>
+          <div class="qa-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          <table>
+            <tr><th>维度</th><th>PPO</th><th>GRPO</th></tr>
+            <tr><td>Critic 网络</td><td>需要（额外显存）</td><td>不需要</td></tr>
+            <tr><td>基线估计</td><td>价值函数 V(s)</td><td>组内奖励均值</td></tr>
+            <tr><td>适用场景</td><td>通用对话</td><td>数学/代码等可验证任务</td></tr>
+          </table>
+          GRPO 对同一问题采样 G 条输出，用<strong>组内相对奖励</strong>替代绝对奖励，节省 Critic 的训练和显存开销。DeepSeek-R1 用规则奖励（数学题直接验证答案），避免了奖励模型的 Reward Hacking。
+        </div>
+      </div>
+
+      <div class="qa-card" data-tags="">
+        <div class="qa-question" onclick="toggleCard(this)">
+          <div class="qa-q-badge">Q</div>
+          <div class="qa-q-text">RLHF 中 KL 散度惩罚项的作用？beta 过大过小会怎样？</div>
+          <div class="qa-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          KL 惩罚约束策略模型不能离 SFT 参考模型太远，防止<strong>奖励黑客</strong>（模型找到高分但低质量的捷径）和灾难性遗忘。<br><br>
+          <strong>beta 过大</strong>：模型几乎无法更新，无法学习偏好。<br>
+          <strong>beta 过小</strong>：约束失效，容易奖励过优化（Reward Overoptimization）。<br>
+          实践中 beta 通常在 <strong>0.01-0.5</strong> 之间。
+        </div>
+      </div>
+
+      <div class="qa-card" data-tags="">
+        <div class="qa-question" onclick="toggleCard(this)">
+          <div class="qa-q-badge">Q</div>
+          <div class="qa-q-text">SimPO、ORPO 等新型对齐算法相比 DPO 的改进是什么？</div>
+          <div class="qa-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          DPO 依赖参考模型（π_ref），需要额外推理开销。<br><br>
+          <strong>SimPO</strong>：去掉参考模型，用生成长度归一化的对数似然作为隐式奖励，加入 Margin Reward 保证分数差。<br>
+          <strong>ORPO</strong>：将 SFT 损失和偏好优化合并为单目标，一步训练完成对齐，无需参考模型也无需单独 RM 训练阶段。
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- Section 5: LoRA & PEFT                      -->
+    <!-- ═══════════════════════════════════════════ -->
+    <div id="lora">
+      <div class="section-header">
+        <div class="section-icon" style="background:rgba(74,222,128,.2)">🔬</div>
+        <div class="section-title">LoRA &amp; 参数高效微调</div>
+        <span class="section-count">6 题</span>
+      </div>
+
+      <div class="qa-card" data-tags="hot">
+        <div class="qa-question" onclick="toggleCard(this)">
+          <div class="qa-q-badge">Q</div>
+          <div class="qa-q-text">LoRA 的核心原理是什么？为什么有效？<span class="tag tag-hot">高频</span></div>
+          <div class="qa-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          基于"预训练权重更新矩阵具有<strong>低内在秩</strong>"的假设，将权重更新分解为低秩矩阵乘积：<br><br>
+          <code>W = W₀ + ΔW = W₀ + B·A</code>（B ∈ R^{d×r}，A ∈ R^{r×k}，r ≪ d,k）<br><br>
+          训练时冻结 W₀ 只更新 A 和 B，参数量从 d×k 降到 r(d+k)，通常节省 100 倍以上。初始化 B=0 保证训练起点不影响原模型输出。<strong>推理时将 BA 合并进 W₀，零额外推理开销</strong>。
+        </div>
+      </div>
+
+      <div class="qa-card" data-tags="hot">
+        <div class="qa-question" onclick="toggleCard(this)">
+          <div class="qa-q-badge">Q</div>
+          <div class="qa-q-text">LoRA 中 rank（r）和 lora_alpha 如何设置？<span class="tag tag-hot">高频</span></div>
+          <div class="qa-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          <strong>rank r</strong>：控制低秩矩阵的秩。r=4~16 适合大多数任务，复杂任务用 r=32~64。<br><br>
+          <strong>lora_alpha（α）</strong>：缩放因子，实际更新为 <code>ΔW = (α/r)·BA</code>，通常设 <strong>α=2r</strong>（如 r=8 则 α=16），切换 rank 时不需要重调学习率。
+        </div>
+      </div>
+
+      <div class="qa-card" data-tags="hot">
+        <div class="qa-question" onclick="toggleCard(this)">
+          <div class="qa-q-badge">Q</div>
+          <div class="qa-q-text">QLoRA 相比 LoRA 有哪些关键技术改进？<span class="tag tag-hot">高频</span></div>
+          <div class="qa-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          三个关键技术：<br><br>
+          <strong>① 4-bit NF4 量化</strong>：NormalFloat4 格式（针对正态分布权重，精度损失小于 INT4）存储预训练模型。<br>
+          <strong>② 双重量化（Double Quantization）</strong>：对量化常数再次量化，每参数额外节省约 0.37 bit。<br>
+          <strong>③ 分页优化器（Paged Optimizer）</strong>：利用 NVIDIA 统一内存防止 OOM，自动在 GPU/CPU 间换页。<br><br>
+          最终效果：<strong>65B 模型可在单张 48GB GPU 上微调</strong>，精度接近全量微调。
+        </div>
+      </div>
+
+      <div class="qa-card" data-tags="">
+        <div class="qa-question" onclick="toggleCard(this)">
+          <div class="qa-q-badge">Q</div>
+          <div class="qa-q-text">Adapter Tuning、Prefix Tuning、LoRA 三种 PEFT 方法的核心区别是什么？</div>
+          <div class="qa-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          <table>
+            <tr><th>方法</th><th>方式</th><th>推理开销</th><th>效果</th></tr>
+            <tr><td>Adapter Tuning</td><td>层间插入 MLP 瓶颈（串行）</td><td>有额外延迟</td><td>一般</td></tr>
+            <tr><td>Prefix Tuning</td><td>输入前拼接可学习向量</td><td>占用上下文长度</td><td>中等</td></tr>
+            <tr><td><strong>LoRA</strong></td><td>旁路低秩矩阵</td><td>推理可合并权重，<strong>零开销</strong></td><td>最优</td></tr>
+          </table>
+          LoRA 综合性能最佳，已成为事实标准。
+        </div>
+      </div>
+
+      <div class="qa-card" data-tags="">
+        <div class="qa-question" onclick="toggleCard(this)">
+          <div class="qa-q-badge">Q</div>
+          <div class="qa-q-text">什么是 AdaLoRA？解决了 LoRA 的什么问题？</div>
+          <div class="qa-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          标准 LoRA 对所有层使用相同 rank，但不同层对任务重要性不同，参数分配不合理。<br><br>
+          <strong>AdaLoRA</strong>：引入基于 SVD 的<strong>自适应 rank 分配</strong>，通过重要性评估动态给重要层分配更大 rank、不重要层分配更小 rank，在相同参数预算下性能更优。
+        </div>
+      </div>
+
+      <div class="qa-card" data-tags="">
+        <div class="qa-question" onclick="toggleCard(this)">
+          <div class="qa-q-badge">Q</div>
+          <div class="qa-q-text">全量微调和 LoRA 微调分别在什么场景下选择？</div>
+          <div class="qa-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          <strong>选全量微调</strong>：数据量充足（10M+ tokens）、任务与预训练差异大（领域知识注入）、计算资源允许时，效果上限更高。<br><br>
+          <strong>选 LoRA</strong>：数据量较少（&lt;1M tokens）、多任务需要灵活切换 adapter、计算/显存受限，同时能防止过拟合和灾难性遗忘。<br><br>
+          <div class="tip-box">指令微调（Instruct SFT）用 LoRA 通常足够；需要深度领域知识融合时全量更可靠。</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- Section 6: 分布式训练                        -->
+    <!-- ═══════════════════════════════════════════ -->
+    <div id="distributed">
+      <div class="section-header">
+        <div class="section-icon" style="background:rgba(251,191,36,.2)">🌐</div>
+        <div class="section-title">分布式训练</div>
+        <span class="section-count">6 题</span>
+      </div>
+
+      <div class="qa-card" data-tags="hot">
+        <div class="qa-question" onclick="toggleCard(this)">
+          <div class="qa-q-badge">Q</div>
+          <div class="qa-q-text">数据并行、模型并行、流水线并行的核心区别？<span class="tag tag-hot">高频</span></div>
+          <div class="qa-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          <table>
+            <tr><th>并行方式</th><th>切分对象</th><th>通信</th><th>适用场景</th></tr>
+            <tr><td>数据并行（DDP）</td><td>Batch</td><td>AllReduce 同步梯度</td><td>通用，最易实现</td></tr>
+            <tr><td>张量并行（TP）</td><td>单层矩阵运算</td><td>每层 AllReduce，频繁</td><td>单机 NVLink 高带宽</td></tr>
+            <tr><td>流水线并行（PP）</td><td>模型层</td><td>只传激活值，少</td><td>跨机器低带宽</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="qa-card" data-tags="hot">
+        <div class="qa-question" onclick="toggleCard(this)">
+          <div class="qa-q-badge">Q</div>
+          <div class="qa-q-text">ZeRO Stage 1/2/3 分别对什么做了分片？<span class="tag tag-hot">高频</span></div>
+          <div class="qa-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          训练时每参数对应 16B 状态（FP16 参数 2B + 梯度 2B + Adam m/v 各 4B + FP32 主参数 4B）：<br><br>
+          <table>
+            <tr><th>Stage</th><th>分片内容</th><th>显存节省</th></tr>
+            <tr><td>ZeRO-1</td><td>优化器状态</td><td>~4x</td></tr>
+            <tr><td>ZeRO-2</td><td>优化器状态 + 梯度</td><td>~8x</td></tr>
+            <tr><td><strong>ZeRO-3</strong></td><td>优化器状态 + 梯度 + <strong>参数</strong></td><td>~64x+</td></tr>
+          </table>
+          ZeRO-3 代价：每次 forward/backward 需要 all-gather 参数，通信量增加约 1.5x。
+        </div>
+      </div>
+
+      <div class="qa-card" data-tags="">
+        <div class="qa-question" onclick="toggleCard(this)">
+          <div class="qa-q-badge">Q</div>
+          <div class="qa-q-text">流水线并行中的 Bubble 是什么？1F1B 调度如何减少？</div>
+          <div class="qa-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          <strong>Bubble</strong>：Naive 流水线中，第一个 micro-batch 前向传播依次经过所有 stage 时，后续 stage 空闲等待，Bubble 比例 = (p-1)/m（p 为 stage 数，m 为 micro-batch 数）。<br><br>
+          <strong>1F1B 调度</strong>：每个 stage 交替执行前向和反向，steady state 下所有 GPU 始终有任务，峰值显存从 O(p·m) 降至 O(p)。<strong>Interleaved 1F1B</strong> 进一步将 Bubble 降至 (p-1)/(m·v)。
+        </div>
+      </div>
+
+      <div class="qa-card" data-tags="">
+        <div class="qa-question" onclick="toggleCard(this)">
+          <div class="qa-q-badge">Q</div>
+          <div class="qa-q-text">3D 并行是什么？如何确定各并行度的配置？</div>
+          <div class="qa-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          3D 并行 = TP × PP × DP（Megatron-DeepSpeed 使用）。<br><br>
+          配置原则：<strong>TP 优先用于单机</strong>（NVLink 高带宽，TP 通信频繁，通常 ≤ 8）；<strong>PP 用于跨机器</strong>（只传激活值，通信量小）；<strong>DP 用剩余资源</strong>。<br>
+          总 GPU 数 = TP × PP × DP。
+        </div>
+      </div>
+
+      <div class="qa-card" data-tags="hot">
+        <div class="qa-question" onclick="toggleCard(this)">
+          <div class="qa-q-badge">Q</div>
+          <div class="qa-q-text">混合精度训练为什么需要保留 FP32 主副本？FP16 和 BF16 如何选？<span class="tag tag-hot">高频</span></div>
+          <div class="qa-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          FP16 精度范围有限（最大约 65504），大模型训练中梯度更新量（1e-7 级别）可能被截断为零，累积导致权重停止更新。FP32 主权重用于更新，前向/反向用 FP16 加速。<br><br>
+          <table>
+            <tr><th></th><th>FP16</th><th>BF16</th></tr>
+            <tr><td>动态范围</td><td>小，易溢出</td><td>大（与 FP32 相当）</td></tr>
+            <tr><td>需要 Loss Scaling</td><td>是</td><td>否</td></tr>
+            <tr><td>推荐硬件</td><td>V100/T4</td><td>A100/H100</td></tr>
+          </table>
+          现代 LLM 训练首选 <strong>BF16</strong>。
+        </div>
+      </div>
+
+      <div class="qa-card" data-tags="">
+        <div class="qa-question" onclick="toggleCard(this)">
+          <div class="qa-q-badge">Q</div>
+          <div class="qa-q-text">Gradient Checkpointing 的原理和代价是什么？</div>
+          <div class="qa-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          标准反向传播需要缓存所有层激活值，显存 O(L)。梯度检查点只保存部分"检查点"，反向传播时从最近检查点重新前向计算。<br><br>
+          <strong>显存节省</strong>：峰值从 O(L) 降至 O(√L)。<strong>计算代价</strong>：约增加 33% 的计算量（每次 forward 计算约 1.33 次）。<br><br>
+          PyTorch：<code>from torch.utils.checkpoint import checkpoint</code>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- Section 7: 评估                              -->
+    <!-- ═══════════════════════════════════════════ -->
+    <div id="eval">
+      <div class="section-header">
+        <div class="section-icon" style="background:rgba(248,113,113,.2)">📊</div>
+        <div class="section-title">大模型评估</div>
+        <span class="section-count">6 题</span>
+      </div>
+
+      <div class="qa-card" data-tags="">
+        <div class="qa-question" onclick="toggleCard(this)">
+          <div class="qa-q-badge">Q</div>
+          <div class="qa-q-text">Perplexity（困惑度）是什么？它能完全代表模型质量吗？</div>
+          <div class="qa-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          <code>PPL = exp(-1/N · Σ log P(wᵢ|w₁,...,wᵢ₋₁))</code>，值越低表示模型预测越准确。<br><br>
+          <strong>局限</strong>：低 PPL 不代表生成质量高，模型可能存在严重幻觉、指令不遵循、偏见等。不同 tokenizer 的 PPL 不可直接比较。适合作为预训练内部指标，不适合对话模型能力评估。
+        </div>
+      </div>
+
+      <div class="qa-card" data-tags="hot">
+        <div class="qa-question" onclick="toggleCard(this)">
+          <div class="qa-q-badge">Q</div>
+          <div class="qa-q-text">什么是 Benchmark 污染？如何检测和缓解？<span class="tag tag-hot">高频</span></div>
+          <div class="qa-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          <strong>定义</strong>：训练数据中包含评测集题目或答案，导致分数虚高，无法反映真实泛化能力。<br><br>
+          <strong>检测</strong>：n-gram 重叠检测；Min-K% Prob 方法（统计模型对测试样本的概率分布）。<br>
+          <strong>缓解</strong>：动态 Benchmark（定期更新题目）；私有内部测试集；Live Evaluation（LMSYS ChatBot Arena 人类投票）。
+        </div>
+      </div>
+
+      <div class="qa-card" data-tags="hot">
+        <div class="qa-question" onclick="toggleCard(this)">
+          <div class="qa-q-badge">Q</div>
+          <div class="qa-q-text">大模型幻觉（Hallucination）的成因和缓解方法有哪些？<span class="tag tag-hot">高频</span></div>
+          <div class="qa-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          <strong>成因</strong>：训练数据含噪声；模型依赖语言模式而非真实知识；RLHF 可能强化流畅度而非准确性；知识截止日期。<br><br>
+          <strong>缓解方法</strong>：
+          <table>
+            <tr><th>方法</th><th>针对问题</th></tr>
+            <tr><td>RAG</td><td>知识截止、事实性幻觉</td></tr>
+            <tr><td>CoT / Self-Consistency</td><td>推理性幻觉</td></tr>
+            <tr><td>CoVe（链式验证）</td><td>独立验证每个事实声明</td></tr>
+            <tr><td>RLHF / Constitutional AI</td><td>对齐训练减少系统性偏差</td></tr>
+          </table>
+          <div class="tip-box">RAG 无法解决推理性幻觉；完全消除幻觉目前没有方案。</div>
+        </div>
+      </div>
+
+      <div class="qa-card" data-tags="">
+        <div class="qa-question" onclick="toggleCard(this)">
+          <div class="qa-q-badge">Q</div>
+          <div class="qa-q-text">MT-Bench 和 LMSYS Chatbot Arena 是什么评估方式？</div>
+          <div class="qa-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          <strong>MT-Bench</strong>：80 道多轮对话题（8 类任务），用 GPT-4 打 1-10 分，通过 LLM-as-Judge 方式自动评估，成本低但存在评测者偏差。<br><br>
+          <strong>Chatbot Arena</strong>：基于人类偏好投票的 ELO 排行榜，用户与两个匿名模型对话后选更好的，是目前最接近真实用户体验的评估方式，但成本高、受主观偏好影响。
+        </div>
+      </div>
+
+      <div class="qa-card" data-tags="">
+        <div class="qa-question" onclick="toggleCard(this)">
+          <div class="qa-q-badge">Q</div>
+          <div class="qa-q-text">代码生成任务如何评估？HumanEval 有什么局限性？</div>
+          <div class="qa-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          <strong>HumanEval</strong>：164 道 Python 编程题，用 <code>pass@k</code>（k 次采样中至少 1 次通过单元测试的概率）评估。<br><br>
+          <strong>局限</strong>：题目较简单（平均约 10 行代码），无法评估系统级编程、多文件项目；题目已大量收录进训练数据（污染）；pass@k 不评估代码风格、效率、安全性。<br><br>
+          补充：MBPP、LiveCodeBench（实时更新，防污染）是更好的补充。
+        </div>
+      </div>
+
+      <div class="qa-card" data-tags="2026">
+        <div class="qa-question" onclick="toggleCard(this)">
+          <div class="qa-q-badge">Q</div>
+          <div class="qa-q-text">2025-2026 年 LLM 评估的新趋势是什么？<span class="tag tag-2026">前沿</span></div>
+          <div class="qa-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          <strong>Benchmark 饱和危机</strong>：MMLU、GSM8K 等经典 benchmark 已被顶级模型接近满分，区分度丧失。<br><br>
+          <strong>新方向</strong>：
+          <table>
+            <tr><th>Benchmark</th><th>特点</th></tr>
+            <tr><td>LiveBench</td><td>实时更新题目，防污染</td></tr>
+            <tr><td>GPQA</td><td>博士级科学题，人类专家才能解答</td></tr>
+            <tr><td>ARC-AGI</td><td>视觉抽象推理，o3 达 87.5%</td></tr>
+            <tr><td>FrontierMath</td><td>顶级数学竞赛题，当前模型 &lt; 5%</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer section -->
+    <div style="margin-top: 60px; padding: 24px; background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; text-align: center;">
+      <div style="font-size: 1rem; font-weight: 700; margin-bottom: 8px;">📚 完整知识点笔记</div>
+      <div style="color: var(--text2); font-size: 0.88rem; margin-bottom: 16px;">21 篇深度笔记 · 覆盖从基础到前沿的完整 LLM 知识体系</div>
+      <a href="https://github.com/laoshan-song/Awesome-LLM-Interview" target="_blank" style="background: var(--accent); color: #fff; padding: 10px 24px; border-radius: 8px; text-decoration: none; font-weight: 600;">查看 GitHub 仓库 →</a>
+    </div>
+  </main>
+</div>
+
+<footer>
+  <div>Awesome-LLM-Interview · 持续更新的大模型面试知识库</div>
+  <div style="margin-top: 4px">欢迎 Star ⭐ 和 PR 贡献</div>
+</footer>
+
+<script>
+  function toggleCard(el) {
+    el.closest('.qa-card').classList.toggle('open');
+  }
+
+  function expandAll() {
+    document.querySelectorAll('.qa-card').forEach(c => {
+      if (!c.classList.contains('hidden')) c.classList.add('open');
+    });
+  }
+
+  function collapseAll() {
+    document.querySelectorAll('.qa-card').forEach(c => c.classList.remove('open'));
+  }
+
+  function filterQA() {
+    const q = document.getElementById('searchInput').value.toLowerCase();
+    document.querySelectorAll('.qa-card').forEach(card => {
+      const text = card.textContent.toLowerCase();
+      card.classList.toggle('hidden', q && !text.includes(q));
+      card.style.display = (q && !text.includes(q)) ? 'none' : '';
+    });
+  }
+
+  function filterTag(tag) {
+    const input = document.getElementById('searchInput');
+    input.value = '';
+    document.querySelectorAll('.qa-card').forEach(card => {
+      const tags = card.dataset.tags || '';
+      const show = tags.includes(tag);
+      card.style.display = show ? '' : 'none';
+    });
+    if (tag === 'hot') {
+      document.querySelectorAll('.qa-card').forEach(c => {
+        if (c.style.display !== 'none') c.classList.add('open');
+      });
+    }
+  }
+
+  // Sidebar active link on scroll
+  const sections = document.querySelectorAll('[id]');
+  const navLinks = document.querySelectorAll('nav a');
+  window.addEventListener('scroll', () => {
+    let cur = '';
+    sections.forEach(s => {
+      if (window.scrollY >= s.offsetTop - 120) cur = s.id;
+    });
+    navLinks.forEach(a => {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + cur);
+    });
+  });
+</script>
+</body>
+</html>

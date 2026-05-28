@@ -20,6 +20,12 @@
 
 每篇笔记包含：**面试高频考点 + 核心原理 + 原始论文 + 视频讲解**。
 
+### ⚡ 面试速记网页
+
+> **[→ 打开速记网页（cheatsheet.html）](./cheatsheet.html)**
+>
+> 49 道高频考题，7 大模块，点击展开即见答案，搜索、筛选、一键展开全部。面试前 30 分钟速刷专用。
+
 > 如果你觉得有用，点个 ⭐ Star 是对我最大的鼓励！
 
 ---
@@ -71,6 +77,9 @@
 | 19 | [Agent 与工具调用](./notes/05_前沿专题/15_Agent.md) | 补充 ReAct / Toolformer 论文 |
 | 20 | [Prompt Engineering](./notes/05_前沿专题/16_Prompt_Engineering.md) | 新增：CoT / ToT / Self-Consistency / 提示注入防御 |
 | 21 | [大模型幻觉与评估](./notes/05_前沿专题/17_大模型幻觉与评估.md) | 新增：幻觉分类、MMLU/HumanEval、LLM-as-Judge |
+| 22 | [推理时计算扩展（Test-Time Compute）](./notes/05_前沿专题/18_推理时计算扩展.md) | **新增**：DeepSeek-R1、GRPO、PRM 全面解析 🔥 |
+| 23 | [多模态大模型（VLM）](./notes/05_前沿专题/19_多模态大模型.md) | **新增**：GPT-4o/InternVL 架构、视觉编码器对比 🔥 |
+| 24 | [GraphRAG 与高级 RAG](./notes/05_前沿专题/20_GraphRAG与高级RAG.md) | **新增**：GraphRAG、HyDE、Self-RAG、RAGAS 评估 🔥 |
 
 ---
 
@@ -102,6 +111,8 @@ git push origin feat/your-topic
 | 📄 为所有知识点补充原始论文 arxiv 链接 |
 | 🎬 添加 Karpathy / 3Blue1Brown / 李沐等优质视频资源 |
 | 🗂️ 重构目录：按主题分为 5 大类，新增分布式训练、Prompt Engineering、幻觉评估等前沿专题 |
+| 🚀 新增 2026 前沿专题：推理时计算扩展（TTC/DeepSeek-R1/GRPO）、多模态大模型（VLM）、GraphRAG 与高级 RAG |
+| ⚡ 新增面试速记网页（cheatsheet.html）：49 道高频考题，支持搜索/筛选/展开，面试前速刷专用 |
 
 ---
 
