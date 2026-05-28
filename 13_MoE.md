@@ -69,3 +69,18 @@ Router：计算每个专家的权重得分
 
 **Q：为什么 DeepSeek-V2 用 160 个专家但只激活 6 个？**
 > 细粒度 MoE 增加专家数量同时减少单专家参数量，路由更灵活，专业化程度更高。
+
+
+---
+
+## 原始论文
+
+| 论文 | 链接 |
+|------|------|
+| Mixtral of Experts (Jiang et al., 2024) | [arxiv.org/abs/2401.04088](https://arxiv.org/abs/2401.04088) |
+| Outrageously Large Neural Networks: The Sparsely-Gated MoE Layer (Shazeer et al., 2017) | [arxiv.org/abs/1701.06538](https://arxiv.org/abs/1701.06538) |
+| Switch Transformers (Fedus et al., 2021) | [arxiv.org/abs/2101.03961](https://arxiv.org/abs/2101.03961) |
+
+## 延伸阅读与视频
+
+> 视频链接持续更新中，欢迎 PR 补充优质资源

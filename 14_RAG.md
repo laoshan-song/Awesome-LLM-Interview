@@ -65,3 +65,17 @@ RAG 通过在生成前检索相关文档，将外部知识注入上下文。
 
 **Q：RAG 和 Fine-tuning 如何选择？**
 > 知识频繁更新、需要引用来源 → RAG；需要改变输出风格/固定领域知识 → Fine-tuning；两者可结合。
+
+
+---
+
+## 原始论文
+
+| 论文 | 链接 |
+|------|------|
+| Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks (Lewis et al., 2020) | [arxiv.org/abs/2005.11401](https://arxiv.org/abs/2005.11401) |
+| Self-RAG (Asai et al., 2023) | [arxiv.org/abs/2310.11511](https://arxiv.org/abs/2310.11511) |
+
+## 延伸阅读与视频
+
+> 视频链接持续更新中，欢迎 PR 补充优质资源

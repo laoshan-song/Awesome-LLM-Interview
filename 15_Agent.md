@@ -78,3 +78,17 @@ Answer: 北京今天晴朗，气温 25°C
 
 **Q：RAG 和 Agent 的关系？**
 > RAG 可以作为 Agent 的一个工具（搜索知识库）。Agent 更通用，可调用任意工具，但复杂度和延迟也更高。
+
+
+---
+
+## 原始论文
+
+| 论文 | 链接 |
+|------|------|
+| ReAct: Synergizing Reasoning and Acting in Language Models (Yao et al., 2022) | [arxiv.org/abs/2210.03629](https://arxiv.org/abs/2210.03629) |
+| Toolformer: Language Models Can Teach Themselves to Use Tools (Schick et al., 2023) | [arxiv.org/abs/2302.04761](https://arxiv.org/abs/2302.04761) |
+
+## 延伸阅读与视频
+
+> 视频链接持续更新中，欢迎 PR 补充优质资源

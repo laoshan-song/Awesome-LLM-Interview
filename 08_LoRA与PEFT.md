@@ -69,3 +69,17 @@ W' = W + ΔW = W + A * B
 
 **Q：LoRA 推理时有额外开销吗？**
 > 可以将 LoRA 权重合并回原始模型（W' = W + AB），推理时零开销。也可以保持分离，支持动态切换不同的 LoRA 适配器。
+
+
+---
+
+## 原始论文
+
+| 论文 | 链接 |
+|------|------|
+| LoRA: Low-Rank Adaptation of Large Language Models (Hu et al., 2021) | [arxiv.org/abs/2106.09685](https://arxiv.org/abs/2106.09685) |
+| QLoRA: Efficient Finetuning of Quantized LLMs (Dettmers et al., 2023) | [arxiv.org/abs/2305.14314](https://arxiv.org/abs/2305.14314) |
+
+## 延伸阅读与视频
+
+> 视频链接持续更新中，欢迎 PR 补充优质资源
