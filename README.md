@@ -40,46 +40,51 @@
 | 02 | [分词算法（BPE / WordPiece / SentencePiece）](./notes/01_基础架构/02_分词算法.md) | 添加 Karpathy 视频 + 3 篇原始论文链接 |
 | 03 | [Transformer 架构详解](./notes/01_基础架构/03_Transformer架构.md) | 添加 3Blue1Brown 可视化视频 + 原版论文 |
 | 04 | [位置编码（RoPE / ALiBi / sinusoidal）](./notes/01_基础架构/04_位置编码.md) | 补充 RoPE / ALiBi 论文 + 外推方案对比 |
-| 05 | [主流模型架构对比（LLaMA / Qwen / DeepSeek）](./notes/01_基础架构/05_主流模型架构对比.md) | 新增：MLA、RMSNorm、SwiGLU 等架构细节 |
+| 05 | [主流模型架构对比（LLaMA / Qwen / DeepSeek）](./notes/01_基础架构/05_主流模型架构对比.md) | MLA、RMSNorm、SwiGLU 等架构细节 |
+| 06 | [国产主流模型全景（DeepSeek / Qwen / GLM / MiniMax）](./notes/01_基础架构/06_国产主流模型全景.md) | **新增**：DeepSeek-V3/R1/V4、Qwen3混合思考、MiniMax Lightning Attention 🔥 |
 
 ### ⚙️ 二、训练与对齐
 
 | 编号 | 主题 | 最近更新 |
 |------|------|----------|
-| 06 | [预训练 vs 微调 vs RLHF](./notes/02_训练与对齐/05_预训练与微调.md) | 补充 InstructGPT / LIMA 论文 + 三阶段流程 |
-| 07 | [SFT 有监督微调](./notes/02_训练与对齐/06_SFT.md) | 补充数据质量分析 + loss 计算细节 |
-| 08 | [RLHF / DPO / PPO 对比](./notes/02_训练与对齐/07_RLHF_DPO_PPO.md) | 添加李沐精读视频 + DPO 完整推导 |
-| 09 | [LoRA 及参数高效微调（PEFT）](./notes/02_训练与对齐/08_LoRA与PEFT.md) | 添加论文精读视频 + QLoRA 细节 |
-| 10 | [预训练数据处理](./notes/02_训练与对齐/09_预训练数据处理.md) | 新增：数据清洗、去重、配比策略 |
+| 07 | [预训练 vs 微调 vs RLHF](./notes/02_训练与对齐/05_预训练与微调.md) | 补充 InstructGPT / LIMA 论文 + 三阶段流程 |
+| 08 | [SFT 有监督微调](./notes/02_训练与对齐/06_SFT.md) | 补充数据质量分析 + loss 计算细节 |
+| 09 | [RLHF / DPO / PPO 对比](./notes/02_训练与对齐/07_RLHF_DPO_PPO.md) | 添加李沐精读视频 + DPO 完整推导 |
+| 10 | [LoRA 及参数高效微调（PEFT）](./notes/02_训练与对齐/08_LoRA与PEFT.md) | 添加论文精读视频 + QLoRA 细节 |
+| 11 | [预训练数据处理](./notes/02_训练与对齐/09_预训练数据处理.md) | 数据清洗、去重、配比策略 |
+| 12 | [2025 前沿对齐技术（RLVR / DAPO / RLAIF）](./notes/02_训练与对齐/10_前沿对齐技术.md) | **新增**：DAPO/Dr.GRPO/OpenRLHF/veRL/Constitutional AI 🔥 |
 
 ### 🚀 三、推理与优化
 
 | 编号 | 主题 | 最近更新 |
 |------|------|----------|
-| 11 | [KV Cache 原理与优化](./notes/03_推理与优化/09_KV_Cache.md) | 补充显存公式 + GQA / PagedAttention |
-| 12 | [量化（INT8 / INT4 / GPTQ / AWQ）](./notes/03_推理与优化/10_量化.md) | 补充 GPTQ / AWQ / SmoothQuant 论文 |
-| 13 | [解码策略（Greedy / Beam / Sampling）](./notes/03_推理与优化/11_解码策略.md) | 补充 Top-p 论文 + 场景使用建议 |
-| 14 | [推理加速（Flash Attention / vLLM / 投机采样）](./notes/03_推理与优化/12_推理加速.md) | 补充 Flash Attention / 投机采样 4 篇论文 |
+| 13 | [KV Cache 原理与优化](./notes/03_推理与优化/09_KV_Cache.md) | 补充显存公式 + GQA / PagedAttention |
+| 14 | [量化（INT8 / INT4 / GPTQ / AWQ）](./notes/03_推理与优化/10_量化.md) | 补充 GPTQ / AWQ / SmoothQuant 论文 |
+| 15 | [解码策略（Greedy / Beam / Sampling）](./notes/03_推理与优化/11_解码策略.md) | 补充 Top-p 论文 + 场景使用建议 |
+| 16 | [推理加速（Flash Attention / vLLM / 投机采样）](./notes/03_推理与优化/12_推理加速.md) | 补充 Flash Attention / 投机采样 4 篇论文 |
+| 17 | [推理框架对比（vLLM / SGLang / llama.cpp）](./notes/03_推理与优化/13_推理框架对比.md) | **新增**：RadixAttention、GGUF量化、Disaggregated P/D、选型指南 🔥 |
 
 ### 🖥️ 四、分布式训练
 
 | 编号 | 主题 | 最近更新 |
 |------|------|----------|
-| 15 | [数据并行与模型并行](./notes/04_分布式训练/01_数据并行与模型并行.md) | 新增：ZeRO 三阶段、张量/流水线并行对比 |
-| 16 | [显存优化技巧](./notes/04_分布式训练/02_显存优化技巧.md) | 新增：梯度检查点、混合精度、显存占用公式 |
+| 18 | [数据并行与模型并行](./notes/04_分布式训练/01_数据并行与模型并行.md) | ZeRO 三阶段、张量/流水线并行对比 |
+| 19 | [显存优化技巧](./notes/04_分布式训练/02_显存优化技巧.md) | 梯度检查点、混合精度、显存占用公式 |
 
 ### 🔬 五、前沿专题
 
 | 编号 | 主题 | 最近更新 |
 |------|------|----------|
-| 17 | [MoE 混合专家模型](./notes/05_前沿专题/13_MoE.md) | 补充 Mixtral / Switch Transformer 论文 |
-| 18 | [RAG 检索增强生成](./notes/05_前沿专题/14_RAG.md) | 添加 IBM 视频 + Self-RAG 论文 |
-| 19 | [Agent 与工具调用](./notes/05_前沿专题/15_Agent.md) | 补充 ReAct / Toolformer 论文 |
-| 20 | [Prompt Engineering](./notes/05_前沿专题/16_Prompt_Engineering.md) | 新增：CoT / ToT / Self-Consistency / 提示注入防御 |
-| 21 | [大模型幻觉与评估](./notes/05_前沿专题/17_大模型幻觉与评估.md) | 新增：幻觉分类、MMLU/HumanEval、LLM-as-Judge |
-| 22 | [推理时计算扩展（Test-Time Compute）](./notes/05_前沿专题/18_推理时计算扩展.md) | **新增**：DeepSeek-R1、GRPO、PRM 全面解析 🔥 |
-| 23 | [多模态大模型（VLM）](./notes/05_前沿专题/19_多模态大模型.md) | **新增**：GPT-4o/InternVL 架构、视觉编码器对比 🔥 |
-| 24 | [GraphRAG 与高级 RAG](./notes/05_前沿专题/20_GraphRAG与高级RAG.md) | **新增**：GraphRAG、HyDE、Self-RAG、RAGAS 评估 🔥 |
+| 20 | [MoE 混合专家模型](./notes/05_前沿专题/13_MoE.md) | 补充 Mixtral / Switch Transformer 论文 |
+| 21 | [RAG 检索增强生成](./notes/05_前沿专题/14_RAG.md) | 添加 Self-RAG 论文 + LangChain 视频 |
+| 22 | [Agent 与工具调用](./notes/05_前沿专题/15_Agent.md) | 补充 ReAct / Toolformer 论文 |
+| 23 | [Prompt Engineering](./notes/05_前沿专题/16_Prompt_Engineering.md) | CoT / ToT / Self-Consistency / 提示注入防御 |
+| 24 | [大模型幻觉与评估](./notes/05_前沿专题/17_大模型幻觉与评估.md) | 幻觉分类、MMLU/HumanEval、LLM-as-Judge |
+| 25 | [推理时计算扩展（Test-Time Compute）](./notes/05_前沿专题/18_推理时计算扩展.md) | DeepSeek-R1、GRPO、PRM 全面解析 |
+| 26 | [多模态大模型（VLM）](./notes/05_前沿专题/19_多模态大模型.md) | GPT-4o/InternVL 架构、视觉编码器对比 |
+| 27 | [GraphRAG 与高级 RAG](./notes/05_前沿专题/20_GraphRAG与高级RAG.md) | GraphRAG、HyDE、Self-RAG、RAGAS 评估 |
+| 28 | [评估框架与 Harness](./notes/05_前沿专题/21_评估框架与Harness.md) | **新增**：lm-eval-harness、Open LLM Leaderboard v2、OpenCompass 🔥 |
+| 29 | [Agent 框架与 MCP 协议](./notes/05_前沿专题/22_Agent框架与MCP.md) | **新增**：LangGraph、AutoGen、OpenAI Agents SDK、MCP/A2A 协议 🔥 |
 
 ---
 
@@ -107,12 +112,14 @@ git push origin feat/your-topic
 | 更新内容 |
 |----------|
 | 🎉 初始化仓库，完成 LLM 核心名词解释 |
-| 📚 补全 15 篇核心知识点（基础 / 训练 / 推理 / 工程） |
+| 📚 补全核心知识点（基础 / 训练 / 推理 / 工程） |
 | 📄 为所有知识点补充原始论文 arxiv 链接 |
 | 🎬 添加 Karpathy / 3Blue1Brown / 李沐等优质视频资源 |
 | 🗂️ 重构目录：按主题分为 5 大类，新增分布式训练、Prompt Engineering、幻觉评估等前沿专题 |
-| 🚀 新增 2026 前沿专题：推理时计算扩展（TTC/DeepSeek-R1/GRPO）、多模态大模型（VLM）、GraphRAG 与高级 RAG |
-| ⚡ 新增面试速记网页（cheatsheet.html）：49 道高频考题，支持搜索/筛选/展开，面试前速刷专用 |
+| 🚀 新增 2026 前沿专题：TTC/DeepSeek-R1/GRPO、多模态VLM、GraphRAG |
+| ⚡ 新增面试速记网页（cheatsheet.html）：49 道高频考题，支持搜索/筛选 |
+| 🇨🇳 新增国产模型全景：DeepSeek-V3/R1、Qwen3混合思考、GLM-4、MiniMax Lightning Attention |
+| 🔧 新增前沿框架：vLLM/SGLang/llama.cpp推理框架对比、DAPO/RLVR对齐技术、lm-eval-harness评估、LangGraph/MCP协议 |
 
 ---
 
