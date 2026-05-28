@@ -20,90 +20,142 @@
       --red: #f87171;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { background: var(--bg); color: var(--text); font-family: 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif; min-height: 100vh; }
+    html { scroll-behavior: smooth; }
+    body {
+      background:
+        radial-gradient(circle at 8% -8%, rgba(124,106,247,.26), transparent 32vw),
+        radial-gradient(circle at 86% 2%, rgba(94,234,212,.16), transparent 28vw),
+        radial-gradient(circle at 50% 110%, rgba(244,114,182,.12), transparent 35vw),
+        var(--bg);
+      color: var(--text);
+      font-family: 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif;
+      min-height: 100vh;
+    }
+    body::before {
+      content: '';
+      position: fixed; inset: 0; pointer-events: none; opacity: .28;
+      background-image: linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
+      background-size: 42px 42px;
+      mask-image: linear-gradient(to bottom, #000 0%, transparent 78%);
+    }
+    ::selection { background: rgba(124,106,247,.35); }
 
     /* ── Header ── */
     header {
-      background: linear-gradient(135deg, #1a1d2e 0%, #252840 100%);
-      border-bottom: 1px solid var(--border);
-      padding: 24px 40px;
-      display: flex; align-items: center; justify-content: space-between;
+      background: rgba(26,29,46,.78);
+      border-bottom: 1px solid rgba(124,106,247,.22);
+      padding: 22px 40px;
+      display: flex; align-items: center; justify-content: space-between; gap: 24px;
       position: sticky; top: 0; z-index: 100;
-      backdrop-filter: blur(10px);
+      backdrop-filter: blur(18px);
+      box-shadow: 0 16px 50px rgba(0,0,0,.22);
     }
-    .logo { font-size: 1.4rem; font-weight: 700; }
+    .logo { font-size: 1.45rem; font-weight: 800; letter-spacing: -.02em; }
     .logo span { color: var(--accent); }
-    .header-meta { font-size: 0.85rem; color: var(--text2); }
-    .github-link {
-      background: var(--accent); color: #fff; padding: 8px 16px; border-radius: 8px;
-      text-decoration: none; font-size: 0.85rem; font-weight: 600;
-      transition: opacity .2s;
+    .header-meta { font-size: 0.85rem; color: var(--text2); margin-top: 4px; }
+    .header-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; justify-content: flex-end; }
+    .pill {
+      border: 1px solid rgba(94,234,212,.28); color: var(--accent2);
+      background: rgba(94,234,212,.08); border-radius: 999px;
+      padding: 7px 12px; font-size: .78rem; font-weight: 700;
     }
-    .github-link:hover { opacity: .85; }
+    .github-link {
+      background: linear-gradient(135deg, var(--accent), #9b8cff); color: #fff; padding: 9px 16px; border-radius: 999px;
+      text-decoration: none; font-size: 0.85rem; font-weight: 700;
+      transition: transform .2s, box-shadow .2s;
+      box-shadow: 0 10px 30px rgba(124,106,247,.25);
+    }
+    .github-link:hover { transform: translateY(-1px); box-shadow: 0 14px 36px rgba(124,106,247,.35); }
 
     /* ── Layout ── */
-    .layout { display: flex; min-height: calc(100vh - 80px); }
+    .layout { display: flex; min-height: calc(100vh - 80px); position: relative; }
     nav {
-      width: 220px; flex-shrink: 0;
-      background: var(--bg2); border-right: 1px solid var(--border);
-      padding: 24px 0; position: sticky; top: 80px;
-      height: calc(100vh - 80px); overflow-y: auto;
+      width: 248px; flex-shrink: 0;
+      background: rgba(26,29,46,.72); border-right: 1px solid rgba(45,49,84,.82);
+      padding: 24px 0; position: sticky; top: 79px;
+      height: calc(100vh - 79px); overflow-y: auto;
+      backdrop-filter: blur(14px);
     }
-    nav h3 { font-size: 0.7rem; letter-spacing: .1em; text-transform: uppercase;
-              color: var(--text2); padding: 0 20px 8px; }
+    nav h3 { font-size: 0.7rem; letter-spacing: .12em; text-transform: uppercase;
+              color: var(--text2); padding: 0 20px 10px; }
     nav a {
-      display: block; padding: 8px 20px; color: var(--text2); text-decoration: none;
+      display: block; padding: 9px 20px; color: var(--text2); text-decoration: none;
       font-size: 0.88rem; border-left: 3px solid transparent;
       transition: all .15s;
     }
-    nav a:hover, nav a.active { color: var(--accent); border-left-color: var(--accent); background: rgba(124,106,247,.08); }
-    .nav-section { margin-bottom: 16px; }
+    nav a:hover, nav a.active { color: var(--accent2); border-left-color: var(--accent); background: rgba(124,106,247,.11); }
+    .nav-section { margin-bottom: 18px; }
 
-    main { flex: 1; padding: 40px; max-width: 900px; }
+    main { flex: 1; padding: 36px 40px 48px; max-width: 1080px; width: 100%; }
+    .hero {
+      position: relative; overflow: hidden; margin-bottom: 28px;
+      background: linear-gradient(135deg, rgba(124,106,247,.18), rgba(37,40,64,.78) 48%, rgba(94,234,212,.11));
+      border: 1px solid rgba(124,106,247,.28); border-radius: 24px;
+      padding: 30px; box-shadow: 0 24px 70px rgba(0,0,0,.24);
+    }
+    .hero::after {
+      content: ''; position: absolute; width: 260px; height: 260px; right: -100px; top: -110px;
+      border-radius: 999px; background: rgba(94,234,212,.16); filter: blur(8px);
+    }
+    .hero-kicker { color: var(--accent2); font-weight: 800; font-size: .82rem; letter-spacing: .12em; text-transform: uppercase; }
+    .hero h1 { font-size: clamp(2rem, 4vw, 3.3rem); line-height: 1.08; margin: 10px 0 12px; letter-spacing: -.05em; }
+    .hero p { color: var(--text2); font-size: .98rem; line-height: 1.8; max-width: 760px; }
+    .stats-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-top: 22px; }
+    .stat-card {
+      background: rgba(15,17,23,.45); border: 1px solid rgba(255,255,255,.08);
+      border-radius: 16px; padding: 14px;
+    }
+    .stat-value { color: #fff; font-size: 1.45rem; font-weight: 800; }
+    .stat-label { color: var(--text2); font-size: .78rem; margin-top: 3px; }
 
     /* ── Section header ── */
     .section-header {
       display: flex; align-items: center; gap: 12px;
-      margin-bottom: 24px; margin-top: 48px;
+      margin-bottom: 18px; margin-top: 52px;
+      scroll-margin-top: 110px;
     }
     .section-header:first-child { margin-top: 0; }
-    .section-icon { width: 36px; height: 36px; border-radius: 10px;
+    .section-icon { width: 40px; height: 40px; border-radius: 14px;
                     display: flex; align-items: center; justify-content: center;
-                    font-size: 1.1rem; }
-    .section-title { font-size: 1.3rem; font-weight: 700; }
-    .section-count { font-size: 0.8rem; color: var(--text2); margin-left: auto;
-                     background: var(--bg3); padding: 3px 10px; border-radius: 20px; }
+                    font-size: 1.1rem; box-shadow: inset 0 1px 0 rgba(255,255,255,.08); }
+    .section-title { font-size: 1.35rem; font-weight: 800; letter-spacing: -.02em; }
+    .section-count { font-size: 0.78rem; color: var(--text2); margin-left: auto;
+                     background: rgba(37,40,64,.82); border: 1px solid rgba(255,255,255,.06); padding: 4px 10px; border-radius: 999px; }
 
     /* ── QA Card ── */
     .qa-card {
-      background: var(--bg2); border: 1px solid var(--border);
-      border-radius: 12px; margin-bottom: 12px; overflow: hidden;
-      transition: border-color .2s;
+      background: linear-gradient(180deg, rgba(26,29,46,.94), rgba(26,29,46,.78));
+      border: 1px solid rgba(45,49,84,.95);
+      border-radius: 16px; margin-bottom: 12px; overflow: hidden;
+      transition: transform .18s, border-color .2s, box-shadow .2s;
+      box-shadow: 0 10px 28px rgba(0,0,0,.12);
     }
-    .qa-card:hover { border-color: var(--accent); }
+    .qa-card:hover { border-color: rgba(124,106,247,.75); transform: translateY(-1px); box-shadow: 0 18px 40px rgba(0,0,0,.18); }
     .qa-question {
-      padding: 16px 20px; cursor: pointer;
+      padding: 17px 20px; cursor: pointer;
       display: flex; align-items: flex-start; gap: 12px;
       user-select: none;
     }
     .qa-q-badge {
-      flex-shrink: 0; width: 24px; height: 24px; border-radius: 6px;
-      background: var(--accent); color: #fff;
+      flex-shrink: 0; width: 26px; height: 26px; border-radius: 8px;
+      background: linear-gradient(135deg, var(--accent), #9b8cff); color: #fff;
       display: flex; align-items: center; justify-content: center;
-      font-size: 0.75rem; font-weight: 700; margin-top: 1px;
+      font-size: 0.75rem; font-weight: 800; margin-top: 1px;
+      box-shadow: 0 8px 22px rgba(124,106,247,.22);
     }
-    .qa-q-text { flex: 1; font-size: 0.95rem; font-weight: 600; line-height: 1.5; }
+    .qa-q-text { flex: 1; font-size: 0.96rem; font-weight: 700; line-height: 1.55; }
     .qa-chevron {
       flex-shrink: 0; color: var(--text2); transition: transform .25s;
       font-size: 0.9rem; margin-top: 2px;
     }
     .qa-card.open .qa-chevron { transform: rotate(180deg); }
     .qa-answer {
-      display: none; padding: 0 20px 16px 56px;
-      font-size: 0.9rem; line-height: 1.75; color: var(--text);
-      border-top: 1px solid var(--border);
+      display: none; padding: 0 20px 16px 58px;
+      font-size: 0.91rem; line-height: 1.78; color: var(--text);
+      border-top: 1px solid rgba(45,49,84,.88);
+      background: rgba(15,17,23,.28);
     }
-    .qa-card.open .qa-answer { display: block; padding-top: 14px; }
+    .qa-card.open .qa-answer { display: block; padding-top: 15px; }
 
     /* Answer formatting */
     .qa-answer code {
@@ -125,10 +177,11 @@
 
     /* Tags */
     .tag { display: inline-block; padding: 2px 8px; border-radius: 20px; font-size: 0.72rem;
-            font-weight: 600; margin-left: 8px; }
+            font-weight: 700; margin-left: 8px; vertical-align: 1px; }
     .tag-hot { background: rgba(248,113,113,.15); color: var(--red); border: 1px solid rgba(248,113,113,.3); }
     .tag-2026 { background: rgba(124,106,247,.15); color: var(--accent); border: 1px solid rgba(124,106,247,.3); }
     .tag-hard { background: rgba(251,191,36,.15); color: var(--yellow); border: 1px solid rgba(251,191,36,.3); }
+    .tag-system { background: rgba(94,234,212,.13); color: var(--accent2); border: 1px solid rgba(94,234,212,.3); }
 
     /* Progress bar */
     .progress-bar { background: var(--bg3); border-radius: 4px; height: 4px; margin-top: 8px; }
@@ -144,30 +197,51 @@
 
     /* Search */
     .search-bar {
-      width: 100%; background: var(--bg2); border: 1px solid var(--border);
-      border-radius: 10px; padding: 12px 16px; color: var(--text);
-      font-size: 0.95rem; margin-bottom: 32px; outline: none;
-      transition: border-color .2s;
+      width: 100%; background: rgba(26,29,46,.88); border: 1px solid rgba(45,49,84,.95);
+      border-radius: 14px; padding: 14px 16px; color: var(--text);
+      font-size: 0.95rem; margin-bottom: 14px; outline: none;
+      transition: border-color .2s, box-shadow .2s;
+      box-shadow: 0 14px 34px rgba(0,0,0,.12);
     }
-    .search-bar:focus { border-color: var(--accent); }
+    .search-bar:focus { border-color: var(--accent); box-shadow: 0 0 0 4px rgba(124,106,247,.12); }
 
     /* Expand all btn */
-    .top-controls { display: flex; gap: 10px; margin-bottom: 20px; }
+    .top-controls { display: flex; gap: 10px; margin-bottom: 24px; flex-wrap: wrap; }
     .ctrl-btn {
-      background: var(--bg3); border: 1px solid var(--border);
-      color: var(--text2); padding: 7px 14px; border-radius: 8px;
+      background: rgba(37,40,64,.88); border: 1px solid rgba(45,49,84,.95);
+      color: var(--text2); padding: 8px 14px; border-radius: 999px;
       cursor: pointer; font-size: 0.83rem; transition: all .2s;
     }
-    .ctrl-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .ctrl-btn:hover { border-color: var(--accent); color: var(--accent2); transform: translateY(-1px); }
+
+    .interview-map {
+      display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px;
+      margin: 10px 0 30px;
+    }
+    .map-card {
+      background: rgba(26,29,46,.72); border: 1px solid rgba(255,255,255,.07);
+      border-radius: 16px; padding: 16px;
+    }
+    .map-card strong { color: var(--accent2); display: block; margin-bottom: 7px; }
+    .map-card span { color: var(--text2); font-size: .84rem; line-height: 1.7; }
 
     /* Footer */
     footer { text-align: center; padding: 40px; color: var(--text2); font-size: 0.82rem;
              border-top: 1px solid var(--border); }
 
+    @media (max-width: 980px) {
+      .stats-grid, .interview-map { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
     @media (max-width: 768px) {
       nav { display: none; }
-      main { padding: 20px; }
-      header { padding: 16px 20px; }
+      main { padding: 18px; }
+      header { padding: 15px 18px; align-items: flex-start; }
+      .header-actions .pill { display: none; }
+      .hero { padding: 22px; border-radius: 18px; }
+      .stats-grid, .interview-map { grid-template-columns: 1fr; }
+      .qa-answer { padding-left: 20px; }
+      .section-count { display: none; }
     }
   </style>
 </head>
@@ -176,9 +250,12 @@
 <header>
   <div>
     <div class="logo">LLM 面试<span>速记</span></div>
-    <div class="header-meta">49 道高频考题 · 覆盖 7 大模块 · 持续更新</div>
+    <div class="header-meta">65 道高频考题 · 覆盖 11 大模块 · 持续更新</div>
   </div>
-  <a class="github-link" href="https://github.com/laoshan-song/Awesome-LLM-Interview" target="_blank">⭐ GitHub</a>
+  <div class="header-actions">
+    <div class="pill">2026 前沿版</div>
+    <a class="github-link" href="https://github.com/laoshan-song/Awesome-LLM-Interview" target="_blank">⭐ GitHub</a>
+  </div>
 </header>
 
 <div class="layout">
@@ -188,6 +265,10 @@
       <a href="#transformer">🔧 Transformer &amp; Attention</a>
       <a href="#position">📍 位置编码</a>
       <a href="#kvcache">⚡ KV Cache &amp; 推理优化</a>
+      <a href="#rag">🧩 RAG &amp; 检索增强</a>
+      <a href="#agent">🤖 Agent &amp; Tool Use</a>
+      <a href="#prompt">🧠 Prompt &amp; 上下文工程</a>
+      <a href="#data">🧪 数据工程 &amp; 预训练</a>
       <a href="#rlhf">🎯 RLHF &amp; 对齐训练</a>
       <a href="#lora">🔬 LoRA &amp; 参数高效微调</a>
       <a href="#distributed">🌐 分布式训练</a>
@@ -196,13 +277,33 @@
   </nav>
 
   <main>
-    <input class="search-bar" type="text" id="searchInput" placeholder="🔍 搜索考题（如：KV Cache、RLHF、LoRA...）" oninput="filterQA()">
+    <section class="hero">
+      <div class="hero-kicker">LLM Interview Cheat Sheet</div>
+      <h1>把高频大模型面试题压缩成一页可搜索速查表</h1>
+      <p>覆盖 Transformer、推理优化、RAG、Agent、对齐、微调、分布式训练与评估。适合面试前 30 分钟快速过重点，也适合复习时按模块查漏补缺。</p>
+      <div class="stats-grid">
+        <div class="stat-card"><div class="stat-value">65</div><div class="stat-label">道核心问答</div></div>
+        <div class="stat-card"><div class="stat-value">11</div><div class="stat-label">个知识模块</div></div>
+        <div class="stat-card"><div class="stat-value">30min</div><div class="stat-label">面试前冲刺</div></div>
+        <div class="stat-card"><div class="stat-value">2026</div><div class="stat-label">前沿趋势补充</div></div>
+      </div>
+    </section>
+
+    <input class="search-bar" type="text" id="searchInput" placeholder="🔍 搜索考题（如：KV Cache、RAG、Agent、GRPO、LoRA...）" oninput="filterQA()">
 
     <div class="top-controls">
       <button class="ctrl-btn" onclick="expandAll()">展开全部</button>
       <button class="ctrl-btn" onclick="collapseAll()">收起全部</button>
       <button class="ctrl-btn" onclick="filterTag('hot')">🔥 高频</button>
       <button class="ctrl-btn" onclick="filterTag('2026')">🚀 2026前沿</button>
+      <button class="ctrl-btn" onclick="filterTag('system')">🧠 工程系统</button>
+      <button class="ctrl-btn" onclick="resetFilter()">重置筛选</button>
+    </div>
+
+    <div class="interview-map">
+      <div class="map-card"><strong>基础必答</strong><span>Attention 公式、复杂度、Pre-LN、RoPE、KV Cache 是最容易被追问的底层题。</span></div>
+      <div class="map-card"><strong>工程落地</strong><span>重点准备 vLLM、PagedAttention、RAG 召回/重排、Agent 工具调用和评估闭环。</span></div>
+      <div class="map-card"><strong>前沿加分</strong><span>能讲清 GRPO、MoE、长上下文、LiveBench、数据合成，会明显拉开差距。</span></div>
     </div>
 
     <!-- ═══════════════════════════════════════════ -->
@@ -497,7 +598,331 @@
     </div>
 
     <!-- ═══════════════════════════════════════════ -->
-    <!-- Section 4: RLHF & 对齐                      -->
+    <!-- Section 4: RAG & 检索增强                   -->
+    <!-- ═══════════════════════════════════════════ -->
+    <div id="rag">
+      <div class="section-header">
+        <div class="section-icon" style="background:rgba(94,234,212,.2)">🧩</div>
+        <div class="section-title">RAG &amp; 检索增强</div>
+        <span class="section-count">6 题</span>
+      </div>
+
+      <div class="qa-card" data-tags="hot system">
+        <div class="qa-question" onclick="toggleCard(this)">
+          <div class="qa-q-badge">Q</div>
+          <div class="qa-q-text">RAG 的完整链路是什么？每一步的关键点？<span class="tag tag-hot">高频</span><span class="tag tag-system">工程</span></div>
+          <div class="qa-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          典型链路：<strong>文档解析 → 分块 Chunking → 向量化 → 建索引 → Query 改写 → 召回 → 重排 → 上下文组装 → 生成 → 引用/评估</strong>。<br><br>
+          关键点：分块决定可召回粒度；Embedding 决定语义匹配上限；Hybrid Search 解决关键词和实体召回；Reranker 决定最终上下文质量；生成阶段要约束答案必须基于证据。
+        </div>
+      </div>
+
+      <div class="qa-card" data-tags="hot system">
+        <div class="qa-question" onclick="toggleCard(this)">
+          <div class="qa-q-badge">Q</div>
+          <div class="qa-q-text">RAG 中 Chunk Size 如何选择？Overlap 有什么用？<span class="tag tag-hot">高频</span><span class="tag tag-system">工程</span></div>
+          <div class="qa-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          Chunk 太小会丢失上下文，太大又会引入噪声并降低召回精度。常见设置是 <strong>300-800 tokens</strong>，代码/表格/法律文档通常需要按结构分块。<br><br>
+          Overlap 用来避免答案跨 chunk 边界时信息断裂，常设为 chunk size 的 <strong>10%-20%</strong>。更好的方案是标题层级、段落、Markdown heading、AST 等结构化切分，而不是纯固定长度切分。
+        </div>
+      </div>
+
+      <div class="qa-card" data-tags="hot system">
+        <div class="qa-question" onclick="toggleCard(this)">
+          <div class="qa-q-badge">Q</div>
+          <div class="qa-q-text">向量检索、BM25、Hybrid Search 各适合什么场景？<span class="tag tag-hot">高频</span><span class="tag tag-system">工程</span></div>
+          <div class="qa-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          <table>
+            <tr><th>方法</th><th>优势</th><th>短板</th></tr>
+            <tr><td>向量检索</td><td>语义相似、同义表达</td><td>对数字、代码、专有名词不稳定</td></tr>
+            <tr><td>BM25</td><td>关键词、实体、精确匹配强</td><td>无法理解语义改写</td></tr>
+            <tr><td><strong>Hybrid</strong></td><td>语义 + 关键词互补</td><td>需要分数归一化和融合策略</td></tr>
+          </table>
+          工程上常用 Hybrid 先召回 Top50-200，再用 Cross-Encoder Reranker 重排 Top5-10 给模型。
+        </div>
+      </div>
+
+      <div class="qa-card" data-tags="system">
+        <div class="qa-question" onclick="toggleCard(this)">
+          <div class="qa-q-badge">Q</div>
+          <div class="qa-q-text">Reranker 为什么重要？Bi-Encoder 和 Cross-Encoder 区别是什么？<span class="tag tag-system">工程</span></div>
+          <div class="qa-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          Bi-Encoder 分别编码 query 和 doc，速度快，适合大规模召回；Cross-Encoder 把 query-doc 拼在一起做交互注意力，相关性判断更准但成本更高。<br><br>
+          RAG 里通常先用 Bi-Encoder/Hybrid 粗召回，再用 Cross-Encoder Reranker 精排，能显著降低“召回到了但没放进上下文”的失败率。
+        </div>
+      </div>
+
+      <div class="qa-card" data-tags="hot system">
+        <div class="qa-question" onclick="toggleCard(this)">
+          <div class="qa-q-badge">Q</div>
+          <div class="qa-q-text">RAG 为什么仍然会幻觉？如何缓解？<span class="tag tag-hot">高频</span><span class="tag tag-system">工程</span></div>
+          <div class="qa-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          RAG 幻觉常见来源：检索不到、检索错、上下文过长导致模型忽略证据、多个证据互相冲突、Prompt 没要求引用来源。<br><br>
+          缓解方法：提升召回率（Query Rewrite、Hybrid、Multi-query）、加 Reranker、答案必须引用 chunk id、无证据时拒答、对关键事实做二次验证（Answer Verification）。
+        </div>
+      </div>
+
+      <div class="qa-card" data-tags="2026 system">
+        <div class="qa-question" onclick="toggleCard(this)">
+          <div class="qa-q-badge">Q</div>
+          <div class="qa-q-text">GraphRAG 解决了普通 RAG 的什么问题？<span class="tag tag-2026">前沿</span><span class="tag tag-system">工程</span></div>
+          <div class="qa-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          普通 RAG 擅长局部事实问答，但对“跨文档、多跳关系、全局总结”能力弱。GraphRAG 先从文档中抽取实体和关系，构建知识图谱，再基于社区发现和图遍历检索相关子图。<br><br>
+          优势是适合复杂关系分析、企业知识库和长报告总结；代价是构图成本高、更新复杂、实体消歧和关系抽取质量会直接影响效果。
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- Section 5: Agent & Tool Use                -->
+    <!-- ═══════════════════════════════════════════ -->
+    <div id="agent">
+      <div class="section-header">
+        <div class="section-icon" style="background:rgba(124,106,247,.2)">🤖</div>
+        <div class="section-title">Agent &amp; Tool Use</div>
+        <span class="section-count">6 题</span>
+      </div>
+
+      <div class="qa-card" data-tags="hot 2026 system">
+        <div class="qa-question" onclick="toggleCard(this)">
+          <div class="qa-q-badge">Q</div>
+          <div class="qa-q-text">LLM Agent 的核心组件有哪些？<span class="tag tag-hot">高频</span><span class="tag tag-2026">前沿</span><span class="tag tag-system">工程</span></div>
+          <div class="qa-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          Agent 通常由 <strong>模型、任务规划、工具调用、记忆、环境反馈、终止条件</strong> 组成。模型负责推理和决策，工具负责访问外部世界，记忆保存跨轮上下文，反馈用于修正行动。<br><br>
+          面试可强调：Agent 不是“会聊天的模型”，而是“能基于目标循环执行观察-思考-行动的系统”。工程重点在工具 schema、权限边界、错误恢复和可观测性。
+        </div>
+      </div>
+
+      <div class="qa-card" data-tags="hot system">
+        <div class="qa-question" onclick="toggleCard(this)">
+          <div class="qa-q-badge">Q</div>
+          <div class="qa-q-text">Function Calling / Tool Use 的工作机制是什么？<span class="tag tag-hot">高频</span><span class="tag tag-system">工程</span></div>
+          <div class="qa-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          开发者给模型提供工具名称、描述和 JSON Schema 参数；模型根据用户意图输出结构化 tool call；应用执行工具并把结果回传给模型；模型再基于结果继续回答或调用下一步工具。<br><br>
+          关键是 <strong>Schema 要清晰、工具粒度要适中、工具结果要可验证</strong>。不要让模型直接执行任意字符串命令，外部副作用操作要有人类确认或权限控制。
+        </div>
+      </div>
+
+      <div class="qa-card" data-tags="system">
+        <div class="qa-question" onclick="toggleCard(this)">
+          <div class="qa-q-badge">Q</div>
+          <div class="qa-q-text">ReAct、Plan-and-Execute、Reflection 有什么区别？<span class="tag tag-system">工程</span></div>
+          <div class="qa-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          <table>
+            <tr><th>范式</th><th>核心思想</th><th>适合场景</th></tr>
+            <tr><td>ReAct</td><td>推理和行动交替</td><td>搜索、排错、交互式任务</td></tr>
+            <tr><td>Plan-and-Execute</td><td>先拆计划，再逐步执行</td><td>多步骤长任务</td></tr>
+            <tr><td>Reflection</td><td>执行后自评并修正</td><td>代码、写作、复杂推理</td></tr>
+          </table>
+          工程上要避免无限循环，通常需要最大步数、失败重试策略和明确的 done 条件。
+        </div>
+      </div>
+
+      <div class="qa-card" data-tags="hot system">
+        <div class="qa-question" onclick="toggleCard(this)">
+          <div class="qa-q-badge">Q</div>
+          <div class="qa-q-text">Agent 系统最常见的安全风险有哪些？<span class="tag tag-hot">高频</span><span class="tag tag-system">工程</span></div>
+          <div class="qa-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          常见风险：Prompt Injection、工具越权、数据外泄、把不可信网页/文档当成系统指令、自动执行不可逆操作、循环调用导致成本失控。<br><br>
+          防护：系统指令与外部内容隔离；工具最小权限；敏感操作二次确认；对工具输入做校验；日志审计；将网页/邮件/文档内容标记为不可信数据而不是指令。
+        </div>
+      </div>
+
+      <div class="qa-card" data-tags="2026 system">
+        <div class="qa-question" onclick="toggleCard(this)">
+          <div class="qa-q-badge">Q</div>
+          <div class="qa-q-text">多 Agent 协作相比单 Agent 有什么收益和问题？<span class="tag tag-2026">前沿</span><span class="tag tag-system">工程</span></div>
+          <div class="qa-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          收益：角色分工更清晰，如 Planner、Coder、Reviewer、Tester；可以并行探索不同方案；对复杂任务更容易做交叉检查。<br><br>
+          问题：通信成本高、状态同步复杂、错误会在 Agent 间传播、评估难度上升。实际生产中常用“主控 Agent + 专用工具/子任务”而不是完全开放式群聊。
+        </div>
+      </div>
+
+      <div class="qa-card" data-tags="hot system">
+        <div class="qa-question" onclick="toggleCard(this)">
+          <div class="qa-q-badge">Q</div>
+          <div class="qa-q-text">Agent 记忆应该如何设计？短期记忆和长期记忆有什么区别？<span class="tag tag-hot">高频</span><span class="tag tag-system">工程</span></div>
+          <div class="qa-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          <strong>短期记忆</strong>通常是当前对话窗口和任务状态，适合保存正在执行的步骤、工具结果和临时约束；<strong>长期记忆</strong>用于跨会话保存稳定偏好、用户画像、项目事实或可复用知识。<br><br>
+          设计重点：只保存未来有价值的信息；写入前做去重和可信度判断；检索时按相关性注入上下文；敏感信息要可删除、可审计。错误记忆会长期污染 Agent 行为，所以记忆系统必须比普通聊天历史更谨慎。
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- Section 6: Prompt & 上下文工程               -->
+    <!-- ═══════════════════════════════════════════ -->
+    <div id="prompt">
+      <div class="section-header">
+        <div class="section-icon" style="background:rgba(244,114,182,.2)">🧠</div>
+        <div class="section-title">Prompt &amp; 上下文工程</div>
+        <span class="section-count">5 题</span>
+      </div>
+
+      <div class="qa-card" data-tags="hot system">
+        <div class="qa-question" onclick="toggleCard(this)">
+          <div class="qa-q-badge">Q</div>
+          <div class="qa-q-text">Prompt Engineering 和 Context Engineering 有什么区别？<span class="tag tag-hot">高频</span><span class="tag tag-system">工程</span></div>
+          <div class="qa-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          Prompt Engineering 更关注“如何写一段指令”；Context Engineering 更关注“如何构造模型每次调用看到的完整上下文”。<br><br>
+          后者包括系统指令、用户输入、历史消息、RAG 证据、工具结果、记忆、输出格式约束和 token 预算管理。生产系统里 Context Engineering 通常比单句 prompt 技巧更重要。
+        </div>
+      </div>
+
+      <div class="qa-card" data-tags="hot">
+        <div class="qa-question" onclick="toggleCard(this)">
+          <div class="qa-q-badge">Q</div>
+          <div class="qa-q-text">Zero-shot、Few-shot、Chain-of-Thought 各适合什么场景？<span class="tag tag-hot">高频</span></div>
+          <div class="qa-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          <table>
+            <tr><th>方式</th><th>特点</th><th>适合场景</th></tr>
+            <tr><td>Zero-shot</td><td>只给任务指令</td><td>通用问答、简单分类</td></tr>
+            <tr><td>Few-shot</td><td>给少量示例</td><td>格式稳定、风格迁移、标签任务</td></tr>
+            <tr><td>CoT</td><td>引导逐步推理</td><td>数学、逻辑、多跳推理</td></tr>
+          </table>
+          注意：CoT 会增加 token 成本，不适合所有任务；生产中常用“让模型内部推理，但只输出简洁答案”的方式控制长度。
+        </div>
+      </div>
+
+      <div class="qa-card" data-tags="system">
+        <div class="qa-question" onclick="toggleCard(this)">
+          <div class="qa-q-badge">Q</div>
+          <div class="qa-q-text">结构化输出为什么容易失败？如何提高 JSON 输出稳定性？<span class="tag tag-system">工程</span></div>
+          <div class="qa-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          失败原因包括 schema 太复杂、字段语义含糊、用户输入与输出格式混杂、模型生成解释性文本、长上下文导致约束被稀释。<br><br>
+          提升方法：使用 JSON Schema / function calling；明确 required 字段；减少可选分支；对枚举值做限制；服务端做解析与重试；不要让模型自己“保证 JSON 合法”，而要用结构化解码或工具调用机制约束。
+        </div>
+      </div>
+
+      <div class="qa-card" data-tags="hot system">
+        <div class="qa-question" onclick="toggleCard(this)">
+          <div class="qa-q-badge">Q</div>
+          <div class="qa-q-text">长上下文一定比 RAG 好吗？<span class="tag tag-hot">高频</span><span class="tag tag-system">工程</span></div>
+          <div class="qa-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          不一定。长上下文适合一次性分析完整文档、跨段落综合、避免检索漏召回；RAG 适合大规模知识库、频繁更新、低成本检索和可引用证据。<br><br>
+          长上下文的问题是成本高、延迟高、注意力稀释、“needle in a haystack” 仍可能失败。工程上常用 RAG 缩小候选，再把少量关键证据放入长上下文。
+        </div>
+      </div>
+
+      <div class="qa-card" data-tags="2026 system">
+        <div class="qa-question" onclick="toggleCard(this)">
+          <div class="qa-q-badge">Q</div>
+          <div class="qa-q-text">Prompt Caching 解决什么问题？适合哪些场景？<span class="tag tag-2026">前沿</span><span class="tag tag-system">工程</span></div>
+          <div class="qa-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          Prompt Caching 复用长前缀上下文的计算结果，降低重复请求的首 token 延迟和输入成本。适合固定系统提示词、长文档问答、多轮代码库分析、RAG 中大量共享背景资料等场景。<br><br>
+          关键限制：缓存通常要求前缀完全一致或高度稳定，所以应把稳定内容放前面，把用户问题、时间戳、随机字段放后面。
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <div id="data">
+      <div class="section-header">
+        <div class="section-icon" style="background:rgba(251,191,36,.2)">🧪</div>
+        <div class="section-title">数据工程 &amp; 预训练</div>
+        <span class="section-count">5 题</span>
+      </div>
+
+      <div class="qa-card" data-tags="hot">
+        <div class="qa-question" onclick="toggleCard(this)">
+          <div class="qa-q-badge">Q</div>
+          <div class="qa-q-text">LLM 预训练数据清洗通常包括哪些步骤？<span class="tag tag-hot">高频</span></div>
+          <div class="qa-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          常见步骤：语言识别、格式解析、去 HTML/脚本噪声、质量过滤、敏感/违法内容过滤、去重、PII 脱敏、按领域配比采样。<br><br>
+          高质量数据比单纯扩大 token 数更重要。面试可强调 dedup 会影响 benchmark 污染，质量分类器会影响模型风格和安全边界。
+        </div>
+      </div>
+
+      <div class="qa-card" data-tags="hot">
+        <div class="qa-question" onclick="toggleCard(this)">
+          <div class="qa-q-badge">Q</div>
+          <div class="qa-q-text">Tokenizer 的 BPE、WordPiece、Unigram 有什么区别？<span class="tag tag-hot">高频</span></div>
+          <div class="qa-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          <table>
+            <tr><th>方法</th><th>思想</th><th>代表</th></tr>
+            <tr><td>BPE</td><td>从字符开始频繁合并 token pair</td><td>GPT 系列</td></tr>
+            <tr><td>WordPiece</td><td>按似然增益选择子词</td><td>BERT</td></tr>
+            <tr><td>Unigram</td><td>从大词表开始按概率裁剪</td><td>SentencePiece/T5</td></tr>
+          </table>
+          Tokenizer 会影响多语言能力、代码能力、上下文有效长度和推理成本。中文模型通常需要更适合中文的词表，否则同样文本会被切成更多 token。
+        </div>
+      </div>
+
+      <div class="qa-card" data-tags="2026">
+        <div class="qa-question" onclick="toggleCard(this)">
+          <div class="qa-q-badge">Q</div>
+          <div class="qa-q-text">合成数据在 LLM 训练中有什么作用？风险是什么？<span class="tag tag-2026">前沿</span></div>
+          <div class="qa-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          合成数据可用于指令微调、偏好数据、数学/代码推理轨迹、低资源语言扩充和安全拒答样本生成。高质量 teacher model 能快速扩大训练集并覆盖长尾任务。<br><br>
+          风险：模式坍塌、错误被放大、风格单一、评测污染、模型学会 teacher 的偏见。通常需要人工抽检、规则验证、去重和多模型交叉生成。
+        </div>
+      </div>
+
+      <div class="qa-card" data-tags="hot">
+        <div class="qa-question" onclick="toggleCard(this)">
+          <div class="qa-q-badge">Q</div>
+          <div class="qa-q-text">Scaling Law 的核心结论是什么？Chinchilla 做了什么修正？<span class="tag tag-hot">高频</span></div>
+          <div class="qa-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          Scaling Law 表明模型损失会随参数量、数据量、计算量按幂律下降。早期很多模型参数很大但训练 token 不足。<br><br>
+          Chinchilla 结论：在固定计算预算下，<strong>模型参数量和训练 token 数应更均衡扩展</strong>，很多大模型其实“欠训练”。经验上训练 token 数应远大于参数量，后续 LLaMA 等模型都明显增加了 token 数。
+        </div>
+      </div>
+
+      <div class="qa-card" data-tags="system">
+        <div class="qa-question" onclick="toggleCard(this)">
+          <div class="qa-q-badge">Q</div>
+          <div class="qa-q-text">预训练中为什么要做数据配比？代码、数学、多语言数据如何影响模型？<span class="tag tag-system">工程</span></div>
+          <div class="qa-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          数据配比决定模型能力分布。代码数据能提升结构化推理和工具使用；数学数据提升多步推理；高质量百科/教材提升事实知识；多语言数据提升跨语言能力但会稀释英文能力。<br><br>
+          实践中常用 mixture weight 控制不同来源数据，并在后期加入更高质量的数据做 annealing，以改善指令遵循和推理能力。
+        </div>
+      </div>
+    </div>
+
     <!-- ═══════════════════════════════════════════ -->
     <div id="rlhf">
       <div class="section-header">
@@ -891,10 +1316,10 @@
     </div>
 
     <!-- Footer section -->
-    <div style="margin-top: 60px; padding: 24px; background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; text-align: center;">
-      <div style="font-size: 1rem; font-weight: 700; margin-bottom: 8px;">📚 完整知识点笔记</div>
-      <div style="color: var(--text2); font-size: 0.88rem; margin-bottom: 16px;">21 篇深度笔记 · 覆盖从基础到前沿的完整 LLM 知识体系</div>
-      <a href="https://github.com/laoshan-song/Awesome-LLM-Interview" target="_blank" style="background: var(--accent); color: #fff; padding: 10px 24px; border-radius: 8px; text-decoration: none; font-weight: 600;">查看 GitHub 仓库 →</a>
+    <div style="margin-top: 60px; padding: 28px; background: linear-gradient(135deg, rgba(26,29,46,.92), rgba(37,40,64,.78)); border: 1px solid rgba(124,106,247,.25); border-radius: 20px; text-align: center; box-shadow: 0 20px 48px rgba(0,0,0,.18);">
+      <div style="font-size: 1.05rem; font-weight: 800; margin-bottom: 8px;">📚 完整知识点笔记</div>
+      <div style="color: var(--text2); font-size: 0.9rem; margin-bottom: 18px;">21 篇深度笔记 · 65 道速查问答 · 覆盖从基础到前沿的完整 LLM 知识体系</div>
+      <a href="https://github.com/laoshan-song/Awesome-LLM-Interview" target="_blank" style="background: linear-gradient(135deg, var(--accent), #9b8cff); color: #fff; padding: 11px 24px; border-radius: 999px; text-decoration: none; font-weight: 700; display: inline-block;">查看 GitHub 仓库 →</a>
     </div>
   </main>
 </div>
@@ -923,8 +1348,9 @@
     const q = document.getElementById('searchInput').value.toLowerCase();
     document.querySelectorAll('.qa-card').forEach(card => {
       const text = card.textContent.toLowerCase();
-      card.classList.toggle('hidden', q && !text.includes(q));
-      card.style.display = (q && !text.includes(q)) ? 'none' : '';
+      const hide = q && !text.includes(q);
+      card.classList.toggle('hidden', hide);
+      card.style.display = hide ? 'none' : '';
     });
   }
 
@@ -934,13 +1360,20 @@
     document.querySelectorAll('.qa-card').forEach(card => {
       const tags = card.dataset.tags || '';
       const show = tags.includes(tag);
+      card.classList.toggle('hidden', !show);
       card.style.display = show ? '' : 'none';
     });
-    if (tag === 'hot') {
-      document.querySelectorAll('.qa-card').forEach(c => {
-        if (c.style.display !== 'none') c.classList.add('open');
-      });
-    }
+    document.querySelectorAll('.qa-card').forEach(c => {
+      if (c.style.display !== 'none') c.classList.add('open');
+    });
+  }
+
+  function resetFilter() {
+    document.getElementById('searchInput').value = '';
+    document.querySelectorAll('.qa-card').forEach(card => {
+      card.classList.remove('hidden');
+      card.style.display = '';
+    });
   }
 
   // Sidebar active link on scroll
