@@ -22,7 +22,7 @@
 
 ### ⚡ 面试速记网页
 
-> **[→ 打开速记网页（cheatsheet.html）](./cheatsheet.html)**
+> **[→ 打开速记网页（在线访问）](https://laoshan-song.github.io/Awesome-LLM-Interview/cheatsheet.html)**
 >
 > 49 道高频考题，7 大模块，点击展开即见答案，搜索、筛选、一键展开全部。面试前 30 分钟速刷专用。
 
