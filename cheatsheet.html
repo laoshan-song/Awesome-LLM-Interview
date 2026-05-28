@@ -250,7 +250,7 @@
 <header>
   <div>
     <div class="logo">LLM 面试<span>速记</span></div>
-    <div class="header-meta">65 道高频考题 · 覆盖 11 大模块 · 持续更新</div>
+    <div class="header-meta">85+ 道高频考题 · 覆盖 14 大模块 · 持续更新</div>
   </div>
   <div class="header-actions">
     <div class="pill">2026 前沿版</div>
@@ -273,6 +273,9 @@
       <a href="#lora">🔬 LoRA &amp; 参数高效微调</a>
       <a href="#distributed">🌐 分布式训练</a>
       <a href="#eval">📊 大模型评估</a>
+      <a href="#embedding">🧬 Embedding &amp; 向量数据库</a>
+      <a href="#deploy">🚀 LLM 部署与推理加速</a>
+      <a href="#advanced-retrieval">🔍 高级检索与文档处理</a>
     </div>
   </nav>
 
@@ -282,8 +285,8 @@
       <h1>把高频大模型面试题压缩成一页可搜索速查表</h1>
       <p>覆盖 Transformer、推理优化、RAG、Agent、对齐、微调、分布式训练与评估。适合面试前 30 分钟快速过重点，也适合复习时按模块查漏补缺。</p>
       <div class="stats-grid">
-        <div class="stat-card"><div class="stat-value">65</div><div class="stat-label">道核心问答</div></div>
-        <div class="stat-card"><div class="stat-value">11</div><div class="stat-label">个知识模块</div></div>
+        <div class="stat-card"><div class="stat-value">89</div><div class="stat-label">道核心问答</div></div>
+        <div class="stat-card"><div class="stat-value">14</div><div class="stat-label">个知识模块</div></div>
         <div class="stat-card"><div class="stat-value">30min</div><div class="stat-label">面试前冲刺</div></div>
         <div class="stat-card"><div class="stat-value">2026</div><div class="stat-label">前沿趋势补充</div></div>
       </div>
@@ -604,7 +607,7 @@
       <div class="section-header">
         <div class="section-icon" style="background:rgba(94,234,212,.2)">🧩</div>
         <div class="section-title">RAG &amp; 检索增强</div>
-        <span class="section-count">6 题</span>
+        <span class="section-count">7 题</span>
       </div>
 
       <div class="qa-card" data-tags="hot system">
@@ -683,6 +686,25 @@
           优势是适合复杂关系分析、企业知识库和长报告总结；代价是构图成本高、更新复杂、实体消歧和关系抽取质量会直接影响效果。
         </div>
       </div>
+
+      <div class="qa-card" data-tags="hot">
+        <div class="qa-question" onclick="toggleCard(this)">
+          <div class="qa-q-badge">Q</div>
+          <div class="qa-q-text">什么时候应该用 Fine-tuning 而不是 RAG？<span class="tag tag-hot">高频</span></div>
+          <div class="qa-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          <table>
+            <tr><th>场景</th><th>推荐</th><th>原因</th></tr>
+            <tr><td>需要实时/最新知识</td><td><strong>RAG</strong></td><td>知识库可动态更新，无需重训</td></tr>
+            <tr><td>学习特定风格/格式/行为模式</td><td><strong>Fine-tuning</strong></td><td>这是模型行为问题，不是知识问题</td></tr>
+            <tr><td>领域术语/专业知识密集</td><td><strong>RAG + Fine-tuning</strong></td><td>FT 学术语表达，RAG 提供事实</td></tr>
+            <tr><td>数据量少（&lt;1K 样本）</td><td><strong>RAG</strong></td><td>小样本 FT 容易过拟合</td></tr>
+            <tr><td>高频固定任务（降延迟/降成本）</td><td><strong>Fine-tuning</strong></td><td>省去检索环节，推理更快更便宜</td></tr>
+          </table>
+          <div class="tip-box">RAG 解决"知不知道"，Fine-tuning 解决"会不会做"。两者不是互斥的，生产系统常同时使用。</div>
+        </div>
+      </div>
     </div>
 
     <!-- ═══════════════════════════════════════════ -->
@@ -692,7 +714,7 @@
       <div class="section-header">
         <div class="section-icon" style="background:rgba(124,106,247,.2)">🤖</div>
         <div class="section-title">Agent &amp; Tool Use</div>
-        <span class="section-count">6 题</span>
+        <span class="section-count">7 题</span>
       </div>
 
       <div class="qa-card" data-tags="hot 2026 system">
@@ -771,6 +793,23 @@
           设计重点：只保存未来有价值的信息；写入前做去重和可信度判断；检索时按相关性注入上下文；敏感信息要可删除、可审计。错误记忆会长期污染 Agent 行为，所以记忆系统必须比普通聊天历史更谨慎。
         </div>
       </div>
+
+      <div class="qa-card" data-tags="hot">
+        <div class="qa-question" onclick="toggleCard(this)">
+          <div class="qa-q-badge">Q</div>
+          <div class="qa-q-text">ReAct、Plan-and-Execute、Function Calling 三种 Agent 策略有什么区别？<span class="tag tag-hot">高频</span></div>
+          <div class="qa-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          <table>
+            <tr><th>策略</th><th>核心循环</th><th>优点</th><th>缺点</th></tr>
+            <tr><td><strong>ReAct</strong></td><td>Thought→Action→Observation 交替</td><td>灵活、可处理多步推理、LLM 自主决策</td><td>可能无限循环、每一步都要 LLM 推理成本高</td></tr>
+            <tr><td><strong>Plan-and-Execute</strong></td><td>先生成完整计划→再逐步执行</td><td>全局视野、减少中间 LLM 调用、计划可审查</td><td>计划僵化、环境变化时需重规划</td></tr>
+            <tr><td><strong>Function Calling</strong></td><td>LLM 输出结构化 JSON→外部执行→结果注入</td><td>确定性高、类型安全、OpenAI 原生支持</td><td>只适合单步工具调用、缺乏多步推理能力</td></tr>
+          </table>
+          <div class="tip-box">ReAct 适合探索性任务（研究/调试），Plan-and-Execute 适合目标明确的复杂任务（代码生成/报告撰写），Function Calling 适合有明确 API 的简单工具调用。</div>
+        </div>
+      </div>
     </div>
 
     <!-- ═══════════════════════════════════════════ -->
@@ -780,7 +819,7 @@
       <div class="section-header">
         <div class="section-icon" style="background:rgba(244,114,182,.2)">🧠</div>
         <div class="section-title">Prompt &amp; 上下文工程</div>
-        <span class="section-count">5 题</span>
+        <span class="section-count">8 题</span>
       </div>
 
       <div class="qa-card" data-tags="hot system">
@@ -845,6 +884,67 @@
         <div class="qa-answer">
           Prompt Caching 复用长前缀上下文的计算结果，降低重复请求的首 token 延迟和输入成本。适合固定系统提示词、长文档问答、多轮代码库分析、RAG 中大量共享背景资料等场景。<br><br>
           关键限制：缓存通常要求前缀完全一致或高度稳定，所以应把稳定内容放前面，把用户问题、时间戳、随机字段放后面。
+        </div>
+      </div>
+
+      <div class="qa-card" data-tags="hot">
+        <div class="qa-question" onclick="toggleCard(this)">
+          <div class="qa-q-badge">Q</div>
+          <div class="qa-q-text">Temperature 参数的本质是什么？不同任务怎么设？<span class="tag tag-hot">高频</span></div>
+          <div class="qa-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          Temperature 控制 softmax 输出的"锐度"：<code>p_i = exp(z_i/T) / Σ exp(z_j/T)</code>。<br><br>
+          <table>
+            <tr><th>T 值</th><th>效果</th><th>适合任务</th></tr>
+            <tr><td>T → 0</td><td>分布尖锐，几乎确定性输出（等价于 greedy）</td><td>数学计算、代码生成、事实问答</td></tr>
+            <tr><td>T = 0.3-0.7</td><td>平衡准确性和多样性</td><td>翻译、摘要、通用对话</td></tr>
+            <tr><td>T = 0.8-1.2</td><td>分布更平滑，输出更多样</td><td>创意写作、头脑风暴、故事生成</td></tr>
+            <tr><td>T > 1.5</td><td>分布接近均匀，输出趋于随机</td><td>通常不推荐（质量急剧下降）</td></tr>
+          </table>
+          <div class="tip-box">Temperature 和 Top-p/Top-k 通常组合使用。低 T + 高 Top-p 能平衡质量和多样性。面试中不要忘了提：Temperature=0 并不能保证确定性（GPU 浮点非结合性），需要设置 seed。</div>
+        </div>
+      </div>
+
+      <div class="qa-card" data-tags="">
+        <div class="qa-question" onclick="toggleCard(this)">
+          <div class="qa-q-badge">Q</div>
+          <div class="qa-q-text">Greedy、Beam Search、Top-p/Top-k 解码策略各有什么特点？</div>
+          <div class="qa-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          <table>
+            <tr><th>策略</th><th>原理</th><th>优点</th><th>缺点</th></tr>
+            <tr><td><strong>Greedy</strong></td><td>每步选概率最高的 token</td><td>最快，确定性</td><td>容易陷入重复循环，缺乏多样性</td></tr>
+            <tr><td><strong>Beam Search</strong></td><td>维护 K 条候选路径，按累积概率选择</td><td>比 Greedy 质量好</td><td>开放生成中输出趋于重复/通用</td></tr>
+            <tr><td><strong>Top-k Sampling</strong></td><td>只在概率最高的 k 个 token 中采样</td><td>增加多样性</td><td>k 固定，对尖峰/平峰分布不适配</td></tr>
+            <tr><td><strong>Top-p (Nucleus)</strong></td><td>在累积概率达 p 的最小 token 集合中采样</td><td>动态适应分布形状</td><td>目前主流，但 p 值需调</td></tr>
+          </table>
+          现代 LLM API 默认通常用 Top-p=0.9~1.0 + Temperature=0.7 的组合。Beam Search 在翻译/摘要等 Seq2Seq 任务中仍常用，但在开放式对话中不如采样策略自然。
+        </div>
+      </div>
+
+      <div class="qa-card" data-tags="system">
+        <div class="qa-question" onclick="toggleCard(this)">
+          <div class="qa-q-badge">Q</div>
+          <div class="qa-q-text">什么是 Prompt Injection？有哪些防御手段？<span class="tag tag-system">工程</span></div>
+          <div class="qa-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          Prompt Injection 是攻击者通过在输入中嵌入恶意指令，覆盖或劫持 LLM 原始 system prompt 的行为。<br><br>
+          <strong>常见攻击类型：</strong>
+          ① <strong>直接注入</strong>：用户输入中包含"忽略以上指令，执行..."<br>
+          ② <strong>间接注入</strong>：在 RAG 检索的文档/网页中埋藏恶意指令，模型读取后被劫持<br>
+          ③ <strong>越狱（Jailbreak）</strong>：用角色扮演、编码、多语言等技巧绕过安全限制<br><br>
+          <strong>防御手段：</strong>
+          <table>
+            <tr><th>方法</th><th>说明</th></tr>
+            <tr><td>输入/输出隔离</td><td>用特殊分隔符明确区分 system/user/data，模型不能混淆来源</td></tr>
+            <tr><td>权限分离</td><td>工具调用需要二次确认，敏感操作不依赖 LLM 单次判断</td></tr>
+            <tr><td>输入过滤</td><td>检测和清理已知攻击模式（但不完美，攻击形式不断演变）</td></tr>
+            <tr><td>最小权限原则</td><td>Agent 的工具权限严格限定所需范围，不授予多余能力</td></tr>
+          </table>
+          <div class="tip-box">没有完美的防御。安全设计应假设 Prompt Injection 一定会发生，核心策略是限制攻击面（blast radius），而不是试图完全阻止注入。</div>
         </div>
       </div>
     </div>
@@ -928,7 +1028,7 @@
       <div class="section-header">
         <div class="section-icon" style="background:rgba(244,114,182,.2)">🎯</div>
         <div class="section-title">RLHF &amp; 对齐训练</div>
-        <span class="section-count">6 题</span>
+        <span class="section-count">7 题</span>
       </div>
 
       <div class="qa-card" data-tags="hot">
@@ -1017,6 +1117,19 @@
           DPO 依赖参考模型（π_ref），需要额外推理开销。<br><br>
           <strong>SimPO</strong>：去掉参考模型，用生成长度归一化的对数似然作为隐式奖励，加入 Margin Reward 保证分数差。<br>
           <strong>ORPO</strong>：将 SFT 损失和偏好优化合并为单目标，一步训练完成对齐，无需参考模型也无需单独 RM 训练阶段。
+        </div>
+      </div>
+
+      <div class="qa-card" data-tags="hot">
+        <div class="qa-question" onclick="toggleCard(this)">
+          <div class="qa-q-badge">Q</div>
+          <div class="qa-q-text">什么是 Reward Hacking？RLHF 中如何检测和缓解？<span class="tag tag-hot">高频</span></div>
+          <div class="qa-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          <strong>Reward Hacking（奖励黑客）</strong>是指策略模型找到奖励模型的漏洞，生成高分但实际低质量的回复。常见模式：回答过长/过于礼貌（奖励模型偏好长文本）、重复正面短语、过度迎合用户而非纠正错误。<br><br>
+          <strong>检测</strong>：监控 reward 分数和 KL 散度是否同步异常升高；人工抽检高 reward 回复；对比不同奖励模型打分是否一致。<br><br>
+          <strong>缓解</strong>：① KL 惩罚约束（防止策略偏离参考模型太远）；② 奖励模型集成（多 RM 取最低分）；③ 在线偏好标注（PPO 过程中持续注入新的人类反馈）；④ GRPO 用规则奖励（数学题直接验证答案）从根本上避免 RM hacking。
         </div>
       </div>
     </div>
@@ -1315,10 +1428,343 @@
       </div>
     </div>
 
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- Section 12: Embedding & 向量数据库         -->
+    <!-- ═══════════════════════════════════════════ -->
+    <div id="embedding">
+      <div class="section-header">
+        <div class="section-icon" style="background:rgba(94,234,212,.2)">🧬</div>
+        <div class="section-title">Embedding &amp; 向量数据库</div>
+        <span class="section-count">6 题</span>
+      </div>
+
+      <div class="qa-card" data-tags="hot">
+        <div class="qa-question" onclick="toggleCard(this)">
+          <div class="qa-q-badge">Q</div>
+          <div class="qa-q-text">什么是向量嵌入（Embedding）？Embedding 模型在 LLM 应用中怎么用？<span class="tag tag-hot">高频</span></div>
+          <div class="qa-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          Embedding 是将文本/图片等非结构化数据映射为高维稠密向量的技术，使语义相近的文本在向量空间中距离更近。<br><br>
+          <strong>在 LLM 应用中的角色：</strong>
+          <table>
+            <tr><th>场景</th><th>用法</th></tr>
+            <tr><td>RAG 检索</td><td>将文档和用户查询映射到同一向量空间，通过相似度匹配召回相关片段</td></tr>
+            <tr><td>语义搜索</td><td>替代关键词匹配，按语义相似度排序</td></tr>
+            <tr><td>聚类/去重</td><td>Embedding 聚类发现主题，去重相似数据</td></tr>
+            <tr><td>分类</td><td>Embedding + 线性分类器做少样本分类</td></tr>
+          </table>
+          主流模型：text-embedding-3、BGE、E5、GTE、Jina。
+        </div>
+      </div>
+
+      <div class="qa-card" data-tags="">
+        <div class="qa-question" onclick="toggleCard(this)">
+          <div class="qa-q-badge">Q</div>
+          <div class="qa-q-text">如何在你的数据上评测 Embedding 模型？准确率低怎么优化？</div>
+          <div class="qa-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          <strong>评测方法：</strong>构建标注数据集（查询-相关文档对），计算 Recall@K、MRR、NDCG 等检索指标。MTEB benchmark 是通用评测标准。<br><br>
+          <strong>如果准确率低：</strong>
+          ① 检查 Embedding 模型的训练数据是否覆盖你的领域（领域不匹配是常见原因）；<br>
+          ② 用领域数据微调 Embedding 模型（如使用对比学习 + 难负样本）；<br>
+          ③ 增加 instruction prefix（BGE 模型对 query 侧加"为这个句子生成表示"有效果）；<br>
+          ④ 考虑升级到更大维度或更强的模型（如 BGE-M3 多语言版）。
+        </div>
+      </div>
+
+      <div class="qa-card" data-tags="hot">
+        <div class="qa-question" onclick="toggleCard(this)">
+          <div class="qa-q-badge">Q</div>
+          <div class="qa-q-text">向量数据库和传统数据库的核心区别是什么？<span class="tag tag-hot">高频</span></div>
+          <div class="qa-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          <table>
+            <tr><th>维度</th><th>传统数据库</th><th>向量数据库</th></tr>
+            <tr><td>查询方式</td><td>精确匹配 (SQL WHERE =)</td><td>近似最近邻 (ANN)</td></tr>
+            <tr><td>索引结构</td><td>B-Tree / Hash</td><td>HNSW / IVF / PQ 图索引</td></tr>
+            <tr><td>返回结果</td><td>精确结果</td><td>近似结果（可配置精度-速度折中）</td></tr>
+            <tr><td>存储数据</td><td>结构化行/列</td><td>高维浮点向量 + 元数据</td></tr>
+          </table>
+          向量数据库 = ANN 索引 + 元数据过滤 + 分布式扩展。主流选择：Milvus、Qdrant、Pinecone、Weaviate、pgvector (PostgreSQL 扩展)。
+        </div>
+      </div>
+
+      <div class="qa-card" data-tags="">
+        <div class="qa-question" onclick="toggleCard(this)">
+          <div class="qa-q-badge">Q</div>
+          <div class="qa-q-text">HNSW 和 IVF 两种索引算法的原理和适用场景？</div>
+          <div class="qa-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          <table>
+            <tr><th>算法</th><th>原理</th><th>优势</th><th>劣势</th></tr>
+            <tr><td><strong>HNSW</strong></td><td>多层可导航小世界图，每层是临近图，搜索时从顶层向下贪心遍历</td><td>查询快、精度高、增量插入友好</td><td>内存占用大（存储图结构），构建慢</td></tr>
+            <tr><td><strong>IVF</strong></td><td>用 K-Means 聚类将向量空间划分为 Voronoi 单元，查询时只搜最近几个聚类</td><td>内存效率高、构建快</td><td>查询精度略低，需定期重建索引</td></tr>
+          </table>
+          <strong>选型</strong>：数据量大（亿级）+ 内存受限 → IVF+PQ；百万级 + 追求低延迟 → HNSW。多数向量数据库两种都支持。
+        </div>
+      </div>
+
+      <div class="qa-card" data-tags="">
+        <div class="qa-question" onclick="toggleCard(this)">
+          <div class="qa-q-badge">Q</div>
+          <div class="qa-q-text">余弦相似度、欧氏距离、内积分别适合什么场景？</div>
+          <div class="qa-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          <table>
+            <tr><th>度量</th><th>公式</th><th>适合场景</th></tr>
+            <tr><td><strong>余弦相似度</strong></td><td>cos = A·B/(‖A‖‖B‖)</td><td>文本语义相似度（忽略长度，只看方向），RAG 默认选择</td></tr>
+            <tr><td><strong>欧氏距离</strong></td><td>‖A-B‖</td><td>需要考虑向量大小差异时（如特征值），对归一化敏感</td></tr>
+            <tr><td><strong>内积</strong></td><td>A·B</td><td>模型已做过归一化训练时；推荐系统中评分预测</td></tr>
+          </table>
+          <div class="tip-box">如果用 L2 归一化后的向量，余弦相似度 = 内积，等价。大多数 Embedding 模型输出归一化向量，此时三种度量等价。</div>
+        </div>
+      </div>
+
+      <div class="qa-card" data-tags="system">
+        <div class="qa-question" onclick="toggleCard(this)">
+          <div class="qa-q-badge">Q</div>
+          <div class="qa-q-text">向量数据库中的过滤（Filter）有哪些类型和挑战？<span class="tag tag-system">工程</span></div>
+          <div class="qa-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          <strong>过滤类型：</strong>
+          ① <strong>Pre-filtering</strong>：先按元数据过滤，再在剩余结果中做 ANN。风险是过滤后候选集太小，可能漏掉真正相关的。<br>
+          ② <strong>Post-filtering</strong>：先 ANN 召回 top-K，再过滤。风险是过滤后可能返回不到 K 个结果。<br>
+          ③ <strong>Single-stage filtering</strong>：在 ANN 搜索时同时检查过滤条件（Milvus/Qdrant 支持），平衡精度和效率。<br><br>
+          <strong>挑战</strong>：多条件 AND/OR 组合下保证召回 K 个结果；过滤条件过于严苛时需降级策略（放宽条件或返回更多候选然后二次过滤）。
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- Section 13: LLM 部署与推理加速              -->
+    <!-- ═══════════════════════════════════════════ -->
+    <div id="deploy">
+      <div class="section-header">
+        <div class="section-icon" style="background:rgba(248,113,113,.2)">🚀</div>
+        <div class="section-title">LLM 部署与推理加速</div>
+        <span class="section-count">6 题</span>
+      </div>
+
+      <div class="qa-card" data-tags="hot">
+        <div class="qa-question" onclick="toggleCard(this)">
+          <div class="qa-q-badge">Q</div>
+          <div class="qa-q-text">模型量化为什么不会显著降低精度？INT8/INT4 的本质是什么？<span class="tag tag-hot">高频</span></div>
+          <div class="qa-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          神经网络权重天然存在<strong>冗余</strong>（过参数化），权重分布集中在一定范围内，不需要 FP16 全部精度来表示。量化将权重从 FP16 映射到低精度整数，只是"舍入"了低有效位，对前向计算影响极小。<br><br>
+          <strong>关键在于</strong>：量化方法（GPTQ/AWQ）通过校准数据感知哪些权重重要，对重要权重用更高精度或保护性缩放；group-wise 量化（每 128 个元素独立 scale）比 per-tensor 量化误差小得多。<br><br>
+          实测 GPTQ INT4 在大多数 Benchmark 精度损失 < 1%。但数学/推理任务对精度更敏感。
+        </div>
+      </div>
+
+      <div class="qa-card" data-tags="hot">
+        <div class="qa-question" onclick="toggleCard(this)">
+          <div class="qa-q-badge">Q</div>
+          <div class="qa-q-text">如何提升 LLM 推理的吞吐量（Throughput）？有哪些工程手段？<span class="tag tag-hot">高频</span></div>
+          <div class="qa-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          <strong>系统级优化：</strong>
+          <table>
+            <tr><th>手段</th><th>效果</th></tr>
+            <tr><td>Continuous Batching</td><td>动态调度请求，GPU 不空转，吞吐提 2-10x</td></tr>
+            <tr><td>PagedAttention</td><td>KV Cache 分页管理，显存利用率接近 100%，可服务更多并发</td></tr>
+            <tr><td>量化 (INT8/INT4/FP8)</td><td>权重压缩 2-4x，同等显存放更大 batch</td></tr>
+            <tr><td>Tensor Parallelism</td><td>单层矩阵切分到多卡，支持超大模型（如 70B+）</td></tr>
+            <tr><td>Prefix Caching</td><td>复用系统 prompt 的 KV Cache，减少重复计算</td></tr>
+            <tr><td>Speculative Decoding</td><td>草稿模型 + 目标模型并行验证，吞吐 2-3x</td></tr>
+          </table>
+          生产推荐：vLLM/SGLang + FP8 量化 + Prefix Caching 开启。高并发场景下 Disaggregated Prefill/Decode 可以进一步提升 40%+。
+        </div>
+      </div>
+
+      <div class="qa-card" data-tags="">
+        <div class="qa-question" onclick="toggleCard(this)">
+          <div class="qa-q-badge">Q</div>
+          <div class="qa-q-text">FP8 是什么？相比 INT8 有什么优势？</div>
+          <div class="qa-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          FP8 是 NVIDIA H100/H200 原生支持的低精度浮点格式，有 E4M3（4 位指数 + 3 位尾数）和 E5M2（5 位指数 + 2 位尾数）两种变体。<br><br>
+          <strong>相比 INT8 的优势：</strong>
+          ① INT8 是定点格式，动态范围有限（-128~127），激活值中的异常值（outlier）会严重损害精度；<br>
+          ② FP8 保留了浮点格式的指数位，动态范围覆盖 10^-9 到 10^5，天然适配神经网络中呈正态分布的激活值；<br>
+          ③ H100 有专门 FP8 Tensor Core，算力是 FP16 的 2 倍。<br><br>
+          DeepSeek-V3 训练全程用 FP8 混合精度，降低了 60% 的显存和带宽需求。
+        </div>
+      </div>
+
+      <div class="qa-card" data-tags="system">
+        <div class="qa-question" onclick="toggleCard(this)">
+          <div class="qa-q-badge">Q</div>
+          <div class="qa-q-text">如何估算 LLM 服务的 GPU 显存需求？<span class="tag tag-system">工程</span></div>
+          <div class="qa-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          <strong>显存 = 模型权重 + KV Cache + 推理临时变量</strong><br><br>
+          以 LLaMA2-7B (FP16) 在 2K 上下文、batch=8 为例：<br>
+          ① <strong>权重</strong>：7B × 2 bytes = 14 GB（INT8 减半，INT4 再减半）<br>
+          ② <strong>KV Cache</strong>：2×层数(32)×hidden(4096)×序列长度(2048)×精度(2)×batch(8) ≈ 4.3 GB<br>
+          ③ <strong>临时变量</strong>：约 1-2 GB<br>
+          <strong>合计约 20 GB</strong>，至少需要一张 24GB 显卡。<br><br>
+          KV Cache 公式（FP16）：<code>2 × n_layers × d_model × max_seq_len × batch_size × 2 bytes</code>。增大上下文或并发时 KV Cache 是主要瓶颈，PagedAttention 和 GQA 可以显著压缩。
+        </div>
+      </div>
+
+      <div class="qa-card" data-tags="">
+        <div class="qa-question" onclick="toggleCard(this)">
+          <div class="qa-q-badge">Q</div>
+          <div class="qa-q-text">在消费级硬件上如何部署 LLM？有哪些关键工具？</div>
+          <div class="qa-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          <strong>工具选型表：</strong>
+          <table>
+            <tr><th>工具</th><th>适合场景</th><th>关键技术</th></tr>
+            <tr><td><strong>llama.cpp</strong></td><td>CPU/边缘/Mac 推理</td><td>GGUF 格式 + Q4_K_M 量化，纯 C++ 无依赖</td></tr>
+            <tr><td><strong>Ollama</strong></td><td>本地一键体验</td><td>基于 llama.cpp，Modelfile 配置，REST API</td></tr>
+            <tr><td><strong>MLX</strong></td><td>Apple Silicon 微调+推理</td><td>Apple 官方框架，Metal GPU 加速</td></tr>
+            <tr><td><strong>ExLlamaV2</strong></td><td>NVIDIA 消费显卡</td><td>极速 GPTQ kernel，Flash Attention 实现</td></tr>
+          </table>
+          日常推荐：Ollama + Q4_K_M 量化模型，8GB 内存可跑 7B 模型。需要服务化则用 llama.cpp server 模式。
+        </div>
+      </div>
+
+      <div class="qa-card" data-tags="2026">
+        <div class="qa-question" onclick="toggleCard(this)">
+          <div class="qa-q-badge">Q</div>
+          <div class="qa-q-text">什么是 Disaggregated Prefill/Decode？为什么能提升效率？<span class="tag tag-2026">前沿</span></div>
+          <div class="qa-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          Prefill（处理输入 prompt）和 Decode（逐 token 生成）对硬件的需求截然不同：Prefill 是<strong>计算密集型</strong>（并行处理所有 token），Decode 是<strong>内存带宽密集型</strong>（每步加载所有权重，只算一个 token）。<br><br>
+          <strong>Disaggregated P/D</strong> 将两个阶段部署在不同 GPU 集群上，各自独立扩缩容。Prefill 集群用高算力 GPU（如 H100），Decode 集群用大显存 GPU。通过高速网络传输 KV Cache。<br><br>
+          优势：TTFT（首 token 延迟）和 TPOT（token 间延迟）独立优化；整体吞吐提升 40%+；Better resource utilization。vLLM v1 和 SGLang 均已原生支持。Mooncake (月之暗面) 论文详细描述了该架构。
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- Section 14: 高级检索与文档处理              -->
+    <!-- ═══════════════════════════════════════════ -->
+    <div id="advanced-retrieval">
+      <div class="section-header">
+        <div class="section-icon" style="background:rgba(251,191,36,.2)">🔍</div>
+        <div class="section-title">高级检索与文档处理</div>
+        <span class="section-count">6 题</span>
+      </div>
+
+      <div class="qa-card" data-tags="hot">
+        <div class="qa-question" onclick="toggleCard(this)">
+          <div class="qa-q-badge">Q</div>
+          <div class="qa-q-text">什么是文档分块（Chunking）？为什么 Chunk 大小很重要？<span class="tag tag-hot">高频</span></div>
+          <div class="qa-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          <strong>Chunking</strong> 是将长文档切分成更小的文本片段，便于 Embedding 模型处理和向量检索。Embedding 模型有输入长度限制（如 512/8192 tokens），且过长的文本会稀释语义焦点。<br><br>
+          <strong>Chunk 大小的影响：</strong>
+          <table>
+            <tr><th>Chunk 大小</th><th>优点</th><th>缺点</th></tr>
+            <tr><td>小 (128-256 tokens)</td><td>语义聚焦、检索精准</td><td>丢失上下文、信息碎片化</td></tr>
+            <tr><td>中 (512-1024 tokens)</td><td>平衡上下文和精度</td><td>通用场景试用</td></tr>
+            <tr><td>大 (2048+ tokens)</td><td>上下文完整</td><td>检索精度下降、噪声增加</td></tr>
+          </table>
+          实践中常用 512-1024 tokens 作为默认值，然后根据具体文档类型和问答精度评测调优。Chunk overlap 一般设 10-20%。
+        </div>
+      </div>
+
+      <div class="qa-card" data-tags="">
+        <div class="qa-question" onclick="toggleCard(this)">
+          <div class="qa-q-badge">Q</div>
+          <div class="qa-q-text">有哪些常见的 Chunking 方法？如何选择？</div>
+          <div class="qa-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          <table>
+            <tr><th>方法</th><th>原理</th><th>适合场景</th></tr>
+            <tr><td><strong>固定大小</strong></td><td>按 token/字符数均分</td><td>通用文本，最简单</td></tr>
+            <tr><td><strong>递归分割</strong></td><td>按优先级分隔符（段落→句子→空格）递归切</td><td>结构化文档（→ 是默认推荐）</td></tr>
+            <tr><td><strong>语义分块</strong></td><td>用 Embedding 相似度判断断点（相邻句子相似度突降处切开）</td><td>主题分散的文档</td></tr>
+            <tr><td><strong>文档结构感知</strong></td><td>按 Markdown/HTML 标题层级切</td><td>技术文档/API 文档</td></tr>
+            <tr><td><strong>Agentic Chunking</strong></td><td>让 LLM 决定最佳切分点</td><td>高精度场景（慢且贵）</td></tr>
+          </table>
+          <div class="tip-box">LangChain 的 RecursiveCharacterTextSplitter + chunk_size=1000 + overlap=200 是最常见的起步配置。复杂文档（年报、合同）优先用结构感知分块。</div>
+        </div>
+      </div>
+
+      <div class="qa-card" data-tags="hot">
+        <div class="qa-question" onclick="toggleCard(this)">
+          <div class="qa-q-badge">Q</div>
+          <div class="qa-q-text">混合搜索（Hybrid Search）是什么？为什么需要它？<span class="tag tag-hot">高频</span></div>
+          <div class="qa-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          <strong>Hybrid Search = 稀疏检索（BM25）+ 稠密检索（向量相似度）</strong>，将两者的分数融合为一个最终排序。<br><br>
+          <strong>为什么需要：</strong>
+          ① 向量搜索擅长语义匹配（"便宜"≈"价格低"），但对精确关键词匹配（产品型号 SKU、法律条款编号）表现差；<br>
+          ② BM25 擅长精确关键词匹配和生僻词（OOV），但无法理解同义改写；<br>
+          ③ 两者互补，融合后召回效果显著优于任一单独方法。<br><br>
+          <strong>融合方式</strong>：最常见是 Reciprocal Rank Fusion (RRF)：<code>score = Σ 1/(k+rank_i)</code>，无需调权重。也可以用加权求和或学习排序（LambdaMART）。
+        </div>
+      </div>
+
+      <div class="qa-card" data-tags="system">
+        <div class="qa-question" onclick="toggleCard(this)">
+          <div class="qa-q-badge">Q</div>
+          <div class="qa-q-text">RAG 检索不准时，有哪些优化手段？<span class="tag tag-system">工程</span></div>
+          <div class="qa-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          <strong>逐层排查与优化：</strong><br><br>
+          ① <strong>查询层</strong>：Query Rewriting（用 LLM 改写用户问题，补全指代/扩写缩写）；HyDE（先让 LLM 生成假设答案，用假答案去检索）；Multi-Query（生成多个变体查询取并集）<br>
+          ② <strong>Embedding 层</strong>：检查模型是否适配你的领域；用领域数据微调 Embedding；采用 BGE-M3 等支持多语言的模型<br>
+          ③ <strong>检索层</strong>：启用 Hybrid Search（BM25 + 向量）；增加 Re-ranker（如 BGE-Reranker/Cohere）对召回结果精排<br>
+          ④ <strong>数据层</strong>：优化 Chunking 策略（结构和语义边界对齐）；去除文档噪声和重复<br>
+          ⑤ <strong>回退策略</strong>：检索为空或相关性低时，降级为关键词搜索或扩大搜索范围
+        </div>
+      </div>
+
+      <div class="qa-card" data-tags="">
+        <div class="qa-question" onclick="toggleCard(this)">
+          <div class="qa-q-badge">Q</div>
+          <div class="qa-q-text">如何处理 RAG 中的表格、列表和图表等复杂文档结构？</div>
+          <div class="qa-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          <strong>表格</strong>：不要直接切碎！先用 OCR/解析提取表格结构 → 转为 Markdown/JSON 描述 → 或用 Table-Specific Embedding 模型。大表格可拆为表头+多行片段，每个片段都携带表头上下文。<br><br>
+          <strong>列表</strong>：保持列表项完整性，在 chunk overlap 中保留完整的列表前导句。<br><br>
+          <strong>图表</strong>：用多模态模型（GPT-4V/Qwen-VL）生成图表摘要文本 → 将摘要 Embedding 存储；检索时返回摘要，上层再调原图。<br><br>
+          <strong>复杂排版（年报/合同）</strong>：推荐 Unstructured.io / Docling 等专用解析工具，它们能识别标题层级、表格、列表、图片并分别输出。
+        </div>
+      </div>
+
+      <div class="qa-card" data-tags="">
+        <div class="qa-question" onclick="toggleCard(this)">
+          <div class="qa-q-badge">Q</div>
+          <div class="qa-q-text">什么是重排序（Re-ranking）？为什么两阶段检索更好？</div>
+          <div class="qa-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          <strong>两阶段检索架构：</strong>
+          ① <strong>第一阶段（粗排）</strong>：用 Embedding 模型 + ANN 从海量文档中快速召回 Top-K（如 K=100），速度快但精度一般<br>
+          ② <strong>第二阶段（精排）</strong>：用更强的 Cross-Encoder（Re-ranker）对 100 条候选逐对计算 query-doc 相关性分数，重新排序后取 Top-N（如 N=5）<br><br>
+          <strong>为什么更好</strong>：Bi-Encoder 将 query 和 doc 独立编码，速度快但交互不充分；Cross-Encoder 将 query 和 doc 拼接后联合编码，能捕捉细粒度语义匹配（如否定、条件关系），精度高但慢。两阶段取各自所长。<br><br>
+          主流工具：Cohere Rerank、BGE-Reranker-v2、Jina Reranker、Cross-Encoder 微调。
+        </div>
+      </div>
+    </div>
+
     <!-- Footer section -->
     <div style="margin-top: 60px; padding: 28px; background: linear-gradient(135deg, rgba(26,29,46,.92), rgba(37,40,64,.78)); border: 1px solid rgba(124,106,247,.25); border-radius: 20px; text-align: center; box-shadow: 0 20px 48px rgba(0,0,0,.18);">
       <div style="font-size: 1.05rem; font-weight: 800; margin-bottom: 8px;">📚 完整知识点笔记</div>
-      <div style="color: var(--text2); font-size: 0.9rem; margin-bottom: 18px;">21 篇深度笔记 · 65 道速查问答 · 覆盖从基础到前沿的完整 LLM 知识体系</div>
+      <div style="color: var(--text2); font-size: 0.9rem; margin-bottom: 18px;">21 篇深度笔记 · 89 道速查问答 · 覆盖从基础到前沿的完整 LLM 知识体系</div>
       <a href="https://github.com/laoshan-song/Awesome-LLM-Interview" target="_blank" style="background: linear-gradient(135deg, var(--accent), #9b8cff); color: #fff; padding: 11px 24px; border-radius: 999px; text-decoration: none; font-weight: 700; display: inline-block;">查看 GitHub 仓库 →</a>
     </div>
   </main>
