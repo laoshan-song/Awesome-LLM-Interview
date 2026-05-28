@@ -82,4 +82,7 @@ W' = W + ΔW = W + A * B
 
 ## 延伸阅读与视频
 
-> 视频链接持续更新中，欢迎 PR 补充优质资源
+- 📺 **[LoRA: Low-Rank Adaptation Paper Explained](https://www.youtube.com/watch?v=PXWYUTMt-AU)** — Yannic Kilcher，论文精读含数学推导（YouTube）
+- 📺 **[Bilibili 搜索"LoRA 微调"](https://search.bilibili.com/all?keyword=LoRA%E5%BE%AE%E8%B0%83&order=click)** — 按播放量筛选
+
+> 欢迎 PR 补充更多优质资源

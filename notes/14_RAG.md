@@ -78,4 +78,7 @@ RAG 通过在生成前检索相关文档，将外部知识注入上下文。
 
 ## 延伸阅读与视频
 
-> 视频链接持续更新中，欢迎 PR 补充优质资源
+- 📺 **[Retrieval Augmented Generation (RAG) Explained](https://www.youtube.com/watch?v=T-D1OfcDW1M)** — IBM Technology，简洁清晰百万播放（YouTube）
+- 📺 **[Bilibili 搜索"RAG 检索增强生成"](https://search.bilibili.com/all?keyword=RAG%E6%A3%80%E7%B4%A2%E5%A2%9E%E5%BC%BA%E7%94%9F%E6%88%90&order=click)** — 按播放量筛选
+
+> 欢迎 PR 补充更多优质资源

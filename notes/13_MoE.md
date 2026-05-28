@@ -83,4 +83,7 @@ Router：计算每个专家的权重得分
 
 ## 延伸阅读与视频
 
-> 视频链接持续更新中，欢迎 PR 补充优质资源
+- 📺 **[YouTube 搜索"Mixture of Experts LLM explained"](https://www.youtube.com/results?search_query=Mixture+of+Experts+LLM+explained)** — 按播放量筛选
+- 📺 **[Bilibili 搜索"MoE 混合专家"](https://search.bilibili.com/all?keyword=MoE%E6%B7%B7%E5%90%88%E4%B8%93%E5%AE%B6%E6%A8%A1%E5%9E%8B&order=click)** — 按播放量筛选
+
+> 欢迎 PR 补充更多优质资源
