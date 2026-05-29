@@ -90,32 +90,15 @@
 
 ## 🛠️ 学完可做项目
 
-下面这些项目按“学完对应知识点就能动手”的标准筛过一遍，优先放 **能跑起来、能改起来、能写进简历** 的入口。
+我单独整理了一份 **项目实战库**，按主题拆成 `RAG / 微调 / 推理部署 / Agent / 多模态 / 评估` 六类，每类都有 GitHub 项目和 Kaggle 数据入口。
 
-### GitHub 练手项目
+> **[→ 打开项目库](./projects.md)**
 
-| 方向 | 项目 | 适合学完哪些笔记后做 | 你能练到什么 |
-|------|------|----------------------|--------------|
-| RAG 基础 | [RAG from Scratch](https://github.com/pguso/rag-from-scratch) | RAG / KV Cache / 推理框架 | 从零搭一套本地 RAG，理解 embedding、检索、rerank、上下文拼接 |
-| RAG 工程化 | [rag-chatbot](https://github.com/mrankitvish/rag-chatbot) | RAG / LangChain / PGVector | 做一个 FastAPI + PGVector + Ollama 的知识库问答服务 |
-| 全栈 RAG | [fullstack-chatbot-with-langchain-and-rag](https://github.com/logreg-n-coffee/fullstack-chatbot-with-langchain-and-rag) | RAG / Prompt / Web 部署 | 补全前后端链路，做成可演示的聊天产品 |
-| QLoRA 微调 | [QLoRA](https://github.com/artidoro/qlora) | LoRA / 量化 / SFT | 跑通 4-bit 微调、理解 adapter、量化训练和显存权衡 |
-| 多 Agent 编排 | [Deb8flow](https://github.com/iason-solomos/Deb8flow) | Agent / LangGraph / 评估 | 理解多 Agent workflow、状态流转、事实校验和仲裁逻辑 |
-| Agent 工程系统 | [Multi-Agent-Orchestrator](https://github.com/OmishaPatel/Multi-Agent-Orchestrator) | Agent / MCP / FastAPI | 练任务拆解、工作流编排、后端工程组织和安全边界 |
+如果你只想先选一个最容易做成作品的方向，建议顺序是：
 
-### Kaggle 数据与比赛
-
-| 类型 | 链接 | 适合做什么 |
-|------|------|------------|
-| 比赛 | [LLM Classification Finetuning](https://www.kaggle.com/competitions/llm-classification-finetuning/overview/description/abstract/abstract) | 做一个小规模指令微调/分类微调实验，练数据清洗、验证集设计、提交评估 |
-| 数据集 | [100K + Medium Articles Dataset For LLM FineTuning](https://www.kaggle.com/datasets/meruvulikith/193k-medium-articles-dataset-for-llm-finetuning) | 自己构建 domain adaptation / continued pretraining / summarization 小项目 |
-| 数据集 | [Prompt Engineering Dataset](https://www.kaggle.com/datasets/austinfairbanks/prompt-engineering-dataset) | 做 prompt 优化、prompt 质量分类、自动改写器或小型评测器 |
-
-### 建议起手顺序
-
-1. 先做一个 **本地 RAG 项目**，最快能形成完整作品。
-2. 再做一个 **QLoRA 微调项目**，补齐训练侧经验。
-3. 最后做一个 **LangGraph 多 Agent 项目**，把 workflow、工具调用、评估串起来。
+1. 本地 RAG
+2. QLoRA 微调
+3. LangGraph 多 Agent
 
 ---
 
