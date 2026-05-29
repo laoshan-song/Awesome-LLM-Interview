@@ -1,4 +1,4 @@
-﻿# LLM 评估框架（lm-evaluation-harness / Lighteval / OpenCompass）
+# LLM 评估框架（lm-evaluation-harness / Lighteval / OpenCompass）
 
 ## 面试高频考点
 - lm-evaluation-harness 是什么？如何在自己的模型上跑评测？
@@ -6,48 +6,67 @@
 - Lighteval 和 lm-evaluation-harness 的区别是什么？
 - OpenCompass 有什么特点？为什么在国内被广泛使用？
 - 什么是 Benchmark 污染？如何通过动态评测缓解？
+- 评估框架解决的是"怎么跑"，还是"评得准不准"？
+
+---
+
+## 为什么需要统一评估框架
+
+模型评估最怕的不是分数低，而是**分数不可比**。如果每个人：
+
+- 用不同 prompt template
+- 用不同 few-shot 数
+- 用不同解码参数
+- 用不同数据版本
+- 用不同打分脚本
+
+那么同一个模型的结果可以差很多，最后你根本不知道变好的是模型，还是评测配置。
+
+统一评估框架的价值在于：
+
+1. **标准化任务定义**
+2. **统一模型接入接口**
+3. **固定 prompt / metric / postprocess**
+4. **便于批量复现和横向对比**
+
+```mermaid
+flowchart LR
+    A["模型/推理后端"] --> B["统一评估框架"]
+    C["Benchmark 任务定义"] --> B
+    B --> D["标准结果与日志"]
+    D --> E["横向比较/回归分析/榜单"]
+```
 
 ---
 
 ## 一、lm-evaluation-harness
 
-**lm-evaluation-harness** 是 EleutherAI 开发的开源大模型统一评测框架，支持 200+ 评测任务，是 HuggingFace Open LLM Leaderboard 的官方评测后端。
+**lm-evaluation-harness** 是 EleutherAI 开发的开源大模型统一评测框架，支持大量任务，也是 HuggingFace Open LLM Leaderboard 的核心后端之一。
 
 **GitHub**：[github.com/EleutherAI/lm-evaluation-harness](https://github.com/EleutherAI/lm-evaluation-harness)
 
 ### 核心架构
 
-```
+```text
 lm-evaluation-harness
 ├── lm_eval/
-│   ├── models/          # 模型适配器（HF、OpenAI、vLLM等）
-│   ├── tasks/           # 评测任务（YAML配置）
-│   └── evaluator.py     # 核心评测逻辑
-└── tasks/
-    ├── mmlu/
-    ├── gsm8k/
-    └── ...              # 每个任务一个YAML
+│   ├── models/      # 模型适配器
+│   ├── tasks/       # 任务定义
+│   └── evaluator.py # 评测主逻辑
+└── templates / configs / utils
 ```
 
 ### 快速上手
 
 ```bash
-# 安装
 pip install lm-eval
 
-# 评测 HuggingFace 模型
 lm_eval --model hf \
   --model_args pretrained=Qwen/Qwen3-8B \
   --tasks mmlu,gsm8k,hellaswag \
   --device cuda:0 \
   --batch_size 8 \
   --output_path ./results
-
-# 使用 vLLM 后端加速
-lm_eval --model vllm \
-  --model_args pretrained=deepseek-ai/DeepSeek-V3,tensor_parallel_size=4 \
-  --tasks mmlu_pro,gpqa_diamond \
-  --batch_size auto
 ```
 
 ### Python API
@@ -62,87 +81,87 @@ results = lm_eval.simple_evaluate(
     num_fewshot=5,
     batch_size=8,
 )
-print(results["results"])
 ```
 
-### 自定义 Task（YAML 配置）
+### 它为什么常用
 
-```yaml
-# tasks/my_task/my_task.yaml
-task: my_custom_task
-dataset_path: my_org/my_dataset
-dataset_name: default
-output_type: multiple_choice
-doc_to_text: "问题：{{question}}\n选项：\nA. {{A}}\nB. {{B}}\nC. {{C}}\nD. {{D}}\n答案："
-doc_to_target: "{{answer}}"
-metric_list:
-  - metric: acc
-    aggregation: mean
-num_fewshot: 5
-```
+- 任务生态成熟
+- CLI 和 Python API 都容易接
+- 适配 HuggingFace、本地模型、vLLM、API 模型较方便
+- 很适合做离线批量回归测试
 
 ---
 
-## 二、Open LLM Leaderboard v2 的 6 大新 Benchmark
+## 二、Open LLM Leaderboard v2 的新 Benchmark 思路
 
-2024 年 HuggingFace 推出 **Leaderboard v2**，完全替换 v1 的 6 个任务，原因是 v1 任务（HellaSwag、ARC、TruthfulQA 等）已被大量模型接近满分，丧失区分度。
+Leaderboard v2 的核心变化不是单纯换题，而是把重心从"容易刷满分的老题"转向**更有区分度的推理与指令遵循任务**。
 
-| Benchmark | 领域 | 格式 | 难度 | 目的 |
-|-----------|------|------|------|------|
-| **MMLU-Pro** | 多学科知识 | 10选1 | ★★★★☆ | MMLU 升级版，减少猜测概率 |
-| **GPQA Diamond** | 研究生级科学 | 4选1 | ★★★★★ | 博士级题目，人类专家才能解答 |
-| **IFEval** | 指令遵循 | 开放生成 | ★★★☆☆ | 验证模型是否严格遵循格式/长度等约束 |
-| **MuSR** | 多步推理 | 开放生成 | ★★★★☆ | 谋杀推理/逻辑谜题等长链推理 |
-| **BBH（BIG-Bench Hard）** | 综合推理 | 多种 | ★★★★☆ | BIG-Bench 中最难的 23 个任务 |
-| **MATH-lvl-5** | 竞赛数学 | 开放生成 | ★★★★★ | MATH 数据集最难级别题目 |
+| Benchmark | 领域 | 主要考察 |
+|-----------|------|----------|
+| MMLU-Pro | 多学科知识 | 更难的知识与推理结合 |
+| GPQA Diamond | 研究生级科学 | 高难专业推理 |
+| IFEval | 指令遵循 | 格式和约束遵循能力 |
+| MuSR | 多步推理 | 长链逻辑推理 |
+| BBH | 综合推理 | 难任务泛化 |
+| MATH-lvl-5 | 竞赛数学 | 高强度数学推理 |
 
-**关键变化**：v2 更注重**推理能力**（而非知识记忆），更难被针对性优化，区分度更高。
+### 为什么要升级
+
+旧 benchmark 面临三个问题：
+
+1. 题库太老，污染严重
+2. 太多模型已接近满分，区分度下降
+3. 更像知识记忆，不够反映新一代模型的推理能力
+
+因此 v2 更关注**会不会推理、会不会遵循要求、会不会在难题上拉开差距**。
 
 ---
 
-## 三、Lighteval（HuggingFace 出品）
+## 三、Lighteval（HuggingFace）
 
-**Lighteval** 是 HuggingFace 自研的评测框架，作为 lm-evaluation-harness 的补充和替代：
+**Lighteval** 是 HuggingFace 自研的评测框架，和自家 datasets/hub 生态结合更自然。
 
 | 维度 | lm-evaluation-harness | Lighteval |
 |------|----------------------|-----------|
 | 维护方 | EleutherAI | HuggingFace |
-| 任务数量 | 200+ | 持续增长 |
-| 与 HF 生态集成 | 好 | **原生集成**（datasets/hub直读）|
-| Pipeline 并行评测 | 有限 | 原生支持 |
-| 任务定义方式 | YAML | Python 类 + YAML |
-| 推荐场景 | 通用评测 | HF 内部模型/快速迭代实验 |
+| 生态集成 | 通用 | HF 原生更强 |
+| 任务定义 | YAML/代码 | Python + YAML |
+| 使用场景 | 社区通用基线 | HF 生态内快速实验 |
+
+### 什么时候选它
+
+- 你本来就在 HF Hub 和 datasets 上组织实验
+- 想快速拉通数据、模型、评测一体化流程
+- 希望更贴近 HuggingFace 官方榜单与工具链
 
 ---
 
 ## 四、OpenCompass（上海 AI 实验室）
 
-**OpenCompass** 是上海人工智能实验室主导的开源评测框架，在中文评测领域是事实标准。
+**OpenCompass** 在中文、国内模型、多模态评测方面很强，在国内基本是事实标准之一。
 
 **GitHub**：[github.com/open-compass/opencompass](https://github.com/open-compass/opencompass)
 
 ### 核心特点
 
-- **中文 benchmark 最全**：C-Eval、CMMLU、GaoKao、NaturalBench 等中文专项任务
-- **多模态评测**：MMBench、MMStar 等 VLM 评测原生支持
-- **API 模型评测**：GPT-4o、Claude、Gemini 等闭源模型一键评测
-- **CompassHub**：在线 benchmark 社区，防污染动态更新
+- 中文 benchmark 很全：C-Eval、CMMLU、GaoKao 等
+- 多模态评测支持更完整
+- 闭源 API 模型接入方便
+- 有较强的国内社区实践积累
 
 ```bash
-# 快速评测
 pip install opencompass
 opencompass --models hf_qwen3_8b --datasets ceval_gen mmlu_ppl
 ```
 
-### 与 lm-evaluation-harness 对比
+### 它为什么在国内常见
 
-| 维度 | lm-evaluation-harness | OpenCompass |
-|------|----------------------|-------------|
-| 中文 benchmark | 较少 | **最全** |
-| 英文 benchmark | **最全** | 完整但略少 |
-| 多模态 | 支持但弱 | **原生强支持** |
-| 国内使用 | 较少 | **主流** |
-| 国际使用 | **主流** | 较少 |
+因为很多国内团队的真实需求不是英文通用榜，而是：
+
+- 中文能力评估
+- 国内开源模型横评
+- 多模态中文场景
+- API 模型与本地模型统一比较
 
 ---
 
@@ -150,46 +169,132 @@ opencompass --models hf_qwen3_8b --datasets ceval_gen mmlu_ppl
 
 ### 污染的三种形式
 
-| 污染类型 | 描述 | 检测难度 |
-|---------|------|---------|
-| **直接污染** | 训练数据中包含原始测试题和答案 | 低（n-gram 可检测）|
-| **间接污染** | 训练数据包含与测试题高度相似的内容 | 中 |
-| **隐性污染** | 爬虫从评测相关网页/讨论中获取了题目 | 高 |
+| 污染类型 | 描述 | 风险 |
+|---------|------|------|
+| 直接污染 | 训练集含原题和答案 | 分数严重失真 |
+| 间接污染 | 高度相似题或解答被见过 | 模型看似会做，实则见过 |
+| 隐性污染 | 题目讨论、解析、镜像被爬进训练集 | 很难彻底排查 |
 
-### 污染检测方法
+### 动态评测为什么重要
 
-```python
-# Min-K% Probability 检测法
-# 如果模型对某文本的最低K%的token概率异常高，说明可能见过该文本
-
-def min_k_prob(model, text, k=0.2):
-    token_probs = get_token_probs(model, text)
-    k_count = max(1, int(len(token_probs) * k))
-    min_k_probs = sorted(token_probs)[:k_count]
-    return sum(min_k_probs) / k_count  # 分数越高越可能被污染
-```
-
-### 动态评测方案
+静态 benchmark 一旦公开足够久，就很难避免被训练数据吸收。动态评测的价值是不断产生模型没见过的新题。
 
 | 方案 | 代表 | 核心思路 |
 |------|------|---------|
-| **动态更新** | LiveBench | 每月用最新新闻/论文出题，题目持续更新 |
-| **人类投票** | Chatbot Arena | 真实用户 A/B 测试，无固定题库 |
-| **私有测试集** | 各公司内部 | 不公开，模型无法训练到 |
-| **程序验证** | LiveCodeBench | 用最新 LeetCode 周赛题，自动判题 |
+| 动态更新 | LiveBench | 持续出新题 |
+| 人类投票 | Chatbot Arena | 用户真实偏好对比 |
+| 私有测试集 | 企业内部评测 | 不公开，难污染 |
+| 程序验证 | LiveCodeBench | 新代码题 + 自动判题 |
+
+### 框架能解决污染吗
+
+不能彻底解决。评估框架最多提供统一执行方式，题本身是否被污染、指标是否反映真实能力，仍然需要单独治理。
+
+---
+
+## 评估框架解决什么，不解决什么
+
+### 解决什么
+
+- 统一执行入口
+- 固定任务配置
+- 可复现实验
+- 批量跑回归和榜单
+
+### 不解决什么
+
+- benchmark 是否有污染
+- 指标是否和业务 KPI 一致
+- prompt 是否代表真实使用方式
+- 某个任务高分是否意味着产品体验好
+
+所以评估框架是**基础设施**，不是"真理机器"。
+
+---
+
+## 工程实践视角
+
+### 企业里一套靠谱评估体系通常至少分三层
+
+```mermaid
+flowchart TD
+    A["公开 benchmark"] --> D["统一评估平台"]
+    B["内部任务集"] --> D
+    C["线上真实反馈"] --> D
+    D --> E["模型发布决策"]
+```
+
+1. **公开 benchmark**：看行业相对位置  
+2. **内部任务集**：看业务贴合度  
+3. **线上指标**：看真实用户是否买账
+
+只看第一层，通常会把模型调成"擅长刷题，不擅长工作"。
+
+### 一个常见评估闭环
+
+- 新模型出 checkpoint
+- 用 harness/OpenCompass 跑标准离线任务
+- 跑内部专项集：RAG、工具调用、客服、代码等
+- 回归线上 badcase 集
+- 再决定是否进入灰度
+
+### 评测最常见的四个坑
+
+1. **few-shot 设置不统一**  
+   这会直接导致结果不可比。
+
+2. **解码参数漂移**  
+   `temperature`、`top_p`、`max_new_tokens` 不一致，分数可能波动很大。
+
+3. **只看平均分**  
+   平均分掩盖了某类关键任务崩掉的事实。
+
+4. **离线高分直接等价上线可用**  
+   这是最危险的误判。真实用户场景往往比 benchmark 更脏、更长尾。
+
+---
+
+## 常见误区
+
+### 误区 1：跑了 harness 就等于做了完整评估
+
+不是。你只是把公开 benchmark 跑规范了。
+
+### 误区 2：榜单高就一定适合业务
+
+不成立。榜单更偏通用能力，而业务常常看格式稳定性、拒答策略、中文术语、工具调用等细项。
+
+### 误区 3：评估框架之间分数可以直接横比
+
+前提是任务版本、prompt 模板、shot 数和 scoring 全一致，否则不能直接比较。
+
+### 误区 4：污染问题只是学术界担心
+
+企业同样会中招，特别是内部测试集被训练数据或合成数据链路污染时，误判成本更高。
 
 ---
 
 ## 面试延伸
 
-**Q：为什么 GPQA Diamond 被认为是目前最难的 LLM benchmark 之一？**
-> GPQA（Graduate-Level Google-Proof Q&A）的题目由博士生/博士后出题，设计要求即使 Google 搜索也无法直接找到答案（Google-Proof），必须真正理解专业知识才能解答。Diamond 子集是其中最难的 198 道题，GPT-4 在此 benchmark 上准确率约 40%，与领域专业人员的 70% 相比仍有差距。
+**Q：为什么 GPQA Diamond 被认为很难？**
+> 因为它考察的是高阶专业推理，不是简单检索式知识问答，而且题目设计尽量避免被搜索引擎直接找到现成答案，因此对模型的真实理解能力要求更高。
 
-**Q：lm-evaluation-harness 支持 few-shot 评测，few-shot 数量对结果有多大影响？**
-> 影响显著。以 MMLU 为例，0-shot 和 5-shot 结果可能相差 5-10 个百分点。原因是少样本示例帮助模型理解任务格式（尤其是选项字母 A/B/C/D 的输出格式），而不是提供知识。因此比较模型性能时，必须确保 few-shot 设置一致，Leaderboard v2 也统一规定了各 benchmark 的 shot 数。
+**Q：few-shot 数量对结果影响大吗？**
+> 很大。少样本示例不仅提供格式示范，还会影响模型的任务理解方式。比较模型时必须统一 shot 数，否则结论不可信。
 
-**Q：如何在企业内部建立一套防污染的评测体系？**
-> 三层防御：① 使用动态 benchmark（LiveBench/LiveCodeBench）减少静态题库依赖；② 维护私有内部测试集，严格限制访问权限，定期轮换题目；③ 结合 Min-K% Prob 等方法定期扫描训练数据是否包含测试集内容。最重要的是将线上真实用户指标（如 thumbs down rate、任务完成率）作为最终 north star metric。
+**Q：如何在企业内部建立防污染评测体系？**
+> 至少要做三件事：维护私有测试集并隔离访问、引入动态更新题目、对训练数据和评测数据做相似度扫描。最终还要把线上真实 badcase 反哺回评估集。
+
+**Q：OpenCompass 和 lm-evaluation-harness 怎么选？**
+> 英文通用 benchmark 和国际社区兼容性优先时，harness 更常见；中文、多模态、国内模型生态和 API 统一评测更重要时，OpenCompass 往往更顺手。
+
+---
+
+## 学完可以做什么
+
+1. 给自己的模型接入 `lm-evaluation-harness` 跑一套公开 benchmark。
+2. 建一个内部 YAML/JSON 任务集，把业务 badcase 也纳入统一评测。
+3. 做一张模型版本回归表，跟踪公开 benchmark、内部任务和线上指标三条线。
 
 ---
 

@@ -1,4 +1,4 @@
-﻿# GraphRAG 与高级 RAG
+# GraphRAG 与高级 RAG
 
 ## 面试高频考点
 - Naive RAG 的主要缺陷是什么？Advanced RAG 如何改进？
@@ -6,6 +6,7 @@
 - HyDE 是什么？Self-RAG 如何判断是否需要检索？
 - Chunk 切分策略如何选择？Embedding 模型如何选型？
 - 如何评估 RAG 系统的质量？RAGAS 有哪些指标？
+- RAG、Long Context、GraphRAG 到底怎么选型？
 
 ---
 
@@ -13,8 +14,8 @@
 
 ### 第一代：Naive RAG
 
-```
-用户 Query → 向量检索 → Top-K 文档 → Prompt 拼接 → LLM → 答案
+```text
+用户 Query -> 向量检索 -> Top-K 文档 -> Prompt 拼接 -> LLM -> 答案
 ```
 
 **主要问题**：
@@ -27,26 +28,34 @@
 
 在检索前后增加处理步骤：
 
-```
-┌──────────────────────────────────────────────────────┐
-│ Pre-Retrieval（检索前优化）                            │
-│  查询改写 → HyDE → 查询分解 → Step-Back Prompting     │
-└──────────────────────────────────────────────────────┘
-                          ↓
-┌──────────────────────────────────────────────────────┐
-│ Retrieval（混合检索）                                  │
-│  BM25（关键词）+ 向量检索（语义）→ RRF 融合            │
-└──────────────────────────────────────────────────────┘
-                          ↓
-┌──────────────────────────────────────────────────────┐
-│ Post-Retrieval（检索后过滤）                           │
-│  Reranker（Cross-Encoder 精排）→ 上下文压缩            │
-└──────────────────────────────────────────────────────┘
+```mermaid
+flowchart TD
+    A["用户 Query"] --> B["Pre-Retrieval<br/>查询改写/HyDE/分解"]
+    B --> C["Hybrid Retrieval<br/>BM25 + Vector + RRF"]
+    C --> D["Post-Retrieval<br/>Reranker + Context Compression"]
+    D --> E["LLM 生成答案"]
 ```
 
 ### 第三代：GraphRAG / Agentic RAG
 
-知识图谱 + Agent 自主规划，支持全局推理和多跳问题。
+核心不再只是"找相关片段"，而是构建可导航、可汇总、可多跳推理的知识结构。
+
+---
+
+## 为什么 Naive RAG 很快会撞墙
+
+Naive RAG 的前提是假设：问题的答案就在某几个语义相似 chunk 里。但现实常见的问题是：
+
+- 关键信息分散在多个文档里
+- 用户问题很抽象，不对应某段现成表述
+- 需要先找实体，再找实体之间关系
+- 检索到的文本很多，但真正有用的很少
+
+所以后续所有高级 RAG 技术，本质上都在补三件事：
+
+1. **召回更准**
+2. **上下文更干净**
+3. **推理更像知识操作，而不是纯文本拼接**
 
 ---
 
@@ -56,33 +65,32 @@
 
 **问题**：用户查询（短）和文档（长）在语义空间中分布差异大，直接匹配效果差。
 
-**方案**：让 LLM 先生成一个"假设的理想答案文档"，用这个假设文档的 Embedding 去检索：
+**方案**：先让 LLM 生成一个"理想答案文档"，再拿这段假设文档做 embedding 检索：
 
-```
-原始 Query: "什么是 RoPE 位置编码？"
-         ↓ LLM 生成假设文档
-假设文档: "RoPE（旋转位置编码）是一种通过旋转矩阵实现相对位置编码的方法，
-          由苏剑林提出，被 LLaMA 等模型采用..."
-         ↓ 用假设文档 Embedding 检索
-真实文档库 → 找到真实的相关文档 → 拼接 Query + 文档 → LLM
+```text
+原始 Query: 什么是 RoPE 位置编码？
+      ↓ LLM 生成假设文档
+假设文档: 对 RoPE 的解释性段落
+      ↓ 用假设文档 embedding 检索
+真实文档库 -> 找到真实相关文档 -> 进入生成阶段
 ```
 
-**效果**：对"解释类"查询提升显著，检索召回率提升约 20-30%。
+HyDE 的本质是做一次**查询扩展 + 表达空间对齐**。
 
 ### Self-RAG（自反思 RAG）
 
-模型自主决定**何时检索、检索什么、如何评估检索结果**，输出特殊 Reflection Token：
+模型自主决定**何时检索、检索什么、如何评估检索结果**，通过特殊 reflection token 显式表达判断：
 
 | Token 类型 | 含义 |
 |-----------|------|
 | `[Retrieve]` | 需要检索外部知识 |
-| `[No Retrieve]` | 可基于参数知识直接回答 |
-| `[Relevant]` | 检索内容与问题相关 |
-| `[Irrelevant]` | 检索内容不相关，忽略 |
+| `[No Retrieve]` | 可直接回答 |
+| `[Relevant]` | 检索内容相关 |
+| `[Irrelevant]` | 检索内容不相关 |
 | `[Fully Supported]` | 生成内容完全有依据 |
-| `[Partially Supported]` | 部分有依据 |
+| `[Partially Supported]` | 只有部分有依据 |
 
-训练方式：特殊 Token 由 Critic LLM 标注，然后对 Generator LLM 做 SFT。
+Self-RAG 的价值是把 RAG 从静态管线推进到**动态决策系统**。
 
 ### 混合检索（Hybrid Retrieval）
 
@@ -90,42 +98,48 @@
 |---------|------|---------|
 | BM25 | 词频-逆文档频率，关键词匹配 | 专有名词、精确查询 |
 | 向量检索 | Embedding 语义相似度 | 语义相关、同义词、模糊查询 |
-| **混合（RRF 融合）** | 两路结果排名倒数加权融合 | 大多数生产场景 |
+| 混合（RRF 融合） | 两路结果排名倒数加权融合 | 大多数生产场景 |
 
 ```python
-# Reciprocal Rank Fusion
 def rrf_score(rank, k=60):
     return 1 / (k + rank)
-
-score = rrf_score(bm25_rank) + rrf_score(vector_rank)
 ```
+
+混合检索几乎是生产 RAG 的默认起点，因为关键词与语义检索各有盲区。
 
 ---
 
 ## GraphRAG（微软 2024）
 
-**核心问题**：标准 RAG 无法回答需要跨文档全局综合的问题，如"这批文档的主要主题是什么？"
+**核心问题**：标准 RAG 擅长找局部证据，但不擅长回答"全局总结型"和"跨文档关联型"问题。
 
 ### 构建阶段（Indexing）
 
-```
-原始文档
-   ↓ 文本切分
-文本块（Chunks）
-   ↓ LLM 抽取实体和关系
-知识图谱（Entity + Relation）
-   ↓ 社区检测（Louvain 算法）
-层次社区结构（Communities）
-   ↓ LLM 生成每个社区摘要
-Community Reports
+```mermaid
+flowchart TD
+    A["原始文档"] --> B["文本切分"]
+    B --> C["LLM 抽取实体和关系"]
+    C --> D["知识图谱"]
+    D --> E["社区检测"]
+    E --> F["社区摘要/报告"]
 ```
 
 ### 查询阶段（Query）
 
-- **Local Search**：图谱 + 向量检索，适合精确实体查询，效果类似 Advanced RAG
-- **Global Search**：跨所有社区摘要做 Map-Reduce 推理，适合全局综合类问题
+- **Local Search**：图谱 + 向量检索，适合精确实体查询
+- **Global Search**：跨社区摘要做 map-reduce 推理，适合主题综合、趋势总结、多跳关系查询
 
-**实测效果**：在全局理解类问题上比传统 RAG 提升 40%+，代价是索引成本高（需要大量 LLM 调用）。
+### GraphRAG 相对传统 RAG 的核心增益
+
+1. **显式实体与关系建模**：不再只依赖文本相似度。
+2. **支持全局问题**：可以在社区摘要层回答"这批文档整体在讲什么"。
+3. **更适合多跳推理**：先找节点，再沿关系扩展。
+
+### 代价
+
+- 建索引成本高，需要大量 LLM 调用
+- 图谱质量高度依赖抽取质量
+- 知识更新更复杂，不像向量库那样直接增量插入就结束
 
 ---
 
@@ -134,36 +148,125 @@ Community Reports
 | 策略 | 方式 | 适用场景 |
 |------|------|---------|
 | 固定大小 | 按字符/Token 数切分 | 快速实现 |
-| 句子切分 | NLTK/spaCy 按句子 | 逻辑完整 |
-| 递归字符切分 | 按段落→句子→词 优先保留段落 | 通用文档（LangChain 默认）|
-| 语义切分 | Embedding 相似度变化点切分 | 内容自适应 |
+| 句子切分 | 按句子边界 | 逻辑完整 |
+| 递归字符切分 | 段落 -> 句子 -> 词 | 通用文档 |
+| 语义切分 | 根据 embedding 变化点切分 | 内容结构复杂文档 |
 | 父文档检索 | 小 chunk 检索，返回大 chunk 上下文 | 精度 + 上下文平衡 |
 
-**经验法则**：chunk_size 256-512 Token，overlap 50-100 Token，避免切断完整语义单元。
+**经验法则**：
+- `chunk_size` 常见 256-512 token
+- `overlap` 常见 50-100 token
+- 不要为了整齐切分而打断定义、代码块、表格或公式
+
+Chunk 不是越小越好。太小会丢上下文，太大又会拉低检索精度。
 
 ---
 
 ## RAG 评估（RAGAS 框架）
 
-| 指标 | 衡量维度 | 计算方式 |
-|------|---------|---------|
-| **Faithfulness** | 答案是否有检索内容支撑 | 答案分解为原子事实，验证每条是否来自上下文 |
-| **Answer Relevancy** | 答案是否回答了问题 | 用 LLM 从答案反推问题，与原问题计算相似度 |
-| **Context Recall** | 检索内容是否覆盖了正确答案 | 与 Ground Truth 对比 |
-| **Context Precision** | 检索内容中有用信息的比例 | 过滤噪声文档的能力 |
+| 指标 | 衡量维度 | 含义 |
+|------|---------|------|
+| Faithfulness | 答案是否被检索上下文支撑 | 防幻觉 |
+| Answer Relevancy | 答案是否真正回答问题 | 防跑题 |
+| Context Recall | 该召回的证据有没有召回到 | 防漏召回 |
+| Context Precision | 检索内容中有用信息比例 | 防噪声 |
+
+理解这几个指标时要分清责任归属：
+
+- **Recall 低**：多半是检索问题
+- **Precision 低**：多半是召回太脏或 rerank 不够
+- **Faithfulness 低**：生成阶段胡编或上下文利用差
+
+---
+
+## RAG、Long Context、GraphRAG 怎么选
+
+| 方案 | 优势 | 劣势 | 适合场景 |
+|------|------|------|---------|
+| Naive/Advanced RAG | 成本可控、可更新、可溯源 | 多跳与全局总结有限 | 大多数企业知识库问答 |
+| Long Context | 省去检索链路、上下文关系保真 | 成本高、窗口仍有限 | 文档数量不大但每篇很长 |
+| GraphRAG | 擅长多跳和全局理解 | 索引复杂、构建成本高 | 研究档案、企业关系网络、复杂知识域 |
+
+选型标准不是谁更先进，而是谁更匹配知识形态：
+
+- 文档本身强结构、实体关系重，GraphRAG 值得做。
+- 文档变化快、更新频繁、问题偏局部事实，Advanced RAG 更实用。
+- 文档量不大但每次都要细读长原文，Long Context 更直接。
+
+---
+
+## 工程实践视角
+
+### 一个更真实的生产 RAG 流程
+
+```mermaid
+flowchart LR
+    A["文档接入"] --> B["清洗/切分/Embedding"]
+    B --> C["向量库 + 倒排索引"]
+    C --> D["Query 改写/路由"]
+    D --> E["召回"]
+    E --> F["Rerank/过滤/压缩"]
+    F --> G["生成 + 引用"]
+    G --> H["离线评估 + 线上反馈"]
+```
+
+### 四个最常见的工程坑
+
+1. **把问题全推给 embedding 模型**  
+   很多失败并不是 embedding 不好，而是切分、query rewrite、rerank 和 prompt 设计一起没做好。
+
+2. **只看最终答案，不看检索中间态**  
+   不拆召回、精排、生成三层指标，就不知道问题出在哪。
+
+3. **引用链路没做干净**  
+   用户问的是"有证据吗"，不是只要一个看起来像答案的段落。
+
+4. **知识更新只做增量入库，不做失效治理**  
+   旧文档过期、版本冲突、规范变化，会让 RAG 在"看似可追溯"的前提下稳定答错。
+
+---
+
+## 常见误区
+
+### 误区 1：RAG 的核心是向量数据库
+
+向量库只是存储和近邻搜索基础设施。真正决定质量的是查询改写、切分、召回融合、rerank、上下文构造和评估闭环。
+
+### 误区 2：GraphRAG 一定比传统 RAG 更强
+
+不一定。GraphRAG 对多跳和全局问题更强，但局部 FAQ 场景可能只会引入更多复杂度和成本。
+
+### 误区 3：chunk overlap 越大越安全
+
+过大 overlap 会显著增加冗余和索引成本，还可能让相似内容在 top-k 中重复出现，浪费上下文窗口。
+
+### 误区 4：只要有引用就说明没幻觉
+
+不对。模型完全可能引用了相关文档，但对文档内容总结错了、拼接错了，甚至借题发挥。
 
 ---
 
 ## 面试延伸
 
 **Q：RAG 和 Long Context 长上下文，两者怎么选？**
-> 长上下文（如 Gemini 1M Token）适合：知识库较小、需要精确引用、文档间关系重要；RAG 适合：知识库超大（几百万文档）、知识频繁更新、需要精确溯源（引用具体文档）、成本敏感（无需每次送入完整文档）。两者并非互斥，Agentic RAG 可以在长上下文窗口中动态检索。
+> 长上下文适合知识库规模不大、文档关系重要、需要精读原文的场景；RAG 适合大规模、频繁更新、需要精确溯源且成本敏感的知识库。两者也可以组合，先检索再把候选长文送进大窗口模型。
 
 **Q：Embedding 模型如何选型？**
-> 中文：BGE 系列（BAAI）、M3E；英文：text-embedding-3-large（OpenAI）、E5-Large；多语言：mE5、BGE-M3。评估时用 MTEB 排行榜，重点看与业务场景最接近的任务类型（检索/分类/聚类）的得分，不要只看总分。
+> 不要只看总榜分数，重点看与业务场景接近的任务子榜。中文场景优先考虑中文检索强项模型，多语言场景再看跨语种表现，最后用自己的 query-doc 对做线下验证。
 
 **Q：Reranker 为什么比向量检索精度更高？**
-> 向量检索用 Bi-Encoder（Query 和文档独立 Encode），效率高但无法捕获 Query 和文档的交互特征。Reranker 用 Cross-Encoder（Query 和文档拼接后一起 Encode），可以精确建模交互，但无法预先计算文档 Embedding，只能对少量候选（Top-100）做精排，不能用于全量检索。
+> 因为向量检索通常用 bi-encoder，query 和文档独立编码，交互建模弱；reranker 用 cross-encoder，把 query 和文档拼一起看，能捕捉细粒度匹配关系，但成本高，只适合精排少量候选。
+
+**Q：什么时候必须上 GraphRAG？**
+> 当你的问题经常需要实体关系、多文档汇总、跨章节因果链分析，而且普通 top-k 检索即使召回很多片段也拼不出完整答案时，GraphRAG 才真正值得投入。
+
+---
+
+## 学完可以做什么
+
+1. 做一个 `BM25 + Vector + Reranker` 的混合检索 demo。
+2. 用同一套知识库对比 Naive RAG 和 GraphRAG 在多跳问题上的差异。
+3. 给自己的 RAG 系统加一套最小可用评估面板：recall、faithfulness、引用命中率。
 
 ---
 
@@ -196,5 +299,5 @@ Community Reports
 | 📺 B站 | [AI知识图谱GraphRAG是怎么回事？](https://www.bilibili.com/video/BV1zoKuzoENM/) | 13万播放，B站最受欢迎的GraphRAG讲解 |
 | 📺 B站 | [面试官：什么场景下必须用GraphRAG？而不是RAG？](https://www.bilibili.com/video/BV1xjNFzgEmR/) | 3.2万播放，场景选型角度讲透两者差异 |
 | 📺 B站 | [15分钟跑通GraphRAG完整流程：从知识图谱构建到问答](https://search.bilibili.com/all?keyword=15%E5%88%86%E9%92%9F%E8%B7%91%E9%80%9AGraphRAG%E5%AE%8C%E6%95%B4%E6%B5%81%E7%A8%8B%EF%BC%9A%E4%BB%8E%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1%E6%9E%84%E5%BB%BA%E5%88%B0%E9%97%AE%E7%AD%94&order=click) | 6959播放，实战演示GraphRAG完整链路 |
-| 📺 B站 | [使用Python构建RAG系统——用代码还原RAG系统的每个细节](https://search.bilibili.com/all?keyword=%E4%BD%BF%E7%94%A8Python%E6%9E%84%E5%BB%BARAG%E7%B3%BB%E7%BB%9F%E2%80%94%E2%80%94%E7%94%A8%E4%BB%A3%E7%A0%81%E8%BF%98%E5%8E%9FRAG%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%AF%8F%E4%B8%AA%E7%BB%86%E8%8A%82&order=click) | 15万播放，代码级还原RAG系统实现 |
-| 📺 B站 | [RAG优化：17种RAG方案，谁才是RAG最佳选择？](https://www.bilibili.com/video/BV1DmzABsEty/) | 1.1万播放，全面对比高级RAG改进方案 |
+| 📺 B站 | [使用Python构建RAG系统——用代码还原RAG系统的每个细节](https://search.bilibili.com/all?keyword=%E4%BD%BF%E7%94%A8Python%E6%9E%84%E5%BB%BARAG%E7%B3%BB%E7%BB%9F%E2%80%94%E2%80%94%E7%94%A8%E4%BB%A3%E7%A0%81%E8%BF%98%E5%8E%9FRAG%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%AF%8F%E4%B8%AA%E7%BB%86%E8%8A%82&order=click) | 15万播放，代码级还原 RAG 系统实现 |
+| 📺 B站 | [RAG优化：17种RAG方案，谁才是RAG最佳选择？](https://www.bilibili.com/video/BV1DmzABsEty/) | 1.1万播放，全面对比高级 RAG 改进方案 |
