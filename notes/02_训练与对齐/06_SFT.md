@@ -1,4 +1,4 @@
-# SFT 有监督微调
+﻿# SFT 有监督微调
 
 ## 面试高频考点
 - SFT 的数据格式是什么？为什么只对 Assistant 部分计算 loss？
@@ -242,6 +242,6 @@ Elimination：过滤失败/低质演化结果
 
 | 平台 | 标题 | 说明 |
 |------|------|------|
-| 📺 B站 | [大模型微调看这个视频就够了 SFT NEFTune](https://www.bilibili.com/video/BV1Cf421p71Q/) | 5.7万播放，SFT全流程+NEFTune噪声增强技巧 |
-| 📺 B站 | [20分钟带你快速弄懂SFT、RLHF、DPO](https://www.bilibili.com/video/BV1yMNteMEYv/) | 从定义到适用边界全流程解析 |
-| 📺 B站 | [SFT一行一行代码实现并跑通（动手学大模型12.1）](https://www.bilibili.com/video/BV1JZHzerEb1/) | 代码级实现 SFT，适合动手学习 |
+| 📺 B站 | [大模型微调看这个视频就够了 SFT NEFTune](https://search.bilibili.com/all?keyword=%E5%A4%A7%E6%A8%A1%E5%9E%8B%E5%BE%AE%E8%B0%83%E7%9C%8B%E8%BF%99%E4%B8%AA%E8%A7%86%E9%A2%91%E5%B0%B1%E5%A4%9F%E4%BA%86%20SFT%20NEFTune&order=click) | 5.7万播放，SFT全流程+NEFTune噪声增强技巧 |
+| 📺 B站 | [20分钟带你快速弄懂SFT、RLHF、DPO](https://search.bilibili.com/all?keyword=20%E5%88%86%E9%92%9F%E5%B8%A6%E4%BD%A0%E5%BF%AB%E9%80%9F%E5%BC%84%E6%87%82SFT%E3%80%81RLHF%E3%80%81DPO&order=click) | 从定义到适用边界全流程解析 |
+| 📺 B站 | [SFT一行一行代码实现并跑通（动手学大模型12.1）](https://search.bilibili.com/all?keyword=SFT%E4%B8%80%E8%A1%8C%E4%B8%80%E8%A1%8C%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0%E5%B9%B6%E8%B7%91%E9%80%9A%EF%BC%88%E5%8A%A8%E6%89%8B%E5%AD%A6%E5%A4%A7%E6%A8%A1%E5%9E%8B12.1%EF%BC%89&order=click) | 代码级实现 SFT，适合动手学习 |

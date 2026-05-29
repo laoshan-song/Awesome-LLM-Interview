@@ -1,4 +1,4 @@
-# Agent 框架生态与 MCP 协议（2025）
+﻿# Agent 框架生态与 MCP 协议（2025）
 
 ## 面试高频考点
 - LangGraph 和 LangChain 的核心区别是什么？什么时候用图状态机？
@@ -295,8 +295,8 @@ if __name__ == "__main__":
 
 | 平台 | 标题 | 说明 |
 |------|------|------|
-| 📺 B站 | [挑战19分钟搞定LangGraph快速入门与原理剖析](https://www.bilibili.com/video/BV1sC411w7f5/) | 2万播放，LangGraph核心概念快速上手 |
-| 📺 B站 | [【吴恩达】LangChain+LangGraph大模型教程（官方授权汉化）](https://www.bilibili.com/video/BV1Vr421k7oK/) | 8万播放，吴恩达课程，权威入门首选 |
-| 📺 B站 | [面试官问：LangChain和LangGraph分别适合什么场景？](https://www.bilibili.com/video/BV1AT421w7Pt/) | 1.2万播放，面试向选型对比 |
-| 📺 B站 | [LangGraph接入MCP工具：为什么需要？如何接入？](https://www.bilibili.com/video/BV1sM411H7qZ/) | 1.2万播放，MCP与LangGraph集成实战 |
-| 📺 B站 | [90分钟手撸企业级Agent多智能体（LangGraph+MCP+RAG）](https://www.bilibili.com/video/BV1jw4m1i7sm/) | 3.7万播放，从0到1的多智能体实战 |
+| 📺 B站 | [挑战19分钟搞定LangGraph快速入门与原理剖析](https://search.bilibili.com/all?keyword=%E6%8C%91%E6%88%9819%E5%88%86%E9%92%9F%E6%90%9E%E5%AE%9ALangGraph%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8%E4%B8%8E%E5%8E%9F%E7%90%86%E5%89%96%E6%9E%90&order=click) | 2万播放，LangGraph核心概念快速上手 |
+| 📺 B站 | [【吴恩达】LangChain+LangGraph大模型教程（官方授权汉化）](https://search.bilibili.com/all?keyword=%E3%80%90%E5%90%B4%E6%81%A9%E8%BE%BE%E3%80%91LangChain%2BLangGraph%E5%A4%A7%E6%A8%A1%E5%9E%8B%E6%95%99%E7%A8%8B%EF%BC%88%E5%AE%98%E6%96%B9%E6%8E%88%E6%9D%83%E6%B1%89%E5%8C%96%EF%BC%89&order=click) | 8万播放，吴恩达课程，权威入门首选 |
+| 📺 B站 | [面试官问：LangChain和LangGraph分别适合什么场景？](https://search.bilibili.com/all?keyword=%E9%9D%A2%E8%AF%95%E5%AE%98%E9%97%AE%EF%BC%9ALangChain%E5%92%8CLangGraph%E5%88%86%E5%88%AB%E9%80%82%E5%90%88%E4%BB%80%E4%B9%88%E5%9C%BA%E6%99%AF%EF%BC%9F&order=click) | 1.2万播放，面试向选型对比 |
+| 📺 B站 | [LangGraph接入MCP工具：为什么需要？如何接入？](https://search.bilibili.com/all?keyword=LangGraph%E6%8E%A5%E5%85%A5MCP%E5%B7%A5%E5%85%B7%EF%BC%9A%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81%EF%BC%9F%E5%A6%82%E4%BD%95%E6%8E%A5%E5%85%A5%EF%BC%9F&order=click) | 1.2万播放，MCP与LangGraph集成实战 |
+| 📺 B站 | [90分钟手撸企业级Agent多智能体（LangGraph+MCP+RAG）](https://search.bilibili.com/all?keyword=90%E5%88%86%E9%92%9F%E6%89%8B%E6%92%B8%E4%BC%81%E4%B8%9A%E7%BA%A7Agent%E5%A4%9A%E6%99%BA%E8%83%BD%E4%BD%93%EF%BC%88LangGraph%2BMCP%2BRAG%EF%BC%89&order=click) | 3.7万播放，从0到1的多智能体实战 |

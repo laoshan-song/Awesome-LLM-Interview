@@ -1,4 +1,4 @@
-# GraphRAG 与高级 RAG
+﻿# GraphRAG 与高级 RAG
 
 ## 面试高频考点
 - Naive RAG 的主要缺陷是什么？Advanced RAG 如何改进？
@@ -185,8 +185,8 @@ Community Reports
 
 | 平台 | 标题 | 说明 |
 |------|------|------|
-| 📺 B站 | [AI知识图谱GraphRAG是怎么回事？](https://www.bilibili.com/video/BV1Vf421X72h/) | 13万播放，B站最受欢迎的GraphRAG讲解 |
-| 📺 B站 | [面试官：什么场景下必须用GraphRAG？而不是RAG？](https://www.bilibili.com/video/BV1vT421k7z9/) | 3.2万播放，场景选型角度讲透两者差异 |
-| 📺 B站 | [15分钟跑通GraphRAG完整流程：从知识图谱构建到问答](https://www.bilibili.com/video/BV1Hm421x7ma/) | 6959播放，实战演示GraphRAG完整链路 |
-| 📺 B站 | [使用Python构建RAG系统——用代码还原RAG系统的每个细节](https://www.bilibili.com/video/BV1sb421C7VD/) | 15万播放，代码级还原RAG系统实现 |
-| 📺 B站 | [RAG优化：17种RAG方案，谁才是RAG最佳选择？](https://www.bilibili.com/video/BV1jT421q7qf/) | 1.1万播放，全面对比高级RAG改进方案 |
+| 📺 B站 | [AI知识图谱GraphRAG是怎么回事？](https://search.bilibili.com/all?keyword=AI%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1GraphRAG%E6%98%AF%E6%80%8E%E4%B9%88%E5%9B%9E%E4%BA%8B%EF%BC%9F&order=click) | 13万播放，B站最受欢迎的GraphRAG讲解 |
+| 📺 B站 | [面试官：什么场景下必须用GraphRAG？而不是RAG？](https://search.bilibili.com/all?keyword=%E9%9D%A2%E8%AF%95%E5%AE%98%EF%BC%9A%E4%BB%80%E4%B9%88%E5%9C%BA%E6%99%AF%E4%B8%8B%E5%BF%85%E9%A1%BB%E7%94%A8GraphRAG%EF%BC%9F%E8%80%8C%E4%B8%8D%E6%98%AFRAG%EF%BC%9F&order=click) | 3.2万播放，场景选型角度讲透两者差异 |
+| 📺 B站 | [15分钟跑通GraphRAG完整流程：从知识图谱构建到问答](https://search.bilibili.com/all?keyword=15%E5%88%86%E9%92%9F%E8%B7%91%E9%80%9AGraphRAG%E5%AE%8C%E6%95%B4%E6%B5%81%E7%A8%8B%EF%BC%9A%E4%BB%8E%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1%E6%9E%84%E5%BB%BA%E5%88%B0%E9%97%AE%E7%AD%94&order=click) | 6959播放，实战演示GraphRAG完整链路 |
+| 📺 B站 | [使用Python构建RAG系统——用代码还原RAG系统的每个细节](https://search.bilibili.com/all?keyword=%E4%BD%BF%E7%94%A8Python%E6%9E%84%E5%BB%BARAG%E7%B3%BB%E7%BB%9F%E2%80%94%E2%80%94%E7%94%A8%E4%BB%A3%E7%A0%81%E8%BF%98%E5%8E%9FRAG%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%AF%8F%E4%B8%AA%E7%BB%86%E8%8A%82&order=click) | 15万播放，代码级还原RAG系统实现 |
+| 📺 B站 | [RAG优化：17种RAG方案，谁才是RAG最佳选择？](https://search.bilibili.com/all?keyword=RAG%E4%BC%98%E5%8C%96%EF%BC%9A17%E7%A7%8DRAG%E6%96%B9%E6%A1%88%EF%BC%8C%E8%B0%81%E6%89%8D%E6%98%AFRAG%E6%9C%80%E4%BD%B3%E9%80%89%E6%8B%A9%EF%BC%9F&order=click) | 1.1万播放，全面对比高级RAG改进方案 |

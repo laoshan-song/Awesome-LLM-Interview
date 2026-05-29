@@ -1,4 +1,4 @@
-# LLM 评估框架（lm-evaluation-harness / Lighteval / OpenCompass）
+﻿# LLM 评估框架（lm-evaluation-harness / Lighteval / OpenCompass）
 
 ## 面试高频考点
 - lm-evaluation-harness 是什么？如何在自己的模型上跑评测？
@@ -209,5 +209,5 @@ def min_k_prob(model, text, k=0.2):
 
 | 平台 | 标题 | 说明 |
 |------|------|------|
-| 📺 B站 | [浙江大学《大模型原理与技术》6-2 RAG知识检索](https://www.bilibili.com/video/BV1fT421q7vk/) | 1.3万播放，学术视角的评估与检索讲解 |
-| 📺 B站 | [大模型SFT/RAG调优效率翻倍！自动生成测试集+自动化评估](https://www.bilibili.com/video/BV1rT421q7xD/) | 1.4万播放，评估工程化实践 |
+| 📺 B站 | [浙江大学《大模型原理与技术》6-2 RAG知识检索](https://search.bilibili.com/all?keyword=%E6%B5%99%E6%B1%9F%E5%A4%A7%E5%AD%A6%E3%80%8A%E5%A4%A7%E6%A8%A1%E5%9E%8B%E5%8E%9F%E7%90%86%E4%B8%8E%E6%8A%80%E6%9C%AF%E3%80%8B6-2%20RAG%E7%9F%A5%E8%AF%86%E6%A3%80%E7%B4%A2&order=click) | 1.3万播放，学术视角的评估与检索讲解 |
+| 📺 B站 | [大模型SFT/RAG调优效率翻倍！自动生成测试集+自动化评估](https://search.bilibili.com/all?keyword=%E5%A4%A7%E6%A8%A1%E5%9E%8BSFT%2FRAG%E8%B0%83%E4%BC%98%E6%95%88%E7%8E%87%E7%BF%BB%E5%80%8D%EF%BC%81%E8%87%AA%E5%8A%A8%E7%94%9F%E6%88%90%E6%B5%8B%E8%AF%95%E9%9B%86%2B%E8%87%AA%E5%8A%A8%E5%8C%96%E8%AF%84%E4%BC%B0&order=click) | 1.4万播放，评估工程化实践 |
