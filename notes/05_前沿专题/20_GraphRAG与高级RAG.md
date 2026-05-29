@@ -181,6 +181,14 @@ Community Reports
 | HippoRAG: Neurobiologically Inspired Long-Term Memory (2024) | [arxiv.org/abs/2405.14831](https://arxiv.org/abs/2405.14831) |
 | HippoRAG 2: From RAG to Memory (2025) | [arxiv.org/abs/2505.03842](https://arxiv.org/abs/2505.03842) |
 
+## 官方仓库
+
+| 项目 | 链接 |
+|------|------|
+| LightRAG GitHub | [github.com/HKUDS/LightRAG](https://github.com/HKUDS/LightRAG) |
+| Self-RAG GitHub | [github.com/AkariAsai/self-rag](https://github.com/AkariAsai/self-rag) |
+| RAGAS GitHub | [github.com/vibrantlabs-ai/ragas](https://github.com/vibrantlabs-ai/ragas) |
+
 ## 延伸阅读与视频
 
 | 平台 | 标题 | 说明 |

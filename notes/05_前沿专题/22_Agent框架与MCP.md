@@ -159,7 +159,7 @@ agent = Agent(
 
 **MCP** 是 Anthropic 主导开发（2024年11月发布）的开放标准，定义了 AI 模型与外部工具/数据源的通信规范。2025 年已被 OpenAI、Google、Microsoft、Cursor 等广泛采纳。
 
-**规范仓库**：[github.com/modelcontextprotocol/specification](https://github.com/modelcontextprotocol/specification)
+**规范仓库**：[github.com/modelcontextprotocol/modelcontextprotocol](https://github.com/modelcontextprotocol/modelcontextprotocol)
 
 ### 为什么叫"AI 的 USB-C"？
 
@@ -282,7 +282,7 @@ if __name__ == "__main__":
 | LangGraph GitHub | [github.com/langchain-ai/langgraph](https://github.com/langchain-ai/langgraph) |
 | AutoGen GitHub | [github.com/microsoft/autogen](https://github.com/microsoft/autogen) |
 | OpenAI Agents SDK | [github.com/openai/openai-agents-python](https://github.com/openai/openai-agents-python) |
-| MCP 规范 GitHub | [github.com/modelcontextprotocol/specification](https://github.com/modelcontextprotocol/specification) |
+| MCP 规范 GitHub | [github.com/modelcontextprotocol/modelcontextprotocol](https://github.com/modelcontextprotocol/modelcontextprotocol) |
 | MCP 官网 | [modelcontextprotocol.io](https://modelcontextprotocol.io) |
 | ReAct 原始论文 (Yao et al., 2022) | [arxiv.org/abs/2210.03629](https://arxiv.org/abs/2210.03629) |
 | Magentic-One 论文 (2024) | [arxiv.org/abs/2411.04468](https://arxiv.org/abs/2411.04468) |
