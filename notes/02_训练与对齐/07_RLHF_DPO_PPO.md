@@ -1,254 +1,281 @@
 # RLHF / DPO / PPO 对比
 
 ## 面试高频考点
+
 - RLHF 的完整流程是什么？
-- DPO 和 RLHF 的区别？
-- PPO 为什么训练不稳定？四个模型各做什么？
-- KL 惩罚的作用？β 怎么设？
-- GRPO 相比 PPO 的改进？
+- PPO 在 LLM 对齐里为什么难训？
+- DPO 为什么能绕开 RM 和 PPO？
+- KL 惩罚项起什么作用？为什么不能去掉？
+- GRPO 相比 PPO 的主要改动是什么？
 
 ---
 
-## 一、RLHF 完整流程
+## RLHF 在解决什么问题
 
-RLHF（Reinforcement Learning from Human Feedback）是 InstructGPT / ChatGPT 背后的对齐技术，分为三个阶段：
+SFT 让模型学会“按指令回答”，但不一定学会在多个可行回答中选择更符合人类偏好的那个。
 
-### Stage 1: SFT（Supervised Fine-Tuning）
+RLHF 解决的是：
 
-```
-预训练模型 → 用高质量人工编写的 (指令, 回复) 对做微调 → SFT 模型
-
-目的：让模型学会"遵循指令"的基本格式
-数据量：通常 10K-100K 条高质量标注
-```
-
-### Stage 2: RM（Reward Model）训练
-
-```
-对同一个 prompt，SFT 模型生成多个回复（如 K=4）
-标注人员对这些回复排序（y₁ > y₂ > y₃ > y₄）
-
-用 Bradley-Terry 模型训练 RM：
-  P(y_w > y_l | x) = σ(r(x, y_w) - r(x, y_l))  ← 好回复比差回复得分高的概率
-
-  Loss = -E[log σ(r(x, y_w) - r(x, y_l))]
-  直觉：让好回复和差回复的得分差距尽可能大
-
-RM 通常是去掉最后 LM head 的 SFT 模型 + 一个标量输出头
-```
-
-### Stage 3: PPO 强化学习
-
-```
-优化目标：
-  max E[r(x, y) - β · KL(π_θ(y|x) || π_ref(y|x))]
-
-  第一项：奖励模型打分（越高越好）
-  第二项：KL 惩罚（生成分布不能偏离 SFT 参考模型太远）
-
-四个模型同时存在于显存中（这是 RLHF 显存开销大的根本原因）：
-
-┌────────────────────────────────────────────────────┐
-│  Actor (策略模型)     ← 被训练，初始化自 SFT          │
-│  Critic (价值模型)    ← 被训练，估计状态价值 V(s)      │
-│  Reference (参考)     ← 冻结，SFT 模型，计算 KL 惩罚   │
-│  Reward Model (奖励)  ← 冻结，为每个回复打分           │
-└────────────────────────────────────────────────────┘
-```
+- 更有帮助
+- 更安全
+- 更符合偏好
+- 更自然的拒答与表达
 
 ---
 
-## 二、PPO 的核心机制
+## RLHF 完整流程
 
-### 为什么需要 PPO（而不是普通的策略梯度）？
-
-在标准 RL 中，策略梯度更新可能导致策略突变（一次更新后策略"跳"太远），训练崩溃。PPO 的核心是 **Trust Region（信任域）**：限制每次更新的幅度。
-
-### PPO-Clip 的核心公式
-
-```
-PPO-Clip 目标（简化版）：
-
-L = min(
-    r_t(θ) · A_t,                        ← 正常策略梯度
-    clip(r_t(θ), 1-ε, 1+ε) · A_t        ← 裁剪版本
-)
-
-其中 r_t(θ) = π_θ(a_t|s_t) / π_old(a_t|s_t)   ← 新旧策略概率比
-      A_t = 优势函数（实际奖励 - 基线）
-
-如果概率比超出 [1-ε, 1+ε] 范围，梯度被裁剪 → 防止一次更新过大
+```mermaid
+flowchart TD
+    A["预训练模型"] --> B["SFT"]
+    B --> C["采样多个回答"]
+    C --> D["人工偏好标注"]
+    D --> E["训练 Reward Model"]
+    E --> F["PPO / RL 优化"]
 ```
 
-### PPO 在 LLM 中的特殊性
+### Stage 1: SFT
 
-```
-标准 RL：每个 step 都有奖励
-LLM RLHF：整个回复结束后才有一个奖励（稀疏奖励）
+先用高质量 instruction 数据把模型变成可用助手。
 
-解决方案：
-  - 用 Critic（价值网络）估计每个 token 的"未来累积奖励"
-  - GAE (Generalized Advantage Estimation) 方法计算每个 token 的优势值
-  - 在 token 级别做 PPO 更新（每个 token 是一个"动作"）
+### Stage 2: Reward Model
 
-实现细节：
-  - 对同一 prompt 生成多条回复（如 4 条），构成 mini-batch
-  - 用这些回复更新 PPO（Experience Buffer）
-```
+对同一个 prompt 的多个候选回答做人类排序，让 RM 学会：
+
+- 哪种回答更好
+- 哪种更差
+
+### Stage 3: PPO
+
+把 RM 作为奖励信号，用强化学习更新模型策略。
 
 ---
 
-## 三、DPO（Direct Preference Optimization）
+## PPO 在 RLHF 中做什么
 
-### 核心思想：绕过 RM，直接优化
+PPO 不是为了“让模型更聪明”，而是为了**稳住策略更新**。
 
-DPO 的数学洞察：RLHF 的最优策略有**解析解**：
+如果直接做激进的策略梯度更新，模型很容易：
 
-```
-RLHF 的最优策略 π* 满足：
+- 一步偏太远
+- 奖励劫持
+- 输出风格崩掉
 
-π*(y|x) ∝ π_ref(y|x) · exp(r(x,y) / β)
+### 一个关键目标
 
-反解出奖励函数：
-r(x,y) = β · log(π*(y|x) / π_ref(y|x)) + β · log Z(x)
-```
-
-将这个表达式代入 Bradley-Terry 模型的损失函数，Z(x) 项会消掉，得到：
-
-```
-L_DPO = -E[log σ(
-    β · log(π_θ(y_w|x) / π_ref(y_w|x))   ← 好回复的"隐式奖励"
-  - β · log(π_θ(y_l|x) / π_ref(y_l|x))   ← 差回复的"隐式奖励"
-)]
-
-直觉：
-  - π_θ(y_w|x) 越大越好 → 好回复的概率被提升
-  - π_θ(y_l|x) 越小越好 → 差回复的概率被压制
-  - π_ref 作为"锚点" → 防止偏离太远（等同于 KL 惩罚的效果）
-  - β 控制偏离参考模型的程度
+```text
+max E[ reward(x, y) - β * KL(π || π_ref) ]
 ```
 
-### DPO 的数学推导（简化）
+含义：
 
-```
-Step 1: 写出 RLHF 的优化目标（带 KL 惩罚）
+- 第一项：让奖励更高
+- 第二项：别离参考模型太远
 
-  max_π E_{y~π}[r(x,y)] - β · KL(π || π_ref)
+### KL 惩罚为什么重要
 
-Step 2: 这个约束优化问题有闭合解
-
-  π*(y|x) = π_ref(y|x) · exp(r(x,y)/β) / Z(x)
-  其中 Z(x) = Σ_y π_ref(y|x) · exp(r(x,y)/β)
-
-Step 3: 反解出 r(x,y)
-
-  r(x,y) = β · log(π*(y|x) / π_ref(y|x)) + β · log Z(x)
-
-Step 4: 将 r 代入 Bradley-Terry 损失
-
-  L = -E[log σ(r(x, y_w) - r(x, y_l))]
-  代入 r 的表达式，log Z(x) 相消
-  → 得到 DPO 损失
-```
-
-### DPO vs RLHF
-
-| 维度 | PPO/RLHF | DPO |
-|------|---------|-----|
-| 需要 RM | 是（需额外训练） | **否**（隐式 RM 在损失函数中） |
-| 模型数量 | 4 个（Actor + Critic + Ref + RM） | **2 个**（策略 + 参考） |
-| 训练方式 | 在线 RL（需要持续采样新数据） | **离线**有监督学习 |
-| 训练稳定性 | 差（RL 天然不稳定） | **好**（交叉熵 + 梯度下降） |
-| 实现复杂度 | 高 | **低** |
-| 在线数据利用 | ✅ 可以 | ❌ 无法利用（只训练一次） |
-| 迭代改进 | ✅ 可以 | 需重复收集偏好数据 |
-| 前沿模型 | ChatGPT, Claude 早期 | Llama 3, Qwen 对齐 |
+如果没有 KL，模型会专门钻 Reward Model 的漏洞，而不是学会真正更好的回答。
 
 ---
 
-## 四、其他对齐方法
+## PPO 为什么难训
 
-### SimPO（Simple Preference Optimization）
+### 1. 奖励稀疏
 
-```
-比 DPO 更简化的方案：
-  - 去掉参考模型 π_ref（减少推理时的模型数量）
-  - 用生成长度做归一化：reward = log π(y|x) / |y|
-  - 加入 Margin：要求好回复的归一化概率 > 差回复 + γ
+常常整段回答最后只得到一个总奖励，credit assignment 很难。
 
-优点：不需要参考模型，训练和推理都更快
-```
+### 2. 显存和系统开销大
 
-### ORPO（Odds Ratio Preference Optimization）
+典型 RLHF 里同时要维护多套角色：
 
-```
-一步完成 SFT + 对齐：
+- Actor
+- Critic
+- Reference
+- Reward Model
 
-  L_ORPO = L_SFT + λ · L_OR
+### 3. 超参敏感
 
-  其中 L_OR 是 Odds Ratio 损失，同时优化"生成好回复"和"抑制差回复"
+- learning rate
+- KL 系数
+- clip range
+- batch size
 
-优点：不需要单独的 SFT 阶段，一步训练完成对齐
-```
+任何一个没调稳，训练都可能崩。
 
-### KTO（Kahneman-Tversky Optimization）
+### 4. Reward Hacking
 
-```
-不需要成对偏好数据（只需单条回复的好/差标签）：
-
-  "这条回复好" → 提升概率
-  "这条回复差" → 降低概率
-
-优点：数据标注更简单（不需要 pairwise 比较）
-适合：从用户点赞/踩等隐式反馈中学习
-```
+模型不是在学“更好”，而是在学“怎样骗高分”。
 
 ---
 
-## 五、Reward Hacking 与对策
+## DPO 的核心思想
 
-### Reward Hacking 的典型表现
+DPO 的洞见是：
 
-```
-RLHF 训练中常见的"Cheating"模式：
+> 既然我们有 chosen / rejected 偏好对，就不一定非要先训 RM 再跑 PPO。
 
-① 长度偏见：RM 偏好长回复 → 模型学会"水字数"
-② 礼貌偏见：RM 偏好礼貌语气 → 回复全是"当然！很棒的问题！"
-③ 格式偏见：RM 偏好列表格式 → 所有回复都是 bullet points
-④ 知识回避：模型拒绝回答难的题（RM 给"安全拒答"打高分）
-⑤ 重复短语：RM 给某些高频短语打高分 → 模型频繁重复
-```
+它直接让模型提高 chosen 的相对概率、压低 rejected 的相对概率。
 
-### 检测与缓解
+### 直观理解
 
-| 阶段 | 方法 |
+对于同一个 prompt：
+
+- 好回答概率提高
+- 差回答概率降低
+- 同时相对参考模型保持约束
+
+这就把复杂 RL 问题变成了更像监督学习的问题。
+
+---
+
+## DPO vs RLHF
+
+| 维度 | PPO / RLHF | DPO |
+|------|------------|-----|
+| 需要 RM | 是 | 否 |
+| 需要 Critic | 是 | 否 |
+| 训练方式 | 在线 RL | 离线偏好学习 |
+| 实现复杂度 | 高 | 低 |
+| 稳定性 | 更脆弱 | 更稳 |
+| 可探索新策略 | 强 | 弱 |
+
+### 什么时候 DPO 特别合适
+
+- 已经有偏好对数据
+- 想快速、稳定地做对齐
+- 团队不想维护复杂 RL 栈
+
+### 什么时候 RL 仍有价值
+
+- 在线交互反馈
+- 多步决策
+- 工具调用和环境回报
+- 需要真正 exploration 的场景
+
+---
+
+## 其他偏好优化方法
+
+### SimPO
+
+进一步简化 DPO 风格训练目标，减少对参考模型的依赖。
+
+### ORPO
+
+尝试把 SFT 和偏好优化更紧凑地合并。
+
+### KTO
+
+不要求严格的成对偏好数据，更适合从点赞/点踩这类弱反馈中学习。
+
+这些方法本质上都在做一件事：
+
+> 用更便宜、更稳的方式替代传统 RLHF 的重链路。
+
+---
+
+## Reward Hacking
+
+### 典型表现
+
+- 回答特别长但没信息量
+- 过度礼貌、模板化
+- 为了安全分数动不动拒答
+- 专门迎合 judge 偏好而不是真正解决问题
+
+### 缓解思路
+
+| 层面 | 方法 |
 |------|------|
-| **数据** | 确保 RM 训练数据中好回复和差回复长度接近；加入反偏见的样本 |
-| **RM 训练** | RM 集成（取多个 RM 的最低分）；RM 模型架构加入长度惩罚 |
-| **PPO 训练** | KL 惩罚（核心防线）；在线标注（定期让人评估最新生成，补充进训练集） |
-| **方法选择** | GRPO 用规则奖励（数学直接验证答案）→ 彻底消除 RM hacking |
+| 数据 | 减少长度和格式偏差 |
+| RM | 用更稳的标注和更广的覆盖 |
+| PPO | 加 KL、控步长、做在线回补 |
+| 替代方案 | 对可验证任务用规则奖励或 GRPO |
 
 ---
 
-## 六、面试延伸
+## GRPO 为什么值得提
 
-**Q：为什么 RLHF 需要 KL 惩罚？β 设多少合适？**
+GRPO 是推理强化路线里很重要的一步，核心变化是：
 
-> 没有 KL 惩罚，策略模型会"奖励黑客"——找到让 RM 打高分但实际质量差的捷径（如输出超长文本、重复正面短语等）。KL 惩罚将模型"锚定"在 SFT 参考模型附近，保证生成质量不会剧烈恶化。
->
-> β 通常设为 0.01-0.5。β 太大：模型几乎不更新，学习不到偏好。β 太小：约束失效。实践中常通过监控 KL 散度来动态调整 β——如果 KL 增长过快，增大 β；如果 KL 几乎不变，减小 β。
+- 不单独训练 Critic
+- 对同题多样本做组内相对比较
 
-**Q：DPO 的局限性是什么？**
+这带来两个好处：
 
-> ① 离线训练：只能学习标注时的偏好分布，无法探索新策略空间（on-policy exploration）；② 分布偏移：训练时用的是 SFT 模型生成的偏好数据，但 DPO 训练过程中模型本身也在变，数据分布和当前策略不匹配；③ 对偏好数据的噪声更敏感（因为没有 RM 的平滑作用）。
+1. 显存和训练复杂度下降
+2. 对数学/代码等可验证任务更直接
 
-**Q：为什么 PPO 在 RLHF 中训练不稳定？**
+所以 GRPO 特别适合：
 
-> ① 稀疏奖励（整个回复只有一个分数），价值估计的方差大；② 四个模型同时在显存中，显存压力大 → 只能用小 batch → 梯度噪声大；③ 策略和 RM 的非平稳交互（RM 的评分空间在 PPO 过程中被探索到了训练未见过的区域）；④ 超参敏感（KL 系数、学习率、clip 范围等任何一个不对都可能导致崩溃）。
+- 有客观答案
+- 可规则验证
+- 长推理链优化
 
-**Q：GRPO 相比 PPO 有什么改进？**
+---
 
-> GRPO（DeepSeek-R1 使用）去掉了 Critic 网络（不需要价值函数估计），对同一 prompt 采样 G 条输出，用组内相对奖励替代绝对奖励：Advantage = (r_i - mean(r_1...r_G)) / std(r_1...r_G)。这省去了训练 Critic 的显存和时间，且对于数学/代码等可自动验证的任务尤为有效（直接用规则判断答案对错，不需要 RM）。详见 [10_前沿对齐技术.md](./10_前沿对齐技术.md)。
+## 工程实践视角
+
+### 一个实际选择顺序
+
+1. 先做强 SFT
+2. 有偏好数据时优先试 DPO
+3. 只有在确实需要在线反馈或环境奖励时，再上 PPO / RL 路线
+
+### 为什么很多团队停在 DPO
+
+因为它已经能解决很大一部分：
+
+- 语气偏好
+- 安全边界
+- 格式偏好
+- 帮助性排序
+
+而 PPO 的系统和调参成本通常高很多。
+
+---
+
+## 常见误区
+
+### 误区 1：RLHF 一定比 DPO 更先进
+
+不对。RLHF 更通用，但不代表对所有场景都更划算。
+
+### 误区 2：DPO 完全等价于 RLHF
+
+也不对。DPO 能替代很多偏好学习场景，但对真正需要在线探索的任务并不等价。
+
+### 误区 3：KL 只是一个小正则
+
+在 RLHF 里它非常关键，很多时候是防止训练失控的主保险。
+
+### 误区 4：奖励模型高分就说明回答质量高
+
+不一定。高分也可能只是更会迎合奖励模型。
+
+---
+
+## 面试延伸
+
+**Q：为什么 RLHF 需要 KL 惩罚？**
+> 因为如果只追逐奖励，模型会专门钻 Reward Model 的漏洞。KL 惩罚把模型锚定在参考策略附近，避免一步偏得太远，是训练稳定性和抗 reward hacking 的关键。
+
+**Q：DPO 的最大优势是什么？**
+> 它把复杂的 RLHF 链路压缩成更像监督学习的训练问题，不需要单独的 RM 和 PPO，训练更稳、工程成本更低。
+
+**Q：PPO 为什么在 LLM 上特别难？**
+> 因为奖励稀疏、序列长、显存开销大、超参敏感，而且 RM 和策略之间会出现非平稳相互作用。
+
+**Q：GRPO 和 PPO 的主要区别是什么？**
+> PPO 依赖 Critic 估计 value；GRPO 用同题多样本的组内相对奖励代替显式 Critic，更省显存，也更适合可验证推理任务。
+
+---
+
+## 学完可以做什么
+
+1. 画一张 `SFT -> RM -> PPO` 与 `SFT -> DPO` 的链路对照图。
+2. 自己构造一小批 chosen/rejected 偏好对，做一个最小 DPO 实验。
+3. 比较“更长、更礼貌”和“更准确、更简洁”两种偏好标签对模型风格的影响。
 
 ---
 
@@ -256,17 +283,17 @@ RLHF 训练中常见的"Cheating"模式：
 
 | 论文 | 链接 |
 |------|------|
-| Training Language Models to Follow Instructions (InstructGPT / RLHF) (Ouyang et al., NeurIPS 2022) | [arxiv.org/abs/2203.02155](https://arxiv.org/abs/2203.02155) |
-| Proximal Policy Optimization Algorithms (Schulman et al., 2017) | [arxiv.org/abs/1707.06347](https://arxiv.org/abs/1707.06347) |
-| Direct Preference Optimization (Rafailov et al., NeurIPS 2023) | [arxiv.org/abs/2305.18290](https://arxiv.org/abs/2305.18290) |
-| SimPO: Simple Preference Optimization (Meng et al., ICML 2024) | [arxiv.org/abs/2405.14734](https://arxiv.org/abs/2405.14734) |
-| ORPO: Monolithic Preference Optimization (Hong et al., 2024) | [arxiv.org/abs/2403.07691](https://arxiv.org/abs/2403.07691) |
-| KTO: Model Alignment as Prospect Theoretic Optimization (Ethayarajh et al., ICML 2024) | [arxiv.org/abs/2402.01306](https://arxiv.org/abs/2402.01306) |
-| DeepSeekMath: Pushing the Limits of Mathematical Reasoning (GRPO) (Shao et al., 2024) | [arxiv.org/abs/2402.03300](https://arxiv.org/abs/2402.03300) |
+| InstructGPT / RLHF (Ouyang et al., 2022) | [arxiv.org/abs/2203.02155](https://arxiv.org/abs/2203.02155) |
+| PPO (Schulman et al., 2017) | [arxiv.org/abs/1707.06347](https://arxiv.org/abs/1707.06347) |
+| DPO (Rafailov et al., 2023) | [arxiv.org/abs/2305.18290](https://arxiv.org/abs/2305.18290) |
+| SimPO (Meng et al., 2024) | [arxiv.org/abs/2405.14734](https://arxiv.org/abs/2405.14734) |
+| ORPO (Hong et al., 2024) | [arxiv.org/abs/2403.07691](https://arxiv.org/abs/2403.07691) |
+| KTO (Ethayarajh et al., 2024) | [arxiv.org/abs/2402.01306](https://arxiv.org/abs/2402.01306) |
+| DeepSeekMath / GRPO (Shao et al., 2024) | [arxiv.org/abs/2402.03300](https://arxiv.org/abs/2402.03300) |
 
 ## 延伸阅读与视频
 
 | 平台 | 标题 | 说明 |
 |------|------|------|
-| 📺 YouTube | [RLHF Explained (AssemblyAI)](https://www.youtube.com/watch?v=Im6ZwnEOy38) | 完整 RLHF 流程讲解 |
-| 📺 B站 | [跟李沐学AI - InstructGPT 论文精读](https://www.bilibili.com/video/BV1hd4y187CR) | 李沐 InstructGPT 精读 |
+| 📺 YouTube | [RLHF Explained](https://www.youtube.com/watch?v=Im6ZwnEOy38) | 完整流程讲解 |
+| 📺 B站 | [跟李沐学 AI - InstructGPT 论文精读](https://www.bilibili.com/video/BV1hd4y187CR) | 学术视角扎实 |
