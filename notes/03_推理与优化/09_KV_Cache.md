@@ -326,5 +326,5 @@ FlashAttention 本身是 Attention 计算的 IO 优化（减少 HBM 读写），
 
 | 平台 | 标题 | 说明 |
 |------|------|------|
-| 📺 B站 | [vLLM PagedAttention 论文精读](https://search.bilibili.com/all?keyword=vLLM%20PagedAttention%20%E8%AE%BA%E6%96%87%E7%B2%BE%E8%AF%BB&order=click) | 近2小时完整解读 PagedAttention 论文 |
-| 📺 B站 | [怎么加快大模型推理？10分钟学懂vLLM内部原理](https://search.bilibili.com/all?keyword=%E6%80%8E%E4%B9%88%E5%8A%A0%E5%BF%AB%E5%A4%A7%E6%A8%A1%E5%9E%8B%E6%8E%A8%E7%90%86%EF%BC%9F10%E5%88%86%E9%92%9F%E5%AD%A6%E6%87%82vLLM%E5%86%85%E9%83%A8%E5%8E%9F%E7%90%86&order=click) | 12.4万播放，最受欢迎的 vLLM+PagedAttention 讲解 |
+| 📺 B站 | [vLLM PagedAttention 论文精读](https://www.bilibili.com/video/BV1GWjjzfE1b/) | 近2小时完整解读 PagedAttention 论文 |
+| 📺 B站 | [怎么加快大模型推理？10分钟学懂vLLM内部原理](https://www.bilibili.com/video/BV1kx4y1x7bu/) | 12.4万播放，最受欢迎的 vLLM+PagedAttention 讲解 |

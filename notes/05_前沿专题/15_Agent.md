@@ -281,6 +281,6 @@ response = openai.chat.completions.create(
 
 | 平台 | 标题 | 说明 |
 |------|------|------|
-| 📺 B站 | [挑战19分钟搞定LangGraph快速入门与原理剖析](https://search.bilibili.com/all?keyword=%E6%8C%91%E6%88%9819%E5%88%86%E9%92%9F%E6%90%9E%E5%AE%9ALangGraph%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8%E4%B8%8E%E5%8E%9F%E7%90%86%E5%89%96%E6%9E%90&order=click) | 2万播放，Agent编排框架快速上手 |
-| 📺 B站 | [90分钟手撸企业级Agent多智能体（LangGraph+MCP+RAG）](https://search.bilibili.com/all?keyword=90%E5%88%86%E9%92%9F%E6%89%8B%E6%92%B8%E4%BC%81%E4%B8%9A%E7%BA%A7Agent%E5%A4%9A%E6%99%BA%E8%83%BD%E4%BD%93%EF%BC%88LangGraph%2BMCP%2BRAG%EF%BC%89&order=click) | 3.7万播放，从0到1的Agent工程实战 |
+| 📺 B站 | [挑战19分钟搞定LangGraph快速入门与原理剖析](https://www.bilibili.com/video/BV1HVFLzfEeS/) | 2万播放，Agent编排框架快速上手 |
+| 📺 B站 | [90分钟手撸企业级Agent多智能体（LangGraph+MCP+RAG）](https://www.bilibili.com/video/BV1Y4LgzzEeU/) | 3.7万播放，从0到1的Agent工程实战 |
 | 📺 B站 | [【吴恩达】LangChain+LangGraph大模型教程（官方授权）](https://search.bilibili.com/all?keyword=%E3%80%90%E5%90%B4%E6%81%A9%E8%BE%BE%E3%80%91LangChain%2BLangGraph%E5%A4%A7%E6%A8%A1%E5%9E%8B%E6%95%99%E7%A8%8B%EF%BC%88%E5%AE%98%E6%96%B9%E6%8E%88%E6%9D%83%EF%BC%89&order=click) | 8万播放，权威Agent开发入门课程 |
