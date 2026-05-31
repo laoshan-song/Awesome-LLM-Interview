@@ -16,6 +16,10 @@
 
 > Transformer 用 attention 让每个 token 动态读取其他 token 的信息，再用 FFN 做非线性变换。
 
+![Attention Is All You Need 原始架构图（官方论文图）](https://upload.wikimedia.org/wikipedia/commons/4/49/Attention_Is_All_You_Need_-_Encoder-decoder_Architecture.png)
+
+> 图源：`Attention Is All You Need` 论文图，Wikimedia Commons 转载页已标注来自原论文并附带授权说明。
+
 ---
 
 ## 整体结构
@@ -214,6 +218,19 @@ Attention 负责“聚合信息”，FFN 负责“重组和变换特征”。
 - 逐 token decode 的串行性
 
 所以后面很多优化技术，其实都在围绕 Transformer 的这些天然成本做文章。
+
+---
+
+## 一分钟回答模板
+
+如果面试官让你快速解释 Transformer，可以按这个顺序讲：
+
+1. 输入 token 先变成 embedding，并注入位置信息
+2. attention 负责让每个 token 动态读取别的 token
+3. FFN 负责在每个位置上做更强的非线性特征变换
+4. 残差和归一化保证深层堆叠还能稳定训练
+
+这样回答比只背 `QKV` 公式更完整。
 
 ---
 

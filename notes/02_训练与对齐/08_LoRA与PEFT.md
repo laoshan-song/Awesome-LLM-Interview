@@ -25,6 +25,10 @@ PEFT（Parameter-Efficient Fine-Tuning）：只训练少量参数，冻结大部
 
 ## 二、LoRA 核心原理
 
+![LoRA 原理论文图：冻结主干并学习低秩更新](https://ar5iv.labs.arxiv.org/html/2106.09685/assets/x1.png)
+
+> 图源：`LoRA: Low-Rank Adaptation of Large Language Models` 论文 HTML 图。
+
 ### 数学基础：低秩假设
 
 LoRA 的核心假设：预训练权重的**更新矩阵 ΔW 具有低秩特性**。
@@ -80,6 +84,16 @@ LoRA Q 投影：
 
 节省 = 16,777,216 / 131,072 ≈ 128 倍（99.2% 参数节省）
 ```
+
+### 面试里怎么把“低秩”讲得更像理解而不是背诵
+
+一个比较好的说法是：
+
+- 预训练模型已经学会了大部分通用表示
+- 下游任务通常不是“重学整套知识”，而是对已有能力做小幅纠偏
+- 所以很多有效更新可以压缩到一个更小的子空间里
+
+这就是 LoRA 为什么常常能用极少参数逼近全量微调效果。
 
 ---
 
@@ -254,6 +268,20 @@ AdaLoRA 方案：
 
 效果：DoRA 的学习模式更接近全量微调，性能优于标准 LoRA
 ```
+
+---
+
+## 工程补充
+
+### LoRA 常见 target modules
+
+实践里最常见的是：
+
+- `q_proj`, `v_proj`：最经典默认配置
+- `q_proj`, `k_proj`, `v_proj`, `o_proj`：想提高表达力时扩展
+- `gate_proj`, `up_proj`, `down_proj`：复杂任务里也会加
+
+面试里如果被问“LoRA 加哪几层”，最好顺手补一句：通常先从 attention 投影层开始，效果不够再扩到 FFN。
 
 ---
 

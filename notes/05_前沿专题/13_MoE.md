@@ -22,6 +22,10 @@
 - **总参数很大**
 - **单次激活参数较少**
 
+![Switch / MoE 路由图](https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/blog/moe/03_switch_layer.png)
+
+> 图源：Hugging Face 官方 MoE 综述文章，所引图片来自 `Switch Transformers` 相关图示。
+
 ```mermaid
 flowchart TD
     A["输入 token"] --> B["Router / Gate"]
@@ -96,6 +100,17 @@ output = Σ g_i * Expert_i(x)
 | 稳定性 | 更稳 | 更敏感 |
 
 所以 MoE 不是“白拿容量”，而是用更复杂的系统工程换参数效率。
+
+---
+
+## 面试里最好主动区分的两个量
+
+- `Total Parameters`：模型总容量
+- `Activated Parameters`：单个 token 真正走到的参数量
+
+MoE 的关键价值就是让这两个数字脱钩。
+
+很多人只会说“MoE 参数大”，但真正有区分度的回答是：MoE 大的是总容量，不是每一步都把所有参数跑一遍。
 
 ---
 
@@ -183,6 +198,16 @@ router 很敏感，超参不稳时容易：
 ### 4. 微调更难
 
 MoE 在 SFT / DPO 时往往比 dense 更敏感，因为数据分布一变，router 行为也可能跟着变。
+
+### 5. Serving 难点
+
+推理侧还要处理：
+
+- token 命中不同专家带来的批处理不规则
+- 专家跨卡放置引入的 all-to-all
+- prefilling 和 decoding 的负载模式差异
+
+所以 MoE 的难点常常不在公式，而在系统实现。
 
 ---
 

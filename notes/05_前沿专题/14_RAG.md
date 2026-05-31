@@ -21,6 +21,10 @@ LLM 的参数知识有天然边界：
 
 RAG 的目标不是让模型“更会背”，而是让模型在回答时**先找证据，再基于证据作答**。
 
+![RAG 官方流程图](https://developer-blogs.nvidia.com/wp-content/uploads/2023/12/rag-pipeline-ingest-query-flow-b.png)
+
+> 图源：NVIDIA Technical Blog, `RAG 101: Demystifying Retrieval-Augmented Generation Pipelines`。
+
 ```mermaid
 flowchart LR
     A["用户问题"] --> B["检索外部知识"]
@@ -77,6 +81,18 @@ flowchart TD
 | 生成 | 小模型、强模型、长上下文模型 | 成本 vs 事实性 vs 体验 |
 
 很多 RAG 失败，不是败在模型不够强，而是败在切分、召回、重排和上下文构造这些前置步骤。
+
+---
+
+## 更工程化的理解
+
+把 RAG 拆成三层更好讲：
+
+- 检索层：尽量别漏掉关键证据
+- 排序层：把最有用的证据排到前面
+- 生成层：基于证据回答，并尽量引用来源
+
+很多线上问题其实不是模型不会答，而是前面喂给它的证据就不对。
 
 ---
 
@@ -226,6 +242,10 @@ RRF = Σ 1 / (k + rank_i)
 ### Agentic RAG
 
 把检索当成 Agent 的工具，而不是固定流水线的一步。适合多轮、多源、多跳任务。
+
+### GraphRAG 为什么近两年经常被问
+
+因为它显式建模实体和关系，不只是“找相似文本块”，所以在多跳推理、知识库问答、跨文档关联检索里更容易体现优势。
 
 ---
 

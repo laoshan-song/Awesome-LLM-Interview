@@ -25,6 +25,10 @@ RLHF 解决的是：
 
 ## RLHF 完整流程
 
+![InstructGPT / RLHF 三阶段流程图](https://ar5iv.labs.arxiv.org/html/2203.02155/assets/x2.png)
+
+> 图源：`Training language models to follow instructions with human feedback` 论文 HTML 图。它把 RLHF 拆成 SFT、Reward Model、PPO 三步。
+
 ```mermaid
 flowchart TD
     A["预训练模型"] --> B["SFT"]
@@ -126,6 +130,18 @@ DPO 的洞见是：
 
 这就把复杂 RL 问题变成了更像监督学习的问题。
 
+### DPO 的一句话公式直觉
+
+DPO 训练时比较的是：
+
+```text
+模型更偏向 chosen 多少  vs  参考模型更偏向 chosen 多少
+```
+
+如果当前模型相对参考模型还不够偏向 chosen，就继续提高 chosen、压低 rejected。
+
+这里的关键不是“chosen 概率绝对高”，而是“chosen 相对 rejected 的优势要比参考模型更大”。
+
 ---
 
 ## DPO vs RLHF
@@ -215,6 +231,17 @@ GRPO 是推理强化路线里很重要的一步，核心变化是：
 ---
 
 ## 工程实践视角
+
+### PPO 链路为什么重
+
+传统 RLHF 训练时常常同时维护：
+
+- `Actor`：正在被更新的策略模型
+- `Reference`：计算 KL 的冻结参考模型
+- `Reward Model`：给回答打偏好分
+- `Critic`：估计 value，帮助 PPO 降低方差
+
+这就是为什么 PPO 比 DPO 难落地：它不是多一个 loss，而是多了一整套训练角色和系统调度。
 
 ### 一个实际选择顺序
 

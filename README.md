@@ -20,6 +20,17 @@
 
 每篇笔记包含：**面试高频考点 + 核心原理 + 原始论文 + 视频讲解**。
 
+### 🔥 推荐优先看这几篇
+
+- [Transformer 架构详解](./notes/01_基础架构/03_Transformer架构.md)：补了官方论文架构图和快速回答模板
+- [LoRA 及参数高效微调（PEFT）](./notes/02_训练与对齐/08_LoRA与PEFT.md)：补了 LoRA 原论文图和工程落地说明
+- [RAG 检索增强生成](./notes/05_前沿专题/14_RAG.md)：补了 NVIDIA 官方流程图和更工程化的拆解
+- [MoE 混合专家模型](./notes/05_前沿专题/13_MoE.md)：补了官方路由图和 serving 难点说明
+- [SFT 有监督微调](./notes/02_训练与对齐/06_SFT.md)：补了 Self-Instruct 论文图和数据验收清单
+- [RLHF / DPO / PPO 对比](./notes/02_训练与对齐/07_RLHF_DPO_PPO.md)：补了 InstructGPT/RLHF 三阶段论文图和 PPO 工程角色说明
+- [推理加速](./notes/03_推理与优化/12_推理加速.md)：补了 FlashAttention 原论文图和 TTFT/TPOT 诊断维度
+- [解码策略](./notes/03_推理与优化/11_解码策略.md)：补了 Nucleus Sampling 论文图和参数联调建议
+
 ### ⚡ 面试速记网页
 
 > **[→ 打开速记网页（在线访问）](https://laoshan-song.github.io/Awesome-LLM-Interview/cheatsheet.html)**
