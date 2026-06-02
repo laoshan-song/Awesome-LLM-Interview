@@ -48,6 +48,7 @@
 |------|------|------|------------------|----------|
 | QLoRA | GitHub | [artidoro/qlora](https://github.com/artidoro/qlora) | LoRA / QLoRA / 量化 | 跑通 4-bit 微调与 adapter 训练 |
 | Fine-tune-a-LLM | GitHub | [medss19/Fine-tune-a-LLM](https://github.com/medss19/Fine-tune-a-LLM) | SFT / QLoRA / 指令数据 | 做一个完整 domain SFT 示例 |
+| LLM 面试模拟与回答诊断实验室 | 本仓库实战 | [interview_simulator_lab](./interview_simulator_lab) | SFT / LoRA / 评估 / 面试诊断 | 自建面试数据，微调小模型学习结构化诊断与追问 |
 
 ### 数据与比赛
 

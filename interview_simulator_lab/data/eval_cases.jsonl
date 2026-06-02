@@ -1,0 +1,5 @@
+{"topic":"rag","answer":"RAG 是检索文档放进上下文生成答案。它能缓解幻觉，但如果召回不到、切块不合理、重排错误，还是会回答错。线上我会看召回率、faithfulness、引用命中、延迟和成本。","min_score":70,"must_match":["检索","召回","切块","重排","幻觉","延迟","成本"]}
+{"topic":"lora","answer":"LoRA 冻结原模型，只训练低秩 adapter，用 A/B 矩阵近似权重更新，所以优化器状态和梯度显存更少。rank 和 target modules 会影响容量，推理时可以 merge。","min_score":70,"must_match":["冻结","低秩","adapter","矩阵","梯度","优化器","rank","merge"]}
+{"topic":"kv_cache","answer":"KV Cache 缓存每层 attention 的 Key 和 Value，自回归生成新 token 时复用历史 K/V，避免重复算前缀。代价是显存随 batch、序列长度和层数增长，长上下文会成为瓶颈。","min_score":80,"must_match":["key","value","attention","缓存","自回归","复用","显存","序列","batch"]}
+{"topic":"sft","answer":"SFT 数据质量不是单纯堆数量，而是让模型学习指令遵循、回答格式和任务行为。数据要清洗、去重、控制风格和难例比例，并用验证集评估格式遵循和任务成功率。","min_score":75,"must_match":["指令","格式","质量","清洗","去重","验证集","风格","难例","评估"]}
+{"topic":"agent","answer":"ReAct Agent 通过 action 和 observation 循环调用工具，适合搜索和代码执行。但要限制权限、校验 schema、设置停止条件，防止循环调用、prompt 注入，并记录日志评估延迟和失败原因。","min_score":75,"must_match":["工具","action","observation","权限","循环","日志","schema","延迟","注入"]}

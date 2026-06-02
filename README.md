@@ -111,6 +111,11 @@
 2. QLoRA 微调
 3. LangGraph 多 Agent
 
+### 🧪 仓库内实战项目
+
+- [商业级 RAG 工单助手](./commercial_rag_ticket_assistant)：企业知识库问答、工单分流、审计与评估指标。
+- [LLM 面试模拟与回答诊断实验室](./interview_simulator_lab)：把面试笔记转成 SFT 数据，提供回答诊断 CLI、模拟追问和 QLoRA 微调脚本模板。
+
 ---
 
 ## 🤝 欢迎一起完善
