@@ -11,6 +11,8 @@
 
 ## 一、为什么需要 PEFT？
 
+**细化理解：** PEFT 的目标是在显存、数据和训练时间有限时完成模型适配。全参数微调不仅要更新全部权重，还要保存梯度和优化器状态，成本很高；PEFT 只训练少量新增参数，便于多任务保存多个 adapter。它适合格式、风格、领域流程适配，但不能替代预训练来补齐基础能力。
+
 全量微调（Full Fine-tuning）的问题：
 
 | 模型规模 | 全量微调显存 | 问题 |
@@ -24,6 +26,8 @@ PEFT（Parameter-Efficient Fine-Tuning）：只训练少量参数，冻结大部
 ---
 
 ## 二、LoRA 核心原理
+
+**细化理解：** LoRA 假设下游任务所需的权重变化 `ΔW` 具有低秩结构，因此用两个小矩阵近似完整更新。训练时冻结原始权重，只更新低秩矩阵；推理时可以合并权重，也可以按需加载 adapter。秩 r、alpha、target modules 和 dropout 是核心超参，需要用验证集而不是直觉选择。
 
 ![LoRA 原理论文图：冻结主干并学习低秩更新](https://ar5iv.labs.arxiv.org/html/2106.09685/assets/x1.png)
 
@@ -320,4 +324,4 @@ AdaLoRA 方案：
 | 平台 | 标题 | 说明 |
 |------|------|------|
 | 📺 YouTube | [LoRA: Low-Rank Adaptation Paper Explained](https://www.youtube.com/watch?v=PXWYUTMt-AU) | Yannic Kilcher 论文精读含数学推导 |
-| 📺 B站 | [Bilibili 搜索"LoRA 微调 原理"](https://search.bilibili.com/all?keyword=LoRA%E5%BE%AE%E8%B0%83%E5%8E%9F%E7%90%86&order=click) | 按播放量筛选中文讲解 |
+| 📖 Hugging Face PEFT | [LoRA developer guide](https://huggingface.co/docs/peft/developer_guides/lora) | 官方 LoRA/PEFT 配置与实现细节 |

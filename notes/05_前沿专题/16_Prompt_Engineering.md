@@ -40,6 +40,8 @@ graph LR
 
 ## 二、Chain-of-Thought（CoT）深入
 
+**细化理解：** CoT 给模型更多中间推理空间，能提升数学、逻辑和多步任务表现，但不保证推理过程真实。生产中常把推理过程隐藏，只输出简洁答案和可验证依据；对高风险任务，更可靠的是结合工具、检索证据、代码执行或 verifier，而不是单纯要求模型“想得更仔细”。
+
 ### Few-shot CoT（Wei et al., 2022）
 
 在示例中明确展示推理过程，让模型学会模仿：
@@ -386,5 +388,5 @@ prompt = f"""
 
 | 平台 | 标题 | 说明 |
 |------|------|------|
-| 📺 B站 | [从RAG到Deep Research：GRPO训练、混合检索、记忆管理](https://search.bilibili.com/all?keyword=%E4%BB%8ERAG%E5%88%B0Deep%20Research%EF%BC%9AGRPO%E8%AE%AD%E7%BB%83%E3%80%81%E6%B7%B7%E5%90%88%E6%A3%80%E7%B4%A2%E3%80%81%E8%AE%B0%E5%BF%86%E7%AE%A1%E7%90%86&order=click) | 1.3万播放，包含Chain-of-Thought提示工程实战 |
-| 📺 B站 | [面试官问：LangChain和LangGraph分别适合什么场景？](https://search.bilibili.com/all?keyword=%E9%9D%A2%E8%AF%95%E5%AE%98%E9%97%AE%EF%BC%9ALangChain%E5%92%8CLangGraph%E5%88%86%E5%88%AB%E9%80%82%E5%90%88%E4%BB%80%E4%B9%88%E5%9C%BA%E6%99%AF%EF%BC%9F&order=click) | 1.2万播放，Prompt设计与框架选型 |
+| 📖 Anthropic Docs | [Prompt engineering overview](https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview) | 官方 prompt engineering 原则与示例 |
+| 📖 LangGraph Docs | [LangGraph concepts](https://langchain-ai.github.io/langgraph/concepts/) | 官方框架概念文档，补充 Agent 编排视角 |

@@ -11,6 +11,8 @@
 
 ## 一、为什么需要 KV Cache？
 
+**细化理解：** 自回归生成中，每一步新增 token 都要看历史上下文。如果不缓存，生成第 n 个 token 时需要反复重算前面 n-1 个 token 的 attention 投影，成本会随输出长度快速累积。KV Cache 缓存历史 Key/Value，使每一步只计算新增 token 的投影并读取历史缓存，是 LLM 在线推理的基础优化。
+
 ### 自回归生成的问题
 
 LLM 逐 token 生成时，每生成一个新 token，传统做法需要对**所有历史 token** 重新计算 Attention。这意味着：
@@ -59,6 +61,8 @@ Q（Query）只用于当前 token 查询历史信息，后续 token 不需要之
 ---
 
 ## 二、KV Cache 显存计算
+
+**工程细节：** KV Cache 大小近似正比于 batch size、序列长度、层数、KV head 数、head 维度和数据类型字节数。长上下文、多并发和多轮对话会让缓存迅速超过权重显存。GQA/MQA、KV 量化、PagedAttention 和请求调度，本质上都在缓解 KV Cache 带来的显存与带宽压力。
 
 ### 公式
 

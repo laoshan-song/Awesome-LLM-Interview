@@ -71,6 +71,8 @@ flowchart TD
 
 ## 每一步的关键设计选择
 
+**细化理解：** RAG 每一步都会影响最终答案。Chunk 切太小会丢上下文，切太大会引入噪声；embedding 只擅长语义近邻，不一定擅长错误码、数字和专有名词；rerank 能把相关证据排到前面，但会增加延迟；上下文拼接如果没有去重、排序和引用约束，模型仍可能忽略关键证据。面试中要把 RAG 当系统工程，而不是单个向量库功能。
+
 | 步骤 | 常见选项 | 核心 trade-off |
 |------|----------|----------------|
 | Chunking | 固定大小、递归切分、语义切分 | 精度 vs 上下文完整性 |
@@ -171,6 +173,8 @@ RRF = Σ 1 / (k + rank_i)
 
 ## Reranker 为什么重要
 
+**细化理解：** 初召回通常追求高 recall，会故意拿回更多候选；Reranker 用更昂贵但更精确的模型重新判断 query-document 相关性，把真正有用的证据放到上下文前面。对于 LLM 来说，证据顺序很重要，因为长上下文中间内容可能被忽略，前排噪声会挤占 token budget。生产 RAG 常见配置是 Top-50 召回、Top-5/10 精排入模。
+
 初检索负责“尽量别漏”，Reranker 负责“别把噪声排太前”。
 
 典型流程：
@@ -185,6 +189,8 @@ RRF = Σ 1 / (k + rank_i)
 ---
 
 ## RAG 如何评估
+
+**工程细节：** RAG 评估要先构造带标准证据的样本集：问题、正确文档、可接受答案、不可接受答案和权限条件。检索层先看 Recall@K、MRR、NDCG；生成层再看 faithfulness、引用准确率和答案覆盖度。没有把检索和生成拆开时，答案错了无法判断是没找对、没排好、没拼好，还是模型看到了但没答对。
 
 ### 检索层指标
 
@@ -305,4 +311,4 @@ RRF = Σ 1 / (k + rank_i)
 | 平台 | 标题 | 说明 |
 |------|------|------|
 | 📺 YouTube | [Retrieval Augmented Generation (RAG) Explained](https://www.youtube.com/watch?v=T-D1OfcDW1M) | IBM Technology，适合快速入门 |
-| 📺 B站 | [Bilibili 搜索“RAG 检索增强生成”](https://search.bilibili.com/all?keyword=RAG%E6%A3%80%E7%B4%A2%E5%A2%9E%E5%BC%BA%E7%94%9F%E6%88%90&order=click) | 按播放量筛选中文讲解 |
+| 📖 LlamaIndex Docs | [RAG concepts](https://docs.llamaindex.ai/en/stable/understanding/rag/) | 明确资料页，解释 RAG 架构与组件 |

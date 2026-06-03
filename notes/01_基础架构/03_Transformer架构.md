@@ -77,6 +77,8 @@ flowchart TD
 
 ## Self-Attention 计算过程
 
+**细化理解：** Self-Attention 不是简单“看全文”，而是每个位置用 Query 去和所有可见位置的 Key 计算相关性，再按权重汇总 Value。Q/K/V 都来自当前 hidden states 的线性变换，因此同一个 token 在不同层、不同上下文里会产生不同的注意力行为。这个机制让模型能动态选择证据，但也带来二次复杂度和长上下文成本。
+
 给定输入 `X`：
 
 ```text
@@ -146,6 +148,8 @@ flowchart LR
 
 ## FFN / SwiGLU
 
+**细化理解：** FFN 是 Transformer 中参数量很大的部分，常常比 attention 更“吃参数”。Attention 负责跨 token 交换信息，FFN 则在每个 token 位置上做特征变换和知识存储；SwiGLU 通过门控结构提高表达能力，在 LLaMA 等现代 LLM 中很常见。回答架构题时不要把 Transformer 简化成只有 attention。
+
 Attention 负责“聚合信息”，FFN 负责“重组和变换特征”。
 
 现代大模型常用 **SwiGLU**，相对 ReLU/GELU 更强。
@@ -205,6 +209,8 @@ Attention 负责“聚合信息”，FFN 负责“重组和变换特征”。
 ---
 
 ## Transformer 的主要成本
+
+**工程细节：** 训练时成本主要来自长序列 attention、FFN 矩阵乘和激活保存；推理时 prefill 更像训练中的并行前向，decode 则因为一次只生成一个 token，容易被显存带宽、KV Cache 读取和调度开销限制。FlashAttention、GQA/MQA、张量并行和 continuous batching 解决的是不同层面的瓶颈，不能混为一个“加速技巧”。
 
 ### 训练时
 

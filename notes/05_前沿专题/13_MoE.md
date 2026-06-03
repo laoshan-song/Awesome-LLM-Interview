@@ -12,6 +12,8 @@
 
 ## MoE 的核心直觉
 
+**细化理解：** MoE 的直觉是“总容量很大，但每个 token 只激活一小部分参数”。Dense 模型每个 token 走同一套 FFN，MoE 则通过 router 把 token 分配给少数专家，从而在计算量相近的情况下增加参数容量。它的难点不在概念，而在路由稳定、专家负载均衡和跨卡通信。
+
 传统 dense 模型里，每个 token 都走完整个 FFN 路径。MoE 的思路是：
 
 - 放很多专家网络
@@ -42,6 +44,8 @@ flowchart TD
 ---
 
 ## MoE 的基本结构
+
+**工程细节：** MoE 层通常包括 router、experts、top-k 选择、容量限制和负载均衡损失。router 输出每个 token 到各专家的概率，系统选 top-1 或 top-2 专家执行 FFN。容量因子设置过小会丢 token，过大又浪费显存和通信，因此 MoE 训练需要细致调参。
 
 MoE 通常把 Transformer 中的 FFN 替换成：
 
@@ -302,5 +306,5 @@ MoE 在 SFT / DPO 时往往比 dense 更敏感，因为数据分布一变，rout
 
 | 平台 | 标题 | 说明 |
 |------|------|------|
-| 📺 B站 | [Bilibili 搜索“MoE 混合专家 大模型”](https://search.bilibili.com/all?keyword=MoE%E6%B7%B7%E5%90%88%E4%B8%93%E5%AE%B6%E5%A4%A7%E6%A8%A1%E5%9E%8B&order=click) | 中文讲解入口 |
-| 📺 YouTube | [Mixture of Experts Explained](https://www.youtube.com/results?search_query=mixture+of+experts+transformer) | 适合补充直觉 |
+| 📖 Hugging Face Blog | [Mixture of Experts Explained](https://huggingface.co/blog/moe) | MoE 架构、路由和训练挑战的系统解释 |
+| 📺 YouTube | [Mixture of Experts explained](https://www.youtube.com/watch?v=iAR8LkkMMIM) | 明确视频页，补充 MoE 直觉理解 |

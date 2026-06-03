@@ -12,6 +12,8 @@
 
 ## RAG 演进三代
 
+**细化理解：** Naive RAG 重点是向量召回加生成，Advanced RAG 加入 query rewrite、hybrid search、rerank、上下文压缩和评估闭环，GraphRAG/Agentic RAG 则进一步处理多跳关系、多源检索和任务规划。演进方向不是替代关系，而是随着问题复杂度增加引入更多结构化检索和控制能力。
+
 ### 第一代：Naive RAG
 
 ```text
@@ -43,6 +45,8 @@ flowchart TD
 ---
 
 ## 为什么 Naive RAG 很快会撞墙
+
+**工程细节：** Naive RAG 容易在实体关系、多跳问题、跨文档聚合和全局总结上失败。相似文本块不一定包含完整答案，Top-K 也可能被局部相似但无关的片段占满。解决思路包括混合检索、query decomposition、rerank、图谱关系、社区摘要和基于任务的多步检索。
 
 Naive RAG 的前提是假设：问题的答案就在某几个语义相似 chunk 里。但现实常见的问题是：
 
@@ -298,6 +302,6 @@ flowchart LR
 |------|------|------|
 | 📺 B站 | [AI知识图谱GraphRAG是怎么回事？](https://www.bilibili.com/video/BV1zoKuzoENM/) | 13万播放，B站最受欢迎的GraphRAG讲解 |
 | 📺 B站 | [面试官：什么场景下必须用GraphRAG？而不是RAG？](https://www.bilibili.com/video/BV1xjNFzgEmR/) | 3.2万播放，场景选型角度讲透两者差异 |
-| 📺 B站 | [15分钟跑通GraphRAG完整流程：从知识图谱构建到问答](https://search.bilibili.com/all?keyword=15%E5%88%86%E9%92%9F%E8%B7%91%E9%80%9AGraphRAG%E5%AE%8C%E6%95%B4%E6%B5%81%E7%A8%8B%EF%BC%9A%E4%BB%8E%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1%E6%9E%84%E5%BB%BA%E5%88%B0%E9%97%AE%E7%AD%94&order=click) | 6959播放，实战演示GraphRAG完整链路 |
-| 📺 B站 | [使用Python构建RAG系统——用代码还原RAG系统的每个细节](https://search.bilibili.com/all?keyword=%E4%BD%BF%E7%94%A8Python%E6%9E%84%E5%BB%BARAG%E7%B3%BB%E7%BB%9F%E2%80%94%E2%80%94%E7%94%A8%E4%BB%A3%E7%A0%81%E8%BF%98%E5%8E%9FRAG%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%AF%8F%E4%B8%AA%E7%BB%86%E8%8A%82&order=click) | 15万播放，代码级还原 RAG 系统实现 |
+| 📖 Microsoft GraphRAG | [GraphRAG official docs](https://microsoft.github.io/graphrag/) | 官方 GraphRAG 流程、索引与查询文档 |
+| 📖 LlamaIndex Docs | [RAG concepts](https://docs.llamaindex.ai/en/stable/understanding/rag/) | 明确资料页，补充基础 RAG 组件 |
 | 📺 B站 | [RAG优化：17种RAG方案，谁才是RAG最佳选择？](https://www.bilibili.com/video/BV1DmzABsEty/) | 1.1万播放，全面对比高级 RAG 改进方案 |
