@@ -22,6 +22,12 @@
 
 ### 🔥 推荐优先看这几篇
 
+- [LLM 从输入到输出](./notes/00_LLM总览/01_LLM从输入到输出.md)：用一条链路讲清 token、embedding、Transformer、logits、解码
+- [LLM 能力来源与 Scaling Law](./notes/00_LLM总览/02_LLM能力来源与Scaling_Law.md)：解释能力从数据、参数、计算和对齐中怎么来
+- [从训练到部署：LLM 生命周期](./notes/00_LLM总览/03_训练到部署全流程.md)：串起数据、预训练、后训练、评估、部署和反馈闭环
+- [Embedding 与向量检索](./notes/06_工程实践/03_Embedding与向量检索.md)：讲清语义检索、Hybrid Search、Rerank 和向量库选型
+- [模型网关与成本治理](./notes/06_工程实践/05_模型网关与成本治理.md)：把模型路由、缓存、降级、成本监控讲成生产系统能力
+- [LLM 安全与红队](./notes/06_工程实践/06_LLM安全与红队.md)：覆盖 Prompt Injection、RAG 权限、Agent 工具安全和审计
 - [Transformer 架构详解](./notes/01_基础架构/03_Transformer架构.md)：补了官方论文架构图和快速回答模板
 - [LoRA 及参数高效微调（PEFT）](./notes/02_训练与对齐/08_LoRA与PEFT.md)：补了 LoRA 原论文图和工程落地说明
 - [RAG 检索增强生成](./notes/05_前沿专题/14_RAG.md)：补了 NVIDIA 官方流程图和更工程化的拆解
@@ -42,6 +48,14 @@
 ---
 
 ## 📚 知识点目录
+
+### 🧭 零、LLM 总览
+
+| 编号 | 主题 | 最近更新 |
+|------|------|----------|
+| 00-01 | [LLM 从输入到输出](./notes/00_LLM总览/01_LLM从输入到输出.md) | **新增**：从 tokenization 到 decoding 的完整链路 |
+| 00-02 | [LLM 能力来源与 Scaling Law](./notes/00_LLM总览/02_LLM能力来源与Scaling_Law.md) | **新增**：解释参数、数据、计算、对齐与涌现能力 |
+| 00-03 | [从训练到部署：LLM 生命周期](./notes/00_LLM总览/03_训练到部署全流程.md) | **新增**：数据、预训练、后训练、评估、部署、监控闭环 |
 
 ### 🔤 一、基础架构
 
@@ -97,6 +111,17 @@
 | 28 | [评估框架与 Harness](./notes/05_前沿专题/21_评估框架与Harness.md) | **新增**：lm-eval-harness、Open LLM Leaderboard v2、OpenCompass 🔥 |
 | 29 | [Agent 框架与 MCP 协议](./notes/05_前沿专题/22_Agent框架与MCP.md) | **新增**：LangGraph、AutoGen、OpenAI Agents SDK、MCP/A2A 协议 🔥 |
 
+### 🧱 六、工程实践
+
+| 编号 | 主题 | 最近更新 |
+|------|------|----------|
+| 30 | [LLM 应用架构与 LLMOps](./notes/06_工程实践/01_LLM应用架构与LLMOps.md) | **新增**：生产级 LLM 应用模块、模型网关、评估与监控 |
+| 31 | [生产 RAG 排障指南](./notes/06_工程实践/02_生产RAG排障指南.md) | **新增**：RAG 失败分类、检索/生成分层排障、线上反馈闭环 |
+| 32 | [Embedding 与向量检索](./notes/06_工程实践/03_Embedding与向量检索.md) | **新增**：Dense Retrieval、BM25、Hybrid Search、Rerank、向量库选型 |
+| 33 | [上下文工程与长上下文应用](./notes/06_工程实践/04_上下文工程与长上下文应用.md) | **新增**：上下文组织、Lost in the Middle、长上下文排障 |
+| 34 | [模型网关与成本治理](./notes/06_工程实践/05_模型网关与成本治理.md) | **新增**：模型路由、缓存、限流、降级、成本归因 |
+| 35 | [LLM 安全与红队](./notes/06_工程实践/06_LLM安全与红队.md) | **新增**：Prompt Injection、RAG 权限、Agent 工具安全、审计日志 |
+
 ---
 
 ## 🛠️ 学完可做项目
@@ -145,7 +170,7 @@ git push origin feat/your-topic
 | 📚 补全核心知识点（基础 / 训练 / 推理 / 工程） |
 | 📄 为所有知识点补充原始论文 arxiv 链接 |
 | 🎬 添加 Karpathy / 3Blue1Brown / 李沐等优质视频资源 |
-| 🗂️ 重构目录：按主题分为 5 大类，新增分布式训练、Prompt Engineering、幻觉评估等前沿专题 |
+| 🗂️ 重构目录：按主题分为 7 大模块，覆盖 LLM 总览、基础架构、训练对齐、推理优化、分布式训练、前沿专题、工程实践 |
 | 🚀 新增 2026 前沿专题：TTC/DeepSeek-R1/GRPO、多模态VLM、GraphRAG |
 | ⚡ 新增面试速记网页（cheatsheet.html）：49 道高频考题，支持搜索/筛选 |
 | 🇨🇳 新增国产模型全景：DeepSeek-V3/R1、Qwen3混合思考、GLM-4、MiniMax Lightning Attention |
