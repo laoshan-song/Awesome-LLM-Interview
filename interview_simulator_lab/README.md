@@ -87,6 +87,28 @@ python scripts/qlora_sft.py \
 
 Linux + NVIDIA GPU 环境可以加 `--load-in-4bit` 做 QLoRA；Windows 本地更建议先不用 4-bit，或在 WSL2 / 云 GPU 上跑。训练完成后，用固定评估集检查格式遵循率、诊断点覆盖率、追问相关性，再决定是否扩大数据。
 
+如果服务器不能联网安装 `datasets/trl`，可以使用只依赖 `torch + transformers + peft` 的最小 LoRA 脚本：
+
+```bash
+CUDA_VISIBLE_DEVICES=0 python scripts/simple_lora_sft.py \
+  --model /data1/ml-1-1/models/Qwen2.5-3B-Instruct \
+  --data data/sft_interview_diagnosis.remote.jsonl \
+  --output /data1/ml-1-1/outputs/interview-diagnosis-lora \
+  --max-steps 100 \
+  --fp16 \
+  --gradient-checkpointing
+```
+
+注意每组单次只使用一张卡。训练前先用 `nvidia-smi` 找真正空闲的 GPU，再设置 `CUDA_VISIBLE_DEVICES=<卡号>`；所有模型、缓存和输出都放在数据盘目录。
+
+如果依赖被离线安装在数据盘 prefix 目录，可以用封装脚本：
+
+```bash
+GPU_ID=0 MAX_STEPS=100 bash scripts/run_remote_sft.sh
+```
+
+这个脚本默认使用 `/data1/ml-1-1/venv/bin/python`、`/data1/ml-1-1/models/Qwen2.5-3B-Instruct`、`/data1/ml-1-1/envs/interview-prefix/local/lib/python3.10/dist-packages`，并把 HF/Transformers/XDG 缓存放在 `/data1/ml-1-1` 下。
+
 ## 微调路线
 
 1. 数据构造：从笔记中抽取 `question / good_answer / weak_answer / diagnosis / follow_up`。
