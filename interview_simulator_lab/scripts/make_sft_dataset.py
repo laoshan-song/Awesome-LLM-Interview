@@ -31,22 +31,29 @@ def to_sft_record(row: dict) -> dict:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Build SFT JSONL from seed interview data.")
-    parser.add_argument("--input", default="data/seed_interviews.jsonl")
+    parser.add_argument(
+        "--input",
+        default="data/seed_interviews.jsonl",
+        help="Input JSONL. Can be a comma-separated list, e.g. data/seed_interviews.jsonl,data/notes_interviews.jsonl.",
+    )
     parser.add_argument("--output", default="data/sft_interview_diagnosis.jsonl")
     args = parser.parse_args()
 
-    input_path = Path(args.input)
+    input_paths = [Path(item.strip()) for item in args.input.split(",") if item.strip()]
     output_path = Path(args.output)
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
-    with input_path.open("r", encoding="utf-8") as source, output_path.open("w", encoding="utf-8") as target:
-        for line in source:
-            if line.strip():
-                target.write(json.dumps(to_sft_record(json.loads(line)), ensure_ascii=False) + "\n")
+    count = 0
+    with output_path.open("w", encoding="utf-8") as target:
+        for input_path in input_paths:
+            with input_path.open("r", encoding="utf-8") as source:
+                for line in source:
+                    if line.strip():
+                        target.write(json.dumps(to_sft_record(json.loads(line)), ensure_ascii=False) + "\n")
+                        count += 1
 
-    print(f"Wrote {output_path}")
+    print(f"Wrote {count} records to {output_path}")
 
 
 if __name__ == "__main__":
     main()
-
