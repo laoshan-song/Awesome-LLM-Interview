@@ -9,6 +9,14 @@
 
 ---
 
+## 外部图解：LLMOps 全流程
+
+![SigNoz：LLMOps 流程图](https://d3nu8xzr1i9u95.cloudfront.net/web/img/guides/2024/08/llmops-Untitled.webp)
+
+> 图源：[SigNoz LLMOps Guide](https://signoz.io/guides/llmops/)。这张图适合把模型开发、部署、监控、反馈和评估放在一个闭环里理解。
+
+---
+
 ## 生产级 LLM 应用的基本结构
 
 ```mermaid

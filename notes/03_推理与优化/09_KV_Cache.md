@@ -9,6 +9,14 @@
 
 ---
 
+## 外部图解：Prefill / Decode 与 KV Cache
+
+![Imagination Tech：LLM Prefill / Decode 与 KV Cache 示意](https://blog.imaginationtech.com/hs-fs/hubfs/LLM%202.png?height=807&name=LLM+2.png&width=1538)
+
+> 图源：[Imagination Tech - LLM Acceleration on PowerVR](https://blog.imaginationtech.com/llm-performance-and-acceleration-introducing-llm-performance)。这张图把 prefill、decode 和 KV Cache 的关系画得很直观：prefill 建缓存，decode 复用缓存逐 token 生成。
+
+---
+
 ## 一、为什么需要 KV Cache？
 
 **细化理解：** 自回归生成中，每一步新增 token 都要看历史上下文。如果不缓存，生成第 n 个 token 时需要反复重算前面 n-1 个 token 的 attention 投影，成本会随输出长度快速累积。KV Cache 缓存历史 Key/Value，使每一步只计算新增 token 的投影并读取历史缓存，是 LLM 在线推理的基础优化。

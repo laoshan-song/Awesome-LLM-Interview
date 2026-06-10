@@ -14,6 +14,12 @@
 
 Embedding 模型把文本压成一个向量，向量检索通过距离或相似度找到语义接近的文本。
 
+### 外部图解：Sentence-BERT 双塔编码
+
+![SBERT 原论文图：两个句子分别编码后做相似度/分类](https://ar5iv.labs.arxiv.org/html/1908.10084/assets/x1.png)
+
+> 图源：[Sentence-BERT 原论文](https://arxiv.org/abs/1908.10084)。这张图适合解释 bi-encoder：query 和 document 可以分别编码成向量，因此适合大规模向量检索。
+
 ```mermaid
 flowchart LR
     A["用户问题"] --> B["Embedding 模型"]

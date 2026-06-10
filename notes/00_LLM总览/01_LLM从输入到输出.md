@@ -27,6 +27,12 @@ flowchart LR
     G --> H["拼回文本"]
 ```
 
+### 外部图解：自回归解码
+
+![The Illustrated Transformer：Decoder 逐 token 生成示意](https://jalammar.github.io/images/t/transformer_decoding_2.gif)
+
+> 图源：[The Illustrated Transformer](https://jalammar.github.io/illustrated-transformer/)。这张图适合理解“输入上下文 -> 输出下一个 token -> 拼回上下文继续生成”的自回归链路。
+
 ---
 
 ## 1. Tokenization：文本变成离散 ID

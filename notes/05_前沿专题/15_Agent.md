@@ -9,6 +9,14 @@
 
 ---
 
+## 外部图解：ReAct Agent 循环
+
+![ReAct Agent architecture：Reason / Act / Observation 循环](https://static.wixstatic.com/media/3eee0b_e9eae6479d5f4515a2588dbc670cfabb~mv2.png/v1/fill/w_586%2Ch_589%2Cal_c%2Cq_85%2Cenc_avif%2Cquality_auto/3eee0b_e9eae6479d5f4515a2588dbc670cfabb~mv2.png)
+
+> 图源：[Intelligent Machines - ReAct Agents Explained](https://www.intelligentmachines.blog/post/react-agents-explained-a-step-by-step-implementation-using-langgraph)。这张图适合理解 Agent 不是一次回答，而是“思考 -> 调工具 -> 观察 -> 再思考”的循环。
+
+---
+
 ## 一、什么是 Agent？
 
 **细化理解：** Agent 是模型围绕目标进行规划、调用工具、观察结果并继续决策的闭环系统。普通 LLM 主要生成文本，Agent 还要决定下一步动作。工程上最关键的是边界控制：工具什么时候能调用、调用失败怎么恢复、循环何时停止、权限和成本如何限制。

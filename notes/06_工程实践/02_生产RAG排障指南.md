@@ -10,6 +10,14 @@
 
 ---
 
+## 外部图解：生产 RAG Pipeline
+
+![NVIDIA：RAG ingest / query pipeline](https://developer-blogs.nvidia.com/wp-content/uploads/2023/12/rag-pipeline-ingest-query-flow-b.png)
+
+> 图源：[NVIDIA Blog - RAG 101](https://developer.nvidia.com/blog/rag-101-demystifying-retrieval-augmented-generation-pipelines/)。这张图把离线 ingest 和在线 query 分开，适合定位 RAG 故障发生在哪一段。
+
+---
+
 ## 一句话原则
 
 RAG 排障不要直接怪模型，要按链路拆：
