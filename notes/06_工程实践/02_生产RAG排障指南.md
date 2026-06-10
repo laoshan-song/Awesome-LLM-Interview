@@ -254,6 +254,72 @@ Top-K 太大会引入噪声，让模型更容易答错。
 
 ---
 
+## 生产排障 Runbook
+
+线上 RAG 出错时，建议按固定 runbook 处理，而不是临时猜：
+
+```text
+1. 复现 query，固定用户身份和权限
+2. 查看 rewrite query
+3. 查看 dense / BM25 各自 Top-K
+4. 查看 fusion 和 rerank 后排序
+5. 查看 ACL filter 前后数量
+6. 查看最终 prompt 中的 context
+7. 查看模型答案是否忠于证据
+8. 给失败打标签，进入优化队列
+```
+
+失败标签建议：
+
+| 标签 | 含义 | 处理 |
+|------|------|------|
+| knowledge_missing | 知识库没有答案 | 补文档、补 FAQ |
+| parse_failed | 文档解析失败 | 修解析器、表格/OCR |
+| chunk_bad | chunk 切分不合理 | 改 chunk 策略 |
+| retrieval_miss | 正确证据没召回 | 调 embedding/BM25/rewrite |
+| rerank_bad | 召回了但排序靠后 | 调 reranker 或训练数据 |
+| context_noise | 上下文噪声太多 | 降 Top-K、压缩证据 |
+| generation_unfaithful | 模型没按证据答 | 改 prompt、加引用校验 |
+| acl_error | 权限过滤错误 | 修 metadata 和 filter |
+
+---
+
+## RAG 评估集怎么构建
+
+生产 RAG 的评估集不应该只有“问题-答案”，最好包含证据：
+
+```json
+{
+  "question": "模型 API 超时怎么排查？",
+  "gold_answer": "...",
+  "gold_chunk_ids": ["ops_001", "gateway_014"],
+  "must_cite": true,
+  "tenant": "internal",
+  "difficulty": "multi-hop"
+}
+```
+
+评估维度：
+
+- **Retrieval Recall@K**：gold chunk 是否被召回。
+- **MRR/NDCG**：正确证据排序是否靠前。
+- **Faithfulness**：答案是否被证据支持。
+- **Citation Accuracy**：引用是否真实对应答案。
+- **Refusal Accuracy**：无证据或无权限时是否拒答。
+- **Latency/Cost**：质量提升是否值得成本。
+
+---
+
+## 面试回答模板
+
+如果被问“RAG 线上效果差怎么办”，可以这样回答：
+
+> 我不会先改模型，而是先拆链路。第一看正确证据在不在知识库，第二看有没有被 dense/BM25 召回，第三看 fusion/rerank 后有没有进入上下文，第四看模型是否忠于证据。每层都有对应指标和日志，定位后再决定补文档、调 chunk、换 embedding、加 rerank、改 prompt 或做权限修复。
+
+这个回答能体现你理解 RAG 是系统工程，而不是一个向量库 demo。
+
+---
+
 ## 原始论文
 
 | 论文 | 链接 |

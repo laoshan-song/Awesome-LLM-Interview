@@ -210,6 +210,76 @@ MTEB 是常用综合 benchmark，但企业项目最好自建领域评测集。
 
 ---
 
+## 生产项目怎么讲
+
+如果把这个知识点放进“企业知识库智能问答与工单助手”，可以这样讲：
+
+```text
+用户问题 -> Query Rewrite -> Dense + BM25 双路召回 -> RRF 融合 -> Rerank 精排 -> Top-N 证据进入 LLM
+```
+
+关键不是“用了向量库”，而是解释清楚为什么每层存在：
+
+| 层级 | 解决的问题 | 可观测指标 |
+|------|------------|------------|
+| Query Rewrite | 用户表达不完整、指代不清 | rewrite 后 Recall@K 是否提升 |
+| Dense Retrieval | 同义改写、自然语言语义匹配 | Recall@K、MRR |
+| BM25 | 错误码、接口名、版本号、日志片段 | keyword hit rate |
+| RRF 融合 | 避免单一路径偏差 | fused recall |
+| Rerank | 粗召回噪声多、排序不准 | NDCG、Context Precision |
+| Metadata Filter | 权限、租户、文档类型过滤 | filter 后 Top-K 充足率 |
+
+面试里不要只说“我用了 Milvus/FAISS”。更好的说法是：
+
+> 我把检索拆成召回、融合、精排、过滤和评估五层。向量检索负责语义召回，BM25 兜住精确关键词，reranker 保证进入上下文的证据质量，最后用 Recall@K 和 Citation Accuracy 评估是否真的帮到回答。
+
+---
+
+## 排障清单
+
+当用户说“搜不到”“答非所问”时，按这个顺序排：
+
+1. **语料是否入库**：文档是否解析成功、chunk 是否为空、metadata 是否正确。
+2. **Query 是否可检索**：是否包含缩写、错别字、指代、日志片段。
+3. **Embedding 是否适配**：中文、代码、技术文档、表格是否表现差。
+4. **ANN 参数是否过紧**：HNSW `efSearch`、IVF `nprobe` 是否导致召回损失。
+5. **权限过滤是否过严**：filter 后 Top-K 是否不足。
+6. **Rerank 是否误杀**：reranker 是否偏向短文本或标题党文本。
+7. **上下文是否被截断**：正确证据是否进入最终 prompt。
+
+一个实用 debug 日志：
+
+```json
+{
+  "query": "...",
+  "rewrite_query": "...",
+  "dense_topk_ids": ["d1", "d2"],
+  "bm25_topk_ids": ["d3", "d1"],
+  "rrf_topk_ids": ["d1", "d3"],
+  "rerank_scores": {"d1": 0.91, "d3": 0.77},
+  "filtered_by_acl": 2,
+  "final_context_ids": ["d1", "d3"]
+}
+```
+
+---
+
+## 面试追问模板
+
+**追问：向量维度越高越好吗？**
+
+> 不一定。高维可能表达力更强，但存储、索引内存、检索延迟都会增加。生产里要看领域评测收益是否覆盖成本。
+
+**追问：为什么有些 query 明明语义相近却召回不到？**
+
+> 可能是 embedding 模型没学到领域术语，也可能是 chunk 太大导致语义被稀释，或者 ANN 近似检索参数牺牲了召回。
+
+**追问：Reranker 放在哪里？**
+
+> 一般放在粗召回之后，只对 Top-50/Top-100 做精排，然后选 Top-5/Top-10 进入 prompt。它不适合直接全库扫描。
+
+---
+
 ## 原始论文
 
 | 论文 | 链接 |

@@ -225,6 +225,81 @@ LLMOps 的关键是持续评估。
 
 ---
 
+## 生产架构落地清单
+
+如果面试官让你“讲一个完整 LLM 应用架构”，可以按下面顺序展开：
+
+```text
+前端/业务入口
+  -> API Gateway / Auth
+  -> LLM Orchestrator
+  -> Model Gateway
+  -> RAG / Tools / Memory
+  -> Safety & Output Validator
+  -> Trace / Eval / Feedback
+```
+
+各层职责：
+
+| 层级 | 职责 | 典型问题 |
+|------|------|----------|
+| API Gateway | 鉴权、租户、限流 | 谁能用、用多少 |
+| Orchestrator | prompt、RAG、工具编排 | 怎么完成任务 |
+| Model Gateway | 模型路由、重试、降级 | 用哪个模型、失败怎么办 |
+| RAG Layer | 检索、权限、引用 | 知识从哪里来 |
+| Tool Layer | 工具 schema、执行、审计 | 能不能执行动作 |
+| Safety Layer | 注入防护、脱敏、输出校验 | 会不会泄露或越权 |
+| Eval Layer | 离线回归、线上反馈 | 改动有没有变好 |
+
+这套讲法比“前端调后端，后端调 LLM”更像生产项目。
+
+---
+
+## 发布与回滚
+
+LLM 应用的变更不只有代码，还包括：
+
+- prompt 模板
+- 模型版本
+- embedding 模型
+- reranker
+- chunk 策略
+- 工具 schema
+- 安全规则
+- 知识库内容
+
+所以发布流程要支持：
+
+1. **版本化**：prompt、模型、索引、评估集都有版本号。
+2. **灰度**：按用户、租户、流量比例切新版本。
+3. **回归评估**：上线前跑黄金集，比较准确率、拒答率、引用准确率。
+4. **线上监控**：看延迟、成本、负反馈、安全拦截。
+5. **快速回滚**：prompt 和模型路由能不发版回滚。
+
+面试里可以强调：
+
+> LLMOps 的难点是“非代码资产”也会改变系统行为，所以必须把 prompt、知识库和评估集当成可版本管理的工程资产。
+
+---
+
+## 商业项目指标
+
+企业知识库问答与工单助手可以这样设指标：
+
+| 指标 | 说明 |
+|------|------|
+| Self-Serve Resolution Rate | 用户不转人工就解决的比例 |
+| Escalation Accuracy | 转工单/转人工是否分流正确 |
+| Citation Accuracy | 引用是否真实支持答案 |
+| First Response Latency | 首次响应延迟 |
+| Cost per Resolved Case | 每个解决问题的平均模型成本 |
+| Unsafe Request Block Rate | 安全拦截比例 |
+| Knowledge Gap Rate | 因知识库缺失导致无法回答的比例 |
+
+这些指标能把项目从 demo 拉到商业系统：既看质量，也看成本、安全和业务结果。
+
+---
+
 ## 原始论文
 
 | 论文 | 链接 |
