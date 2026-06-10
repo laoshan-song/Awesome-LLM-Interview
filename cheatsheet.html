@@ -204,6 +204,19 @@
       box-shadow: 0 14px 34px rgba(0,0,0,.12);
     }
     .search-bar:focus { border-color: var(--accent); box-shadow: 0 0 0 4px rgba(124,106,247,.12); }
+    .search-status {
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+      color: var(--text2); font-size: .83rem; margin: -4px 0 16px;
+      background: rgba(15,17,23,.34); border: 1px solid rgba(255,255,255,.06);
+      border-radius: 12px; padding: 10px 13px;
+    }
+    .search-status strong { color: var(--accent2); }
+    .empty-state {
+      display: none; text-align: center; padding: 34px 20px; margin: 28px 0;
+      border: 1px dashed rgba(148,163,184,.34); border-radius: 18px;
+      background: rgba(26,29,46,.48); color: var(--text2);
+    }
+    .empty-state strong { color: var(--text); display: block; margin-bottom: 8px; font-size: 1rem; }
 
     /* Expand all btn */
     .top-controls { display: flex; gap: 10px; margin-bottom: 24px; flex-wrap: wrap; }
@@ -213,6 +226,7 @@
       cursor: pointer; font-size: 0.83rem; transition: all .2s;
     }
     .ctrl-btn:hover { border-color: var(--accent); color: var(--accent2); transform: translateY(-1px); }
+    .ctrl-btn.active { border-color: var(--accent2); color: var(--accent2); background: rgba(94,234,212,.09); }
 
     .interview-map {
       display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px;
@@ -225,12 +239,80 @@
     .map-card strong { color: var(--accent2); display: block; margin-bottom: 7px; }
     .map-card span { color: var(--text2); font-size: .84rem; line-height: 1.7; }
 
+    .diagnostic-panel {
+      position: relative; overflow: hidden; margin: 0 0 30px;
+      display: grid; grid-template-columns: 1.05fr .95fr; gap: 14px;
+      border: 1px solid rgba(94,234,212,.2); border-radius: 22px;
+      background:
+        linear-gradient(135deg, rgba(94,234,212,.1), transparent 34%),
+        linear-gradient(160deg, rgba(124,106,247,.16), rgba(26,29,46,.82));
+      box-shadow: 0 24px 70px rgba(0,0,0,.2);
+      padding: 16px;
+    }
+    .diagnostic-panel::before {
+      content: ''; position: absolute; inset: 0; pointer-events: none;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.045), transparent);
+      transform: translateX(-100%); animation: sheen 6s ease-in-out infinite;
+    }
+    @keyframes sheen { 0%, 55% { transform: translateX(-100%); } 75%, 100% { transform: translateX(100%); } }
+    .diagnostic-card {
+      position: relative; z-index: 1;
+      background: rgba(15,17,23,.52); border: 1px solid rgba(255,255,255,.08);
+      border-radius: 18px; padding: 18px;
+    }
+    .diagnostic-kicker {
+      color: var(--accent2); font-size: .72rem; letter-spacing: .12em;
+      text-transform: uppercase; font-weight: 900; margin-bottom: 7px;
+    }
+    .diagnostic-card h2 { font-size: 1.12rem; margin-bottom: 8px; letter-spacing: -.02em; }
+    .diagnostic-card p { color: var(--text2); font-size: .86rem; line-height: 1.7; }
+    .mock-question {
+      margin: 14px 0 10px; padding: 14px; border-radius: 14px;
+      border: 1px solid rgba(124,106,247,.22); background: rgba(37,40,64,.58);
+      line-height: 1.65; font-weight: 800;
+    }
+    .answer-box {
+      width: 100%; min-height: 98px; resize: vertical; margin: 8px 0 10px;
+      border-radius: 14px; border: 1px solid rgba(45,49,84,.95);
+      background: rgba(10,12,20,.72); color: var(--text);
+      padding: 12px 13px; outline: none; line-height: 1.6;
+      font-family: inherit;
+    }
+    .answer-box:focus { border-color: var(--accent2); box-shadow: 0 0 0 4px rgba(94,234,212,.1); }
+    .diagnostic-actions { display: flex; gap: 9px; flex-wrap: wrap; }
+    .result-box {
+      display: none; margin-top: 12px; padding: 13px; border-radius: 14px;
+      background: rgba(15,17,23,.62); border: 1px solid rgba(255,255,255,.08);
+      color: var(--text2); font-size: .86rem; line-height: 1.75;
+    }
+    .result-box strong { color: var(--accent2); }
+    .result-box a { color: var(--accent2); text-decoration: none; border-bottom: 1px dashed rgba(94,234,212,.55); }
+    .skill-grid { display: grid; gap: 10px; margin-top: 12px; }
+    .skill-row {
+      display: grid; grid-template-columns: 1fr auto; gap: 12px; align-items: center;
+      padding: 10px 12px; border-radius: 14px;
+      background: rgba(37,40,64,.46); border: 1px solid rgba(255,255,255,.06);
+    }
+    .skill-row label { font-size: .86rem; font-weight: 800; }
+    .skill-row select {
+      background: rgba(15,17,23,.86); color: var(--text);
+      border: 1px solid rgba(45,49,84,.95); border-radius: 10px;
+      padding: 7px 9px; outline: none;
+    }
+    .weak-links { display: grid; gap: 8px; margin-top: 8px; }
+    .weak-links a {
+      display: block; padding: 9px 10px; border-radius: 11px;
+      background: rgba(94,234,212,.07); border: 1px solid rgba(94,234,212,.18);
+      color: var(--accent2); text-decoration: none;
+    }
+
     /* Footer */
     footer { text-align: center; padding: 40px; color: var(--text2); font-size: 0.82rem;
              border-top: 1px solid var(--border); }
 
     @media (max-width: 980px) {
       .stats-grid, .interview-map { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .diagnostic-panel { grid-template-columns: 1fr; }
     }
 
     @media (max-width: 768px) {
@@ -293,15 +375,23 @@
       </div>
     </section>
 
-    <input class="search-bar" type="text" id="searchInput" placeholder="🔍 搜索考题（如：KV Cache、RAG、Agent、模型网关、安全红队、LoRA...）" oninput="filterQA()">
+    <input class="search-bar" type="search" id="searchInput" placeholder="🔍 搜索考题（如：KV Cache、RAG、Agent、模型网关、安全红队、LoRA...）" autocomplete="off">
 
     <div class="top-controls">
-      <button class="ctrl-btn" onclick="expandAll()">展开全部</button>
-      <button class="ctrl-btn" onclick="collapseAll()">收起全部</button>
-      <button class="ctrl-btn" onclick="filterTag('hot')">🔥 高频</button>
-      <button class="ctrl-btn" onclick="filterTag('2026')">🚀 2026前沿</button>
-      <button class="ctrl-btn" onclick="filterTag('system')">🧠 工程系统</button>
-      <button class="ctrl-btn" onclick="resetFilter()">重置筛选</button>
+      <button class="ctrl-btn" type="button" data-action="expand">展开全部</button>
+      <button class="ctrl-btn" type="button" data-action="collapse">收起全部</button>
+      <button class="ctrl-btn" type="button" data-tag="hot">🔥 高频</button>
+      <button class="ctrl-btn" type="button" data-tag="2026">🚀 2026前沿</button>
+      <button class="ctrl-btn" type="button" data-tag="system">🧠 工程系统</button>
+      <button class="ctrl-btn" type="button" data-action="reset">重置筛选</button>
+    </div>
+    <div class="search-status" id="searchStatus">
+      <span>当前显示 <strong id="visibleCount">95</strong> / <span id="totalCount">95</span> 道题</span>
+      <span id="activeFilterText">全部题目</span>
+    </div>
+    <div class="empty-state" id="emptyState">
+      <strong>没有匹配的题目</strong>
+      换一个关键词，或点击“重置筛选”查看全部内容。
     </div>
 
     <div class="interview-map">
@@ -309,6 +399,33 @@
       <div class="map-card"><strong>工程落地</strong><span>重点准备 vLLM、PagedAttention、RAG 召回/重排、模型网关、成本治理和评估闭环。</span></div>
       <div class="map-card"><strong>前沿加分</strong><span>能讲清 GRPO、MoE、长上下文、LiveBench、数据合成，会明显拉开差距。</span></div>
     </div>
+
+    <section class="diagnostic-panel" id="diagnostic">
+      <div class="diagnostic-card">
+        <div class="diagnostic-kicker">Mock Interview</div>
+        <h2>模拟面试问答诊断</h2>
+        <p>随机抽一道高频题，写下你的回答。页面会按关键词覆盖度给出本地诊断，并推荐对应 notes。</p>
+        <div class="mock-question" id="mockQuestion">点击“换一题”开始模拟面试。</div>
+        <textarea class="answer-box" id="mockAnswer" placeholder="在这里输入你的 3-5 句话回答，例如：先定义概念，再讲原理、工程取舍和常见坑。"></textarea>
+        <div class="diagnostic-actions">
+          <button class="ctrl-btn" type="button" id="nextMockBtn">换一题</button>
+          <button class="ctrl-btn" type="button" id="gradeMockBtn">诊断回答</button>
+        </div>
+        <div class="result-box" id="mockResult"></div>
+      </div>
+
+      <div class="diagnostic-card">
+        <div class="diagnostic-kicker">Weakness Radar</div>
+        <h2>薄弱点判断测试</h2>
+        <p>给 8 个方向打分，低分模块会直接输出复习路径和 notes 链接。</p>
+        <div class="skill-grid" id="skillGrid"></div>
+        <div class="diagnostic-actions" style="margin-top:12px">
+          <button class="ctrl-btn" type="button" id="analyzeWeakBtn">生成复习建议</button>
+          <button class="ctrl-btn" type="button" id="resetWeakBtn">重置</button>
+        </div>
+        <div class="result-box" id="weakResult"></div>
+      </div>
+    </section>
 
     <!-- ═══════════════════════════════════════════ -->
     <!-- Section 1: Transformer                      -->
@@ -1897,6 +2014,164 @@
 </footer>
 
 <script>
+  const searchInput = document.getElementById('searchInput');
+  const qaCards = Array.from(document.querySelectorAll('.qa-card'));
+  const contentSections = Array.from(document.querySelectorAll('main > div[id]')).filter(section => section.querySelector('.qa-card'));
+  const navLinks = Array.from(document.querySelectorAll('nav a'));
+  const visibleCount = document.getElementById('visibleCount');
+  const totalCount = document.getElementById('totalCount');
+  const activeFilterText = document.getElementById('activeFilterText');
+  const emptyState = document.getElementById('emptyState');
+  let activeTag = '';
+
+  const mockQuestions = [
+    {
+      q: 'Self-Attention 的公式是什么？为什么要除以 sqrt(d_k)？',
+      topic: 'Transformer 基础',
+      keywords: ['q', 'k', 'v', 'softmax', 'sqrt', '方差', '梯度', '缩放'],
+      links: [
+        ['Transformer 架构详解', './notes/01_基础架构/03_Transformer架构.md'],
+        ['LLM 从输入到输出', './notes/00_LLM总览/01_LLM从输入到输出.md']
+      ]
+    },
+    {
+      q: 'KV Cache 为什么能加速推理？它的显存瓶颈在哪里？',
+      topic: '推理优化',
+      keywords: ['自回归', '缓存', 'key', 'value', 'prefill', 'decode', '显存', 'batch'],
+      links: [
+        ['KV Cache 原理与优化', './notes/03_推理与优化/09_KV_Cache.md'],
+        ['推理加速', './notes/03_推理与优化/12_推理加速.md']
+      ]
+    },
+    {
+      q: 'RAG 线上回答不准，你会按什么顺序排查？',
+      topic: 'RAG 工程',
+      keywords: ['query', 'chunk', 'embedding', 'bm25', 'hybrid', 'rerank', '召回', '评估'],
+      links: [
+        ['生产 RAG 排障指南', './notes/06_工程实践/02_生产RAG排障指南.md'],
+        ['Embedding 与向量检索', './notes/06_工程实践/03_Embedding与向量检索.md']
+      ]
+    },
+    {
+      q: 'RLHF、PPO、DPO 的关系是什么？为什么 DPO 工程上更简单？',
+      topic: '对齐训练',
+      keywords: ['偏好', '奖励模型', 'ppo', 'policy', 'kl', 'dpo', 'reference', '稳定'],
+      links: [
+        ['RLHF / DPO / PPO 对比', './notes/02_训练与对齐/07_RLHF_DPO_PPO.md'],
+        ['前沿对齐技术', './notes/02_训练与对齐/10_前沿对齐技术.md']
+      ]
+    },
+    {
+      q: '生产级 LLM 应用为什么需要模型网关？',
+      topic: 'LLMOps',
+      keywords: ['alias', '路由', '限流', '熔断', '降级', '审计', '成本', '监控'],
+      links: [
+        ['模型网关与成本治理', './notes/06_工程实践/05_模型网关与成本治理.md'],
+        ['LLM 应用架构与 LLMOps', './notes/06_工程实践/01_LLM应用架构与LLMOps.md']
+      ]
+    },
+    {
+      q: 'Prompt Injection 在 RAG / Agent 里为什么危险？怎么防？',
+      topic: '安全治理',
+      keywords: ['间接注入', '权限', 'acl', '工具', 'schema', '审计', '隔离', '红队'],
+      links: [
+        ['LLM 安全与红队', './notes/06_工程实践/06_LLM安全与红队.md'],
+        ['Agent 框架与 MCP', './notes/05_前沿专题/22_Agent框架与MCP.md']
+      ]
+    }
+  ];
+
+  const weaknessTopics = [
+    { id: 'overview', name: 'LLM 总览链路', links: [['LLM 从输入到输出', './notes/00_LLM总览/01_LLM从输入到输出.md'], ['训练到部署全流程', './notes/00_LLM总览/03_训练到部署全流程.md']] },
+    { id: 'architecture', name: 'Transformer / 架构', links: [['Transformer 架构', './notes/01_基础架构/03_Transformer架构.md'], ['位置编码', './notes/01_基础架构/04_位置编码.md']] },
+    { id: 'training', name: '训练与对齐', links: [['预训练与微调', './notes/02_训练与对齐/05_预训练与微调.md'], ['RLHF / DPO / PPO', './notes/02_训练与对齐/07_RLHF_DPO_PPO.md']] },
+    { id: 'inference', name: '推理与优化', links: [['KV Cache', './notes/03_推理与优化/09_KV_Cache.md'], ['推理加速', './notes/03_推理与优化/12_推理加速.md']] },
+    { id: 'rag', name: 'RAG / 检索', links: [['RAG', './notes/05_前沿专题/14_RAG.md'], ['生产 RAG 排障', './notes/06_工程实践/02_生产RAG排障指南.md']] },
+    { id: 'agent', name: 'Agent / 工具调用', links: [['Agent', './notes/05_前沿专题/15_Agent.md'], ['Agent 框架与 MCP', './notes/05_前沿专题/22_Agent框架与MCP.md']] },
+    { id: 'eval', name: '评估与幻觉', links: [['大模型幻觉与评估', './notes/05_前沿专题/17_大模型幻觉与评估.md'], ['评估框架与 Harness', './notes/05_前沿专题/21_评估框架与Harness.md']] },
+    { id: 'ops', name: '工程实践 / 安全', links: [['LLMOps', './notes/06_工程实践/01_LLM应用架构与LLMOps.md'], ['模型网关与成本治理', './notes/06_工程实践/05_模型网关与成本治理.md'], ['LLM 安全与红队', './notes/06_工程实践/06_LLM安全与红队.md']] }
+  ];
+  let currentMock = mockQuestions[0];
+
+  totalCount.textContent = qaCards.length;
+  visibleCount.textContent = qaCards.length;
+
+  function toGithubNotesUrl(href) {
+    if (!href.startsWith('./notes/')) return href;
+    const cleanPath = href.replace('./', '');
+    return `https://github.com/laoshan-song/Awesome-LLM-Interview/blob/main/${encodeURI(cleanPath)}`;
+  }
+
+  function renderLinks(links) {
+    return links.map(([label, href]) => `<a href="${toGithubNotesUrl(href)}" target="_blank" rel="noopener noreferrer">${label}</a>`).join('');
+  }
+
+  function pickMockQuestion() {
+    currentMock = mockQuestions[Math.floor(Math.random() * mockQuestions.length)];
+    document.getElementById('mockQuestion').textContent = currentMock.q;
+    document.getElementById('mockAnswer').value = '';
+    document.getElementById('mockResult').style.display = 'none';
+  }
+
+  function gradeMockAnswer() {
+    const answer = normalizeText(document.getElementById('mockAnswer').value);
+    const hit = currentMock.keywords.filter(keyword => answer.includes(keyword.toLowerCase()));
+    const score = Math.round((hit.length / currentMock.keywords.length) * 100);
+    const missing = currentMock.keywords.filter(keyword => !hit.includes(keyword)).slice(0, 5);
+    const result = document.getElementById('mockResult');
+    const level = score >= 70 ? '回答覆盖度不错' : score >= 40 ? '回答有框架，但细节不足' : '薄弱，需要回到 notes 补基础';
+    result.innerHTML = `
+      <strong>${level}：${score} 分</strong><br>
+      命中关键词：${hit.length ? hit.join('、') : '暂无'}<br>
+      建议补充：${missing.length ? missing.join('、') : '可以继续补工程取舍和反例'}<br>
+      推荐复习：
+      <div class="weak-links">${renderLinks(currentMock.links)}</div>
+    `;
+    result.style.display = 'block';
+  }
+
+  function renderWeaknessTest() {
+    const grid = document.getElementById('skillGrid');
+    grid.innerHTML = weaknessTopics.map(topic => `
+      <div class="skill-row">
+        <label for="skill-${topic.id}">${topic.name}</label>
+        <select id="skill-${topic.id}" data-topic="${topic.id}">
+          <option value="2">不熟</option>
+          <option value="3" selected>一般</option>
+          <option value="4">能讲</option>
+          <option value="5">很稳</option>
+        </select>
+      </div>
+    `).join('');
+  }
+
+  function analyzeWeakness() {
+    const weak = weaknessTopics
+      .map(topic => ({ ...topic, score: Number(document.querySelector(`[data-topic="${topic.id}"]`).value) }))
+      .sort((a, b) => a.score - b.score)
+      .slice(0, 3);
+    const avg = weaknessTopics.reduce((sum, topic) => sum + Number(document.querySelector(`[data-topic="${topic.id}"]`).value), 0) / weaknessTopics.length;
+    const result = document.getElementById('weakResult');
+    result.innerHTML = `
+      <strong>综合熟练度：${avg.toFixed(1)} / 5</strong><br>
+      优先补这 3 个方向：
+      <div class="weak-links">
+        ${weak.map(topic => `
+          <div>
+            <strong>${topic.name}：${topic.score}/5</strong>
+            ${renderLinks(topic.links)}
+          </div>
+        `).join('')}
+      </div>
+    `;
+    result.style.display = 'block';
+  }
+
+  function resetWeakness() {
+    document.querySelectorAll('#skillGrid select').forEach(select => { select.value = '3'; });
+    document.getElementById('weakResult').style.display = 'none';
+  }
+
   function toggleCard(el) {
     el.closest('.qa-card').classList.toggle('open');
   }
@@ -1911,41 +2186,99 @@
     document.querySelectorAll('.qa-card').forEach(c => c.classList.remove('open'));
   }
 
-  function filterQA() {
-    const q = document.getElementById('searchInput').value.toLowerCase();
-    document.querySelectorAll('.qa-card').forEach(card => {
-      const text = card.textContent.toLowerCase();
-      const hide = q && !text.includes(q);
-      card.classList.toggle('hidden', hide);
-      card.style.display = hide ? 'none' : '';
+  function normalizeText(text) {
+    return text.toLowerCase().replace(/\s+/g, ' ').trim();
+  }
+
+  function updateTagButtons() {
+    document.querySelectorAll('[data-tag]').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.tag === activeTag);
     });
   }
 
-  function filterTag(tag) {
-    const input = document.getElementById('searchInput');
-    input.value = '';
-    document.querySelectorAll('.qa-card').forEach(card => {
-      const tags = card.dataset.tags || '';
-      const show = tags.includes(tag);
+  function applyFilters() {
+    const query = normalizeText(searchInput.value);
+    let shown = 0;
+
+    qaCards.forEach(card => {
+      const tags = (card.dataset.tags || '').split(/\s+/).filter(Boolean);
+      const text = normalizeText(card.textContent);
+      const matchesQuery = !query || text.includes(query);
+      const matchesTag = !activeTag || tags.includes(activeTag);
+      const show = matchesQuery && matchesTag;
+
       card.classList.toggle('hidden', !show);
       card.style.display = show ? '' : 'none';
+      if (show) shown += 1;
     });
-    document.querySelectorAll('.qa-card').forEach(c => {
-      if (c.style.display !== 'none') c.classList.add('open');
+
+    contentSections.forEach(section => {
+      const hasVisibleCard = Array.from(section.querySelectorAll('.qa-card')).some(card => card.style.display !== 'none');
+      section.style.display = hasVisibleCard ? '' : 'none';
+    });
+
+    visibleCount.textContent = shown;
+    emptyState.style.display = shown === 0 ? 'block' : 'none';
+
+    const parts = [];
+    if (query) parts.push(`搜索：${searchInput.value.trim()}`);
+    if (activeTag) {
+      const labels = { hot: '高频', '2026': '2026 前沿', system: '工程系统' };
+      parts.push(`标签：${labels[activeTag] || activeTag}`);
+    }
+    activeFilterText.textContent = parts.length ? parts.join(' · ') : '全部题目';
+    updateTagButtons();
+  }
+
+  function filterQA() {
+    applyFilters();
+  }
+
+  function filterTag(tag) {
+    activeTag = activeTag === tag ? '' : tag;
+    applyFilters();
+    qaCards.forEach(card => {
+      if (card.style.display !== 'none') card.classList.add('open');
     });
   }
 
   function resetFilter() {
-    document.getElementById('searchInput').value = '';
-    document.querySelectorAll('.qa-card').forEach(card => {
-      card.classList.remove('hidden');
-      card.style.display = '';
-    });
+    searchInput.value = '';
+    activeTag = '';
+    contentSections.forEach(section => { section.style.display = ''; });
+    applyFilters();
   }
 
+  searchInput.addEventListener('input', applyFilters);
+  document.getElementById('nextMockBtn').addEventListener('click', pickMockQuestion);
+  document.getElementById('gradeMockBtn').addEventListener('click', gradeMockAnswer);
+  document.getElementById('analyzeWeakBtn').addEventListener('click', analyzeWeakness);
+  document.getElementById('resetWeakBtn').addEventListener('click', resetWeakness);
+  document.querySelector('.top-controls').addEventListener('click', event => {
+    const button = event.target.closest('button');
+    if (!button) return;
+
+    if (button.dataset.tag) filterTag(button.dataset.tag);
+    if (button.dataset.action === 'expand') expandAll();
+    if (button.dataset.action === 'collapse') collapseAll();
+    if (button.dataset.action === 'reset') resetFilter();
+  });
+
+  document.addEventListener('keydown', event => {
+    if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'k') {
+      event.preventDefault();
+      searchInput.focus();
+    }
+    if (event.key === 'Escape' && document.activeElement === searchInput) {
+      resetFilter();
+      searchInput.blur();
+    }
+  });
+
   // Sidebar active link on scroll
-  const sections = document.querySelectorAll('[id]');
-  const navLinks = document.querySelectorAll('nav a');
+  const sections = navLinks
+    .map(link => document.querySelector(link.getAttribute('href')))
+    .filter(Boolean);
   window.addEventListener('scroll', () => {
     let cur = '';
     sections.forEach(s => {
@@ -1955,6 +2288,9 @@
       a.classList.toggle('active', a.getAttribute('href') === '#' + cur);
     });
   });
+
+  renderWeaknessTest();
+  pickMockQuestion();
 </script>
 </body>
 </html>
