@@ -250,7 +250,7 @@
 <header>
   <div>
     <div class="logo">LLM 面试<span>速记</span></div>
-    <div class="header-meta">85+ 道高频考题 · 覆盖 14 大模块 · 持续更新</div>
+    <div class="header-meta">95 道高频考题 · 覆盖 15 大模块 · 持续更新</div>
   </div>
   <div class="header-actions">
     <div class="pill">2026 前沿版</div>
@@ -276,6 +276,7 @@
       <a href="#embedding">🧬 Embedding &amp; 向量数据库</a>
       <a href="#deploy">🚀 LLM 部署与推理加速</a>
       <a href="#advanced-retrieval">🔍 高级检索与文档处理</a>
+      <a href="#production">🧱 生产化与安全治理</a>
     </div>
   </nav>
 
@@ -283,16 +284,16 @@
     <section class="hero">
       <div class="hero-kicker">LLM Interview Cheat Sheet</div>
       <h1>把高频大模型面试题压缩成一页可搜索速查表</h1>
-      <p>覆盖 Transformer、推理优化、RAG、Agent、对齐、微调、分布式训练与评估。适合面试前 30 分钟快速过重点，也适合复习时按模块查漏补缺。</p>
+      <p>覆盖 Transformer、推理优化、RAG、Agent、对齐、微调、分布式训练、评估、模型网关与安全治理。适合面试前 30 分钟快速过重点，也适合复习时按模块查漏补缺。</p>
       <div class="stats-grid">
-        <div class="stat-card"><div class="stat-value">89</div><div class="stat-label">道核心问答</div></div>
-        <div class="stat-card"><div class="stat-value">14</div><div class="stat-label">个知识模块</div></div>
+        <div class="stat-card"><div class="stat-value">95</div><div class="stat-label">道核心问答</div></div>
+        <div class="stat-card"><div class="stat-value">15</div><div class="stat-label">个知识模块</div></div>
         <div class="stat-card"><div class="stat-value">30min</div><div class="stat-label">面试前冲刺</div></div>
         <div class="stat-card"><div class="stat-value">2026</div><div class="stat-label">前沿趋势补充</div></div>
       </div>
     </section>
 
-    <input class="search-bar" type="text" id="searchInput" placeholder="🔍 搜索考题（如：KV Cache、RAG、Agent、GRPO、LoRA...）" oninput="filterQA()">
+    <input class="search-bar" type="text" id="searchInput" placeholder="🔍 搜索考题（如：KV Cache、RAG、Agent、模型网关、安全红队、LoRA...）" oninput="filterQA()">
 
     <div class="top-controls">
       <button class="ctrl-btn" onclick="expandAll()">展开全部</button>
@@ -305,7 +306,7 @@
 
     <div class="interview-map">
       <div class="map-card"><strong>基础必答</strong><span>Attention 公式、复杂度、Pre-LN、RoPE、KV Cache 是最容易被追问的底层题。</span></div>
-      <div class="map-card"><strong>工程落地</strong><span>重点准备 vLLM、PagedAttention、RAG 召回/重排、Agent 工具调用和评估闭环。</span></div>
+      <div class="map-card"><strong>工程落地</strong><span>重点准备 vLLM、PagedAttention、RAG 召回/重排、模型网关、成本治理和评估闭环。</span></div>
       <div class="map-card"><strong>前沿加分</strong><span>能讲清 GRPO、MoE、长上下文、LiveBench、数据合成，会明显拉开差距。</span></div>
     </div>
 
@@ -1761,10 +1762,130 @@
       </div>
     </div>
 
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- Section 15: 生产化与安全治理                -->
+    <!-- ═══════════════════════════════════════════ -->
+    <div id="production">
+      <div class="section-header">
+        <div class="section-icon" style="background:rgba(94,234,212,.18)">🧱</div>
+        <div class="section-title">生产化与安全治理</div>
+        <span class="section-count">6 题</span>
+      </div>
+
+      <div class="qa-card" data-tags="hot system">
+        <div class="qa-question" onclick="toggleCard(this)">
+          <div class="qa-q-badge">Q</div>
+          <div class="qa-q-text">生产级 LLM 应用和 Demo 最大区别是什么？<span class="tag tag-hot">高频</span><span class="tag tag-system">工程</span></div>
+          <div class="qa-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          Demo 重点证明“模型能回答”，生产系统重点保证<strong>稳定、可控、可评估、可追责</strong>。<br><br>
+          生产级 LLM 应用通常要补齐：模型网关、鉴权与配额、Prompt/模型版本管理、RAG 数据更新、离线评测集、线上反馈、成本监控、限流熔断、审计日志和安全策略。<br><br>
+          <table>
+            <tr><th>维度</th><th>Demo</th><th>生产系统</th></tr>
+            <tr><td>调用方式</td><td>业务直接调模型</td><td>统一模型网关</td></tr>
+            <tr><td>质量判断</td><td>人工感觉不错</td><td>评测集 + 线上指标 + 抽检</td></tr>
+            <tr><td>故障处理</td><td>失败就报错</td><td>超时、重试、降级、熔断</td></tr>
+            <tr><td>安全</td><td>靠 system prompt</td><td>权限、过滤、工具约束、审计</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="qa-card" data-tags="hot system">
+        <div class="qa-question" onclick="toggleCard(this)">
+          <div class="qa-q-badge">Q</div>
+          <div class="qa-q-text">为什么需要模型网关？模型网关应该做哪些事？<span class="tag tag-hot">高频</span><span class="tag tag-system">工程</span></div>
+          <div class="qa-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          模型网关是所有模型调用的统一入口，把业务服务和具体模型供应商解耦。它的价值是把“不可控的 API 调用”变成“可治理的基础设施”。<br><br>
+          <strong>核心职责：</strong><br>
+          ① Model Alias：业务只使用 <code>qa-fast</code>、<code>qa-strong</code> 这类别名，不写死模型名<br>
+          ② 路由与降级：按任务难度、SLA、成本预算选择模型，上游异常时 fallback<br>
+          ③ 限流与配额：按用户、租户、应用控制调用量和预算<br>
+          ④ 观测与审计：记录 request id、模型、token、延迟、错误码、prompt 版本<br>
+          ⑤ 安全隔离：统一保管 API key，工具调用和敏感输出统一过策略层
+        </div>
+      </div>
+
+      <div class="qa-card" data-tags="system">
+        <div class="qa-question" onclick="toggleCard(this)">
+          <div class="qa-q-badge">Q</div>
+          <div class="qa-q-text">模型路由怎么做？如何在质量、延迟和成本之间取舍？<span class="tag tag-system">工程</span></div>
+          <div class="qa-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          模型路由的目标不是永远用最强模型，而是在满足质量底线的前提下降低成本和延迟。<br><br>
+          <table>
+            <tr><th>策略</th><th>做法</th><th>适合场景</th></tr>
+            <tr><td>规则路由</td><td>按长度、语言、业务线、风险等级切模型</td><td>MVP 到早期生产</td></tr>
+            <tr><td>Cascade</td><td>先小模型，低置信度再转强模型</td><td>大量简单 FAQ</td></tr>
+            <tr><td>Learned Router</td><td>训练路由器预测哪个模型性价比最高</td><td>流量大、有评测数据</td></tr>
+            <tr><td>A/B Test</td><td>按用户或请求比例灰度新模型</td><td>模型升级和 Prompt 迭代</td></tr>
+          </table>
+          评估时不能只看成本下降，还要同时看回答通过率、用户负反馈、超时率、fallback 比例和高风险任务误路由率。
+        </div>
+      </div>
+
+      <div class="qa-card" data-tags="hot system">
+        <div class="qa-question" onclick="toggleCard(this)">
+          <div class="qa-q-badge">Q</div>
+          <div class="qa-q-text">LLM 成本优化有哪些抓手？<span class="tag tag-hot">高频</span><span class="tag tag-system">工程</span></div>
+          <div class="qa-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          成本优化要先做归因，再做优化。否则不知道钱花在输入 token、输出 token、embedding、rerank、重试还是错误路由上。<br><br>
+          <strong>常见抓手：</strong><br>
+          ① Prompt 压缩：删除无效上下文，减少重复 system prompt<br>
+          ② Prompt caching：稳定长前缀放前面，复用系统指令、工具说明和固定示例<br>
+          ③ RAG 控制 top-k：用 rerank 选少量高质量证据，不把整篇文档塞给模型<br>
+          ④ 模型分层：简单问题走小模型，复杂技术方案走强模型<br>
+          ⑤ 输出控制：设置合理 <code>max_tokens</code>、停止条件和结构化输出<br>
+          ⑥ 重试治理：区分 429、5xx、timeout，限制最大重试次数<br><br>
+          <div class="tip-box">面试回答重点：成本优化不是“换便宜模型”这么简单，而是 token、路由、缓存、RAG 和重试共同治理。</div>
+        </div>
+      </div>
+
+      <div class="qa-card" data-tags="hot system">
+        <div class="qa-question" onclick="toggleCard(this)">
+          <div class="qa-q-badge">Q</div>
+          <div class="qa-q-text">RAG 如何做权限控制，避免泄露企业知识库内容？<span class="tag tag-hot">高频</span><span class="tag tag-system">工程</span></div>
+          <div class="qa-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          原则是：<strong>模型不能看到用户无权访问的 chunk</strong>。不能先检索全库再让模型判断能不能回答，因为只要敏感内容进入 prompt，就已经有泄露风险。<br><br>
+          正确链路：<br>
+          ① 文档入库时打 <code>tenant_id</code>、部门、项目、密级、可见范围等 metadata<br>
+          ② 查询时从用户身份解析 ACL 条件<br>
+          ③ 检索阶段强制带 metadata filter，只召回有权限的 chunk<br>
+          ④ 答案引用必须绑定 chunk id 和来源<br>
+          ⑤ 审计日志记录 user id、query、retrieved chunk ids、policy decision<br><br>
+          多租户场景下，向量库索引、缓存和日志也要隔离，尤其要防止 response cache 返回其他用户的答案。
+        </div>
+      </div>
+
+      <div class="qa-card" data-tags="2026 system">
+        <div class="qa-question" onclick="toggleCard(this)">
+          <div class="qa-q-badge">Q</div>
+          <div class="qa-q-text">Prompt Injection 和 LLM 红队测试怎么做？<span class="tag tag-2026">前沿</span><span class="tag tag-system">工程</span></div>
+          <div class="qa-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          Prompt Injection 不是只发生在用户输入里，也可能藏在 RAG 文档、网页、邮件、日志和工具返回结果中。红队测试要覆盖“模型会读到的所有不可信文本”。<br><br>
+          <strong>测试清单：</strong><br>
+          ① 基础攻击：忽略系统指令、要求输出 system prompt、要求泄露 key 或内部配置<br>
+          ② RAG 攻击：在文档中植入恶意指令、污染召回、请求无权限知识库内容、要求伪造引用<br>
+          ③ Agent 攻击：诱导调用无关工具、构造危险参数、把内部结果发到外部 endpoint<br>
+          ④ 数据隐私：PII 泄露、多租户串扰、日志明文存储、缓存污染<br><br>
+          防御思路是纵深防御：数据和指令隔离、ACL 过滤、工具参数 schema 校验、高风险动作人工确认、输出敏感信息检测、全链路审计。
+        </div>
+      </div>
+    </div>
+
     <!-- Footer section -->
     <div style="margin-top: 60px; padding: 28px; background: linear-gradient(135deg, rgba(26,29,46,.92), rgba(37,40,64,.78)); border: 1px solid rgba(124,106,247,.25); border-radius: 20px; text-align: center; box-shadow: 0 20px 48px rgba(0,0,0,.18);">
       <div style="font-size: 1.05rem; font-weight: 800; margin-bottom: 8px;">📚 完整知识点笔记</div>
-      <div style="color: var(--text2); font-size: 0.9rem; margin-bottom: 18px;">21 篇深度笔记 · 89 道速查问答 · 覆盖从基础到前沿的完整 LLM 知识体系</div>
+      <div style="color: var(--text2); font-size: 0.9rem; margin-bottom: 18px;">35 篇深度笔记 · 95 道速查问答 · 覆盖从基础到生产化落地的完整 LLM 知识体系</div>
       <a href="https://github.com/laoshan-song/Awesome-LLM-Interview" target="_blank" style="background: linear-gradient(135deg, var(--accent), #9b8cff); color: #fff; padding: 11px 24px; border-radius: 999px; text-decoration: none; font-weight: 700; display: inline-block;">查看 GitHub 仓库 →</a>
     </div>
   </main>
