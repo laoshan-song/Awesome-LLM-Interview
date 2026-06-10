@@ -18,7 +18,7 @@
 
 **一句话**：你备战大模型面试时，希望有人帮你把所有核心知识点整理清楚——这个仓库就是干这个的。
 
-每篇笔记包含：**面试高频考点 + 核心原理 + 原始论文 + 视频讲解**。
+每篇笔记包含：**面试高频考点 + 核心原理 + 外部图解 + 原始论文 + 视频讲解 + 工程落地追问**。
 
 ### 🔥 推荐优先看这几篇
 
@@ -41,7 +41,7 @@
 
 > **[→ 打开速记网页（在线访问）](https://laoshan-song.github.io/Awesome-LLM-Interview/cheatsheet.html)**
 >
-> 49 道高频考题，7 大模块，点击展开即见答案，搜索、筛选、一键展开全部。面试前 30 分钟速刷专用。
+> 95 道高频考题，15 大模块，支持搜索、标签筛选、一键展开、模拟面试问答诊断和薄弱点判断测试。测试结果会直接跳转到 GitHub 上对应的 notes 文档。面试前 30 分钟速刷专用。
 
 > 如果你觉得有用，点个 ⭐ Star 是对我最大的鼓励！
 
@@ -62,7 +62,7 @@
 | 编号 | 主题 | 最近更新 |
 |------|------|----------|
 | 01 | [LLM 核心名词解释](./notes/01_基础架构/01_名词解释.md) | 补全 Token / Attention / KV Cache 等 30+ 核心术语 |
-| 02 | [分词算法（BPE / WordPiece / SentencePiece）](./notes/01_基础架构/02_分词算法.md) | 添加 Karpathy 视频 + 3 篇原始论文链接 |
+| 02 | [分词算法（BPE / WordPiece / SentencePiece）](./notes/01_基础架构/02_分词算法.md) | 添加 Karpathy 视频、官方 tokenizer 工具链和论文链接 |
 | 03 | [Transformer 架构详解](./notes/01_基础架构/03_Transformer架构.md) | 添加 3Blue1Brown 可视化视频 + 原版论文 |
 | 04 | [位置编码（RoPE / ALiBi / sinusoidal）](./notes/01_基础架构/04_位置编码.md) | 补充 RoPE / ALiBi 论文 + 外推方案对比 |
 | 05 | [主流模型架构对比（LLaMA / Qwen / DeepSeek）](./notes/01_基础架构/05_主流模型架构对比.md) | MLA、RMSNorm、SwiGLU 等架构细节 |
@@ -72,18 +72,18 @@
 
 | 编号 | 主题 | 最近更新 |
 |------|------|----------|
-| 07 | [预训练 vs 微调 vs RLHF](./notes/02_训练与对齐/05_预训练与微调.md) | 补充 InstructGPT / LIMA 论文 + 三阶段流程 |
+| 07 | [预训练 vs 微调 vs RLHF](./notes/02_训练与对齐/05_预训练与微调.md) | 补充 InstructGPT / LIMA 论文、三阶段流程和训练工具链 |
 | 08 | [SFT 有监督微调](./notes/02_训练与对齐/06_SFT.md) | 补充数据质量分析 + loss 计算细节 |
 | 09 | [RLHF / DPO / PPO 对比](./notes/02_训练与对齐/07_RLHF_DPO_PPO.md) | 添加李沐精读视频 + DPO 完整推导 |
 | 10 | [LoRA 及参数高效微调（PEFT）](./notes/02_训练与对齐/08_LoRA与PEFT.md) | 添加论文精读视频 + QLoRA 细节 |
-| 11 | [预训练数据处理](./notes/02_训练与对齐/09_预训练数据处理.md) | 数据清洗、去重、配比策略 |
+| 11 | [预训练数据处理](./notes/02_训练与对齐/09_预训练数据处理.md) | 数据清洗、去重、配比策略、FineWeb/Dolma/Datatrove 链接 |
 | 12 | [2025 前沿对齐技术（RLVR / DAPO / RLAIF）](./notes/02_训练与对齐/10_前沿对齐技术.md) | **新增**：DAPO/Dr.GRPO/OpenRLHF/veRL/Constitutional AI 🔥 |
 
 ### 🚀 三、推理与优化
 
 | 编号 | 主题 | 最近更新 |
 |------|------|----------|
-| 13 | [KV Cache 原理与优化](./notes/03_推理与优化/09_KV_Cache.md) | 补充显存公式 + GQA / PagedAttention |
+| 13 | [KV Cache 原理与优化](./notes/03_推理与优化/09_KV_Cache.md) | 补充 Prefill/Decode 外部图、显存公式、GQA / PagedAttention |
 | 14 | [量化（INT8 / INT4 / GPTQ / AWQ）](./notes/03_推理与优化/10_量化.md) | 补充 GPTQ / AWQ / SmoothQuant 论文 |
 | 15 | [解码策略（Greedy / Beam / Sampling）](./notes/03_推理与优化/11_解码策略.md) | 补充 Top-p 论文 + 场景使用建议 |
 | 16 | [推理加速（Flash Attention / vLLM / 投机采样）](./notes/03_推理与优化/12_推理加速.md) | 补充 Flash Attention / 投机采样 4 篇论文 |
@@ -102,7 +102,7 @@
 |------|------|----------|
 | 20 | [MoE 混合专家模型](./notes/05_前沿专题/13_MoE.md) | 补充 Mixtral / Switch Transformer 论文 |
 | 21 | [RAG 检索增强生成](./notes/05_前沿专题/14_RAG.md) | 添加 Self-RAG 论文 + LangChain 视频 |
-| 22 | [Agent 与工具调用](./notes/05_前沿专题/15_Agent.md) | 补充 ReAct / Toolformer 论文 |
+| 22 | [Agent 与工具调用](./notes/05_前沿专题/15_Agent.md) | 补充 ReAct 外部图、Toolformer 论文和工具调用边界 |
 | 23 | [Prompt Engineering](./notes/05_前沿专题/16_Prompt_Engineering.md) | CoT / ToT / Self-Consistency / 提示注入防御 |
 | 24 | [大模型幻觉与评估](./notes/05_前沿专题/17_大模型幻觉与评估.md) | 幻觉分类、MMLU/HumanEval、LLM-as-Judge |
 | 25 | [推理时计算扩展（Test-Time Compute）](./notes/05_前沿专题/18_推理时计算扩展.md) | DeepSeek-R1、GRPO、PRM 全面解析 |
@@ -115,10 +115,10 @@
 
 | 编号 | 主题 | 最近更新 |
 |------|------|----------|
-| 30 | [LLM 应用架构与 LLMOps](./notes/06_工程实践/01_LLM应用架构与LLMOps.md) | **新增**：生产级 LLM 应用模块、模型网关、评估与监控 |
-| 31 | [生产 RAG 排障指南](./notes/06_工程实践/02_生产RAG排障指南.md) | **新增**：RAG 失败分类、检索/生成分层排障、线上反馈闭环 |
-| 32 | [Embedding 与向量检索](./notes/06_工程实践/03_Embedding与向量检索.md) | **新增**：Dense Retrieval、BM25、Hybrid Search、Rerank、向量库选型 |
-| 33 | [上下文工程与长上下文应用](./notes/06_工程实践/04_上下文工程与长上下文应用.md) | **新增**：上下文组织、Lost in the Middle、长上下文排障 |
+| 30 | [LLM 应用架构与 LLMOps](./notes/06_工程实践/01_LLM应用架构与LLMOps.md) | **新增**：LLMOps 外部图、生产架构、发布回滚、商业项目指标 |
+| 31 | [生产 RAG 排障指南](./notes/06_工程实践/02_生产RAG排障指南.md) | **新增**：NVIDIA RAG 图、生产排障 Runbook、评估集构建 |
+| 32 | [Embedding 与向量检索](./notes/06_工程实践/03_Embedding与向量检索.md) | **新增**：SBERT 双塔图、Hybrid Search、Rerank、向量库排障 |
+| 33 | [上下文工程与长上下文应用](./notes/06_工程实践/04_上下文工程与长上下文应用.md) | **新增**：Lost in the Middle 图、上下文编排、长上下文排障 |
 | 34 | [模型网关与成本治理](./notes/06_工程实践/05_模型网关与成本治理.md) | **新增**：模型路由、缓存、限流、降级、成本归因 |
 | 35 | [LLM 安全与红队](./notes/06_工程实践/06_LLM安全与红队.md) | **新增**：Prompt Injection、RAG 权限、Agent 工具安全、审计日志 |
 
@@ -172,9 +172,10 @@ git push origin feat/your-topic
 | 🎬 添加 Karpathy / 3Blue1Brown / 李沐等优质视频资源 |
 | 🗂️ 重构目录：按主题分为 7 大模块，覆盖 LLM 总览、基础架构、训练对齐、推理优化、分布式训练、前沿专题、工程实践 |
 | 🚀 新增 2026 前沿专题：TTC/DeepSeek-R1/GRPO、多模态VLM、GraphRAG |
-| ⚡ 新增面试速记网页（cheatsheet.html）：49 道高频考题，支持搜索/筛选 |
+| ⚡ 升级面试速记网页（cheatsheet.html）：95 道高频考题、15 大模块，支持搜索/筛选、模拟面试诊断、薄弱点测试和 GitHub notes 跳转 |
 | 🇨🇳 新增国产模型全景：DeepSeek-V3/R1、Qwen3混合思考、GLM-4、MiniMax Lightning Attention |
 | 🔧 新增前沿框架：vLLM/SGLang/llama.cpp推理框架对比、DAPO/RLVR对齐技术、lm-eval-harness评估、LangGraph/MCP协议 |
+| 🖼️ 补充外部图解和资料链接：全库 19 张外部图、400+ 外部链接，覆盖 Transformer、RAG、KV Cache、Agent、LLMOps、Embedding、长上下文等核心主题 |
 
 ---
 
