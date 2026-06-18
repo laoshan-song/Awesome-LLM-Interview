@@ -419,9 +419,9 @@
 <body>
 
 <header>
-  <div>
-    <div class="logo">LLM 面试<span>速记</span></div>
-    <div class="header-meta">95 道高频考题 · 覆盖 15 大模块 · 持续更新</div>
+    <div>
+      <div class="logo">LLM 面试<span>速记</span></div>
+    <div class="header-meta">220+ 道高频考题 · 覆盖 20+ 模块 · 持续更新</div>
   </div>
   <div class="header-actions">
     <div class="user-chip" id="headerUserChip">未登录</div>
@@ -450,6 +450,7 @@
       <a href="#advanced-retrieval">🔍 高级检索与文档处理</a>
       <a href="#production">🧱 生产化与安全治理</a>
       <a href="#papers">📄 核心论文路线图</a>
+      <a href="#public-questions">🧪 公开题库扩展</a>
     </div>
   </nav>
 
@@ -459,8 +460,8 @@
       <h1>把高频大模型面试题压缩成一页可搜索速查表</h1>
       <p>覆盖 Transformer、推理优化、RAG、Agent、对齐、微调、分布式训练、评估、模型网关与安全治理。适合面试前 30 分钟快速过重点，也适合复习时按模块查漏补缺。</p>
       <div class="stats-grid">
-        <div class="stat-card"><div class="stat-value">95</div><div class="stat-label">道核心问答</div></div>
-        <div class="stat-card"><div class="stat-value">15</div><div class="stat-label">个知识模块</div></div>
+        <div class="stat-card"><div class="stat-value">220+</div><div class="stat-label">道核心问答</div></div>
+        <div class="stat-card"><div class="stat-value">20+</div><div class="stat-label">个知识模块</div></div>
         <div class="stat-card"><div class="stat-value">30min</div><div class="stat-label">面试前冲刺</div></div>
         <div class="stat-card"><div class="stat-value">2026</div><div class="stat-label">前沿趋势补充</div></div>
       </div>
@@ -2252,10 +2253,20 @@
       </div>
     </div>
 
+    <div id="public-questions">
+      <div class="section-header">
+        <div class="section-icon" style="background:rgba(94,234,212,.16)">🧪</div>
+        <div class="section-title">公开高频面试题库扩展</div>
+        <span class="section-count">120+ 题</span>
+      </div>
+      <div class="tip-box">这些题基于公开 LLM/GenAI/RAG 面试题库、岗位 JD 和社区面经的高频主题统一改写，重点覆盖真实面试追问方式；不是逐字复制外站题库。</div>
+      <div id="publicQuestionList"></div>
+    </div>
+
     <!-- Footer section -->
     <div style="margin-top: 60px; padding: 28px; background: linear-gradient(135deg, rgba(26,29,46,.92), rgba(37,40,64,.78)); border: 1px solid rgba(124,106,247,.25); border-radius: 20px; text-align: center; box-shadow: 0 20px 48px rgba(0,0,0,.18);">
       <div style="font-size: 1.05rem; font-weight: 800; margin-bottom: 8px;">📚 完整知识点笔记</div>
-      <div style="color: var(--text2); font-size: 0.9rem; margin-bottom: 18px;">35 篇深度笔记 · 95 道速查问答 · 覆盖从基础到生产化落地的完整 LLM 知识体系</div>
+      <div style="color: var(--text2); font-size: 0.9rem; margin-bottom: 18px;">35 篇深度笔记 · 220+ 道速查问答 · 覆盖从基础到生产化落地的完整 LLM 知识体系</div>
       <a href="https://github.com/laoshan-song/Awesome-LLM-Interview" target="_blank" style="background: linear-gradient(135deg, var(--accent), #9b8cff); color: #fff; padding: 11px 24px; border-radius: 999px; text-decoration: none; font-weight: 700; display: inline-block;">查看 GitHub 仓库 →</a>
     </div>
   </main>
@@ -2268,8 +2279,8 @@
 
 <script>
   const searchInput = document.getElementById('searchInput');
-  const qaCards = Array.from(document.querySelectorAll('.qa-card'));
-  const contentSections = Array.from(document.querySelectorAll('main > div[id]')).filter(section => section.querySelector('.qa-card'));
+  let qaCards = Array.from(document.querySelectorAll('.qa-card'));
+  let contentSections = Array.from(document.querySelectorAll('main > div[id]')).filter(section => section.querySelector('.qa-card'));
   const navLinks = Array.from(document.querySelectorAll('nav a'));
   const visibleCount = document.getElementById('visibleCount');
   const totalCount = document.getElementById('totalCount');
@@ -2280,6 +2291,253 @@
   const sessionKey = `${storagePrefix}session`;
   let activeTag = '';
   let currentUser = localStorage.getItem(sessionKey) || '';
+
+  const publicQuestionGroups = [
+    {
+      category: 'LLM 基础链路',
+      tags: 'hot',
+      note: ['LLM 从输入到输出', './notes/00_LLM总览/01_LLM从输入到输出.md'],
+      questions: [
+        'Tokenizer 的词表大小会如何影响中文、英文和代码任务？',
+        '为什么 LLM 预测的是下一个 token，而不是直接生成整句？',
+        'Logits、probability、temperature 三者是什么关系？',
+        '为什么 decoder-only 模型需要 causal mask？',
+        'Embedding 层和输出层权重共享有什么好处？',
+        '模型上下文窗口变长后，训练和推理分别难在哪里？',
+        '为什么同一句话在不同 tokenizer 下 token 数可能差很多？',
+        'BOS、EOS、PAD、UNK 这些特殊 token 在训练中分别有什么作用？',
+        '为什么生成式模型不能像 BERT 一样一次性输出所有 token？',
+        '什么是 exposure bias，它会怎样影响自回归生成？',
+        '为什么模型会重复输出，和解码策略有什么关系？',
+        'System、user、assistant role 在 chat template 中如何影响训练？'
+      ]
+    },
+    {
+      category: 'Transformer 架构',
+      tags: 'hot',
+      note: ['Transformer 架构', './notes/01_基础架构/03_Transformer架构.md'],
+      questions: [
+        'Q、K、V 分别从哪里来，为什么不是只用一个矩阵？',
+        'Attention score 的 softmax 维度应该是什么，写错会怎样？',
+        'Pre-LN 为什么比 Post-LN 更适合深层大模型？',
+        'RMSNorm 为什么可以去掉均值中心化？',
+        'SwiGLU 为什么在 LLaMA 系列中常见？',
+        'FFN 层参数量为什么通常大于 Attention 层？',
+        'Residual connection 对大模型训练稳定性有什么作用？',
+        '为什么多头注意力不是简单重复计算？',
+        'Attention mask 和 padding mask 有什么区别？',
+        'Encoder-only、Decoder-only、Encoder-Decoder 分别适合哪些任务？',
+        'MoE 中 expert、router、top-k routing 分别是什么？',
+        'MoE 为什么能增加参数量但不等比例增加计算量？'
+      ]
+    },
+    {
+      category: '位置编码与长上下文',
+      tags: '2026',
+      note: ['位置编码', './notes/01_基础架构/04_位置编码.md'],
+      questions: [
+        '绝对位置编码和相对位置编码的本质区别是什么？',
+        'RoPE 为什么可以把相对位置信息体现在 QK 点积里？',
+        'ALiBi 为什么能做长度外推？',
+        'NTK scaling、YaRN、位置插值分别想解决什么？',
+        '长上下文训练和长上下文推理的瓶颈是否一样？',
+        '为什么长上下文不一定能替代 RAG？',
+        'Lost in the Middle 对上下文排序有什么启发？',
+        '多轮对话历史过长时如何裁剪和压缩？',
+        '长上下文模型做摘要为什么仍可能遗漏中间信息？',
+        '如何评估模型是否真的利用了长上下文？'
+      ]
+    },
+    {
+      category: '训练与数据',
+      tags: 'hot',
+      note: ['预训练与微调', './notes/02_训练与对齐/05_预训练与微调.md'],
+      questions: [
+        '预训练数据去重为什么重要，重复数据会导致什么问题？',
+        '数据配比中代码、数学、网页、书籍各自带来什么能力？',
+        '继续预训练和 SFT 的目标函数有什么区别？',
+        '为什么领域知识缺失时只做 SFT 往往不够？',
+        '训练数据污染 benchmark 会带来什么风险？',
+        '如何构建一条高质量 instruction tuning 样本？',
+        '多轮对话训练时哪些 token 应该参与 loss？',
+        '为什么 chat template 不一致会导致微调模型异常？',
+        '如何判断 SFT 后模型过拟合了模板？',
+        '合成数据如何做质量过滤？',
+        '为什么小而高质量的数据有时比大而脏的数据更有效？',
+        '训练时 sequence packing 有什么收益和风险？'
+      ]
+    },
+    {
+      category: '对齐与偏好优化',
+      tags: 'hot',
+      note: ['RLHF / DPO / PPO', './notes/02_训练与对齐/07_RLHF_DPO_PPO.md'],
+      questions: [
+        'RLHF 中 SFT、Reward Model、PPO 三阶段分别解决什么？',
+        'Reward Model 为什么可能被 policy hack？',
+        'PPO 中 KL penalty 的作用是什么？',
+        'DPO 的 reference model 起什么作用？',
+        'DPO 为什么可以绕过显式 Reward Model？',
+        'IPO、KTO、ORPO 和 DPO 的差异大致是什么？',
+        '偏好数据 pairwise、ranked list、binary feedback 各怎么用？',
+        '为什么对齐可能降低模型创造性或覆盖率？',
+        'RLHF 是否能提升事实正确性，为什么不一定？',
+        '如何处理标注员偏好不一致？',
+        '安全对齐和有用性之间如何权衡？',
+        '拒答策略过强会带来什么业务问题？'
+      ]
+    },
+    {
+      category: 'LoRA 与量化',
+      tags: 'hot',
+      note: ['LoRA 与 PEFT', './notes/02_训练与对齐/08_LoRA与PEFT.md'],
+      questions: [
+        'LoRA 的 A、B 低秩矩阵如何和原权重合并？',
+        'LoRA rank 选太小或太大会怎样？',
+        'LoRA alpha 和 dropout 分别影响什么？',
+        'LoRA 插 q_proj、v_proj、o_proj、FFN 的取舍是什么？',
+        'QLoRA 中 NF4 为什么适合神经网络权重？',
+        'Double quantization 降低了哪部分显存？',
+        'Paged optimizer 解决什么训练峰值显存问题？',
+        'GPTQ、AWQ、SmoothQuant 的核心差异是什么？',
+        'INT4 量化为什么可能伤害数学和代码能力？',
+        '量化后如何做回归评估？'
+      ]
+    },
+    {
+      category: '推理与服务',
+      tags: 'hot system',
+      note: ['KV Cache', './notes/03_推理与优化/09_KV_Cache.md'],
+      questions: [
+        'Prefill 阶段为什么更像计算密集，Decode 阶段为什么更像内存带宽受限？',
+        'KV Cache 的显存公式如何估算？',
+        '为什么 GQA/MQA 可以降低 KV Cache 显存？',
+        'PagedAttention 如何减少 KV Cache 碎片？',
+        'Continuous batching 和普通 batching 的区别是什么？',
+        'Speculative decoding 什么时候收益不明显？',
+        'TTFT、TPOT、TPS、QPS 分别衡量什么？',
+        '为什么首 token 慢和输出 token 慢要分开排查？',
+        'FlashAttention 是精确 attention 还是近似 attention？',
+        '模型 serving 中队列等待会如何影响 P99 延迟？',
+        '吞吐优先和低延迟优先的调度策略如何不同？',
+        '多 GPU 推理中 tensor parallel 和 pipeline parallel 如何取舍？'
+      ]
+    },
+    {
+      category: 'RAG 与检索',
+      tags: 'hot system',
+      note: ['RAG', './notes/05_前沿专题/14_RAG.md'],
+      questions: [
+        'RAG 离线索引和在线查询分别包含哪些步骤？',
+        'Chunk size 过大或过小分别会导致什么问题？',
+        '为什么 chunk overlap 不是越大越好？',
+        'Metadata 在企业 RAG 中为什么关键？',
+        'BM25 为什么仍然有价值？',
+        'Hybrid Search 中 RRF 融合如何理解？',
+        'Reranker 为什么通常比 bi-encoder 慢但更准？',
+        'Query rewrite 什么时候会伤害召回？',
+        'HyDE 的思想是什么，适合什么场景？',
+        'GraphRAG 适合解决哪类多跳或全局问题？',
+        '表格类文档做 RAG 有哪些特殊处理？',
+        'PDF 解析失败会如何传导到最终答案？',
+        '如何做 citation accuracy 评估？',
+        '如果正确文档在 Top20 不在 Top5，该优化哪一层？',
+        '如果 TopK 文档正确但答案错了，下一步查什么？'
+      ]
+    },
+    {
+      category: 'Embedding 与向量库',
+      tags: 'system',
+      note: ['Embedding 与向量检索', './notes/06_工程实践/03_Embedding与向量检索.md'],
+      questions: [
+        'Embedding 模型维度越高一定越好吗？',
+        '余弦相似度、点积、L2 距离如何选择？',
+        '向量归一化会影响什么？',
+        'HNSW 的 M 和 efSearch 大致影响什么？',
+        'IVF、PQ 适合什么规模和延迟要求？',
+        '为什么只看 MTEB 排名不足以选企业 embedding？',
+        '领域词、型号、编号为什么 dense retrieval 容易漏？',
+        '多语言 RAG 如何选择 embedding？',
+        'Embedding 模型升级后如何重建索引？',
+        '向量库如何做多租户隔离？'
+      ]
+    },
+    {
+      category: 'Agent 与工具调用',
+      tags: '2026 system',
+      note: ['Agent', './notes/05_前沿专题/15_Agent.md'],
+      questions: [
+        'Agent 和 workflow 的区别是什么？',
+        'ReAct 中 Thought 是否应该暴露给用户？',
+        '工具 schema 设计不清会导致什么问题？',
+        'Function calling 的参数校验应放在哪里？',
+        'Agent 如何避免无限循环？',
+        'Plan-and-Execute 相比 ReAct 的优势和代价是什么？',
+        '多 Agent 协作什么时候是过度设计？',
+        '工具调用失败如何重试、降级或转人工？',
+        'Agent 记忆应该如何分层？',
+        'MCP 解决了工具接入中的什么标准化问题？',
+        'Agent 执行高风险动作为什么需要 human-in-the-loop？',
+        '如何评估 Agent 任务成功率？'
+      ]
+    },
+    {
+      category: 'Prompt 与安全',
+      tags: 'hot system',
+      note: ['LLM 安全与红队', './notes/06_工程实践/06_LLM安全与红队.md'],
+      questions: [
+        'Zero-shot、Few-shot、CoT 的适用边界是什么？',
+        '为什么 few-shot 示例顺序会影响结果？',
+        '生产 prompt 应该如何版本管理？',
+        '结构化输出为什么不能只靠“请输出 JSON”？',
+        'Prompt injection 和 jailbreak 有什么区别？',
+        '间接 prompt injection 为什么在 RAG/Agent 中更危险？',
+        'System prompt 能否当作安全边界？',
+        '如何设计红队测试集覆盖越权、泄露和工具滥用？',
+        '敏感信息检测应该在输入、输出还是日志层做？',
+        '为什么安全策略不能只放在 prompt 里？',
+        '如何防止 RAG 文档中的恶意指令被模型执行？',
+        '如何记录安全审计 trace？'
+      ]
+    },
+    {
+      category: '评估与 LLMOps',
+      tags: 'system',
+      note: ['评估框架与 Harness', './notes/05_前沿专题/21_评估框架与Harness.md'],
+      questions: [
+        '离线评估和线上 A/B 测试各自解决什么问题？',
+        'LLM-as-Judge 有哪些偏差？',
+        '如何构建企业内部 golden set？',
+        'MMLU、GSM8K、HumanEval、MT-Bench 分别测什么？',
+        'Benchmark contamination 怎么发现？',
+        'RAG 评估为什么要分检索指标和生成指标？',
+        '模型升级前需要跑哪些回归测试？',
+        'Badcase 如何进入数据闭环？',
+        '线上监控应该记录哪些字段？',
+        '模型网关如何做成本归因？',
+        '降级、熔断、限流在 LLM 应用中如何设计？',
+        'Prompt 改动为什么也需要版本回滚？'
+      ]
+    },
+    {
+      category: '系统设计与项目',
+      tags: 'hot system',
+      note: ['LLM 应用架构与 LLMOps', './notes/06_工程实践/01_LLM应用架构与LLMOps.md'],
+      questions: [
+        '设计一个企业知识库智能问答系统，你会如何拆模块？',
+        '设计一个技术支持工单助手，如何判断转人工？',
+        '设计一个模型网关，如何支持多模型路由和预算控制？',
+        '设计一个多租户 RAG 系统，如何保证权限隔离？',
+        '设计一个代码库问答助手，如何做 repo 级检索？',
+        '设计一个 RAG 评估平台，如何接入 badcase 回流？',
+        '设计一个 Agent 运维助手，如何限制命令执行范围？',
+        '设计一个长文档分析系统，如何控制成本和引用准确率？',
+        '你的项目如何证明不是 demo？',
+        '如果 API 超时，你的系统如何降级？',
+        '如何向面试官解释你的项目商业价值？',
+        '如何把用户反馈转成可执行的迭代任务？'
+      ]
+    }
+  ];
 
   const mockQuestions = [
     {
@@ -2386,9 +2644,6 @@
   ];
   let currentMock = mockQuestions[0];
 
-  totalCount.textContent = qaCards.length;
-  visibleCount.textContent = qaCards.length;
-
   function toGithubNotesUrl(href) {
     if (!href.startsWith('./notes/')) return href;
     const cleanPath = href.replace('./', '');
@@ -2397,6 +2652,61 @@
 
   function renderLinks(links) {
     return links.map(([label, href]) => `<a href="${toGithubNotesUrl(href)}" target="_blank" rel="noopener noreferrer">${label}</a>`).join('');
+  }
+
+  function renderTagBadges(tags) {
+    const tagList = String(tags || '').split(/\s+/).filter(Boolean);
+    const labels = {
+      hot: ['高频', 'tag-hot'],
+      '2026': ['前沿', 'tag-2026'],
+      system: ['工程', 'tag-system']
+    };
+    return tagList.map(tag => {
+      const [label, className] = labels[tag] || [tag, 'tag-system'];
+      return `<span class="tag ${className}">${label}</span>`;
+    }).join('');
+  }
+
+  function answerTemplate(category, links) {
+    return `
+      <strong>考察点：${escapeHtml(category)}</strong><br>
+      回答时按 <code>定义 -> 原理 -> 工程取舍 -> 常见坑 -> 指标</code> 展开；如果结合项目，说明你如何记录 trace、做回归评估和定位 badcase。<br><br>
+      <strong>推荐复习：</strong>
+      <div class="weak-links">${renderLinks(links)}</div>
+    `;
+  }
+
+  function renderPublicQuestions() {
+    const container = document.getElementById('publicQuestionList');
+    if (!container) return;
+    let index = 1;
+    container.innerHTML = publicQuestionGroups.map(group => {
+      const links = [group.note];
+      return group.questions.map(question => {
+        const card = `
+          <div class="qa-card public-qa-card" data-tags="${escapeHtml(group.tags)}">
+            <div class="qa-question" onclick="toggleCard(this)">
+              <div class="qa-q-badge">Q</div>
+              <div class="qa-q-text">${escapeHtml(question)}${renderTagBadges(group.tags)}</div>
+              <div class="qa-chevron">▼</div>
+            </div>
+            <div class="qa-answer">
+              ${answerTemplate(group.category, links)}
+            </div>
+          </div>
+        `;
+        index += 1;
+        return card;
+      }).join('');
+    }).join('');
+  }
+
+  function refreshQaCollections() {
+    qaCards = Array.from(document.querySelectorAll('.qa-card'));
+    contentSections = Array.from(document.querySelectorAll('main > div[id]')).filter(section => section.querySelector('.qa-card'));
+    totalCount.textContent = qaCards.length;
+    visibleCount.textContent = qaCards.length;
+    document.querySelectorAll('.stat-card .stat-value')[0].textContent = `${qaCards.length}+`;
   }
 
   function escapeHtml(text) {
@@ -2842,8 +3152,11 @@
     });
   });
 
+  renderPublicQuestions();
+  refreshQaCollections();
   renderWeaknessTest();
   updateAuthUi();
+  applyFilters();
   pickMockQuestion();
 </script>
 </body>
