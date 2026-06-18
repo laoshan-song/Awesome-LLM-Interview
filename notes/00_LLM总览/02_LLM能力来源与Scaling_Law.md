@@ -10,6 +10,14 @@
 
 ---
 
+## 外部图解：Scaling Law 曲线
+
+![Scaling Laws 原论文图：模型规模、数据和计算量与损失的幂律关系](https://ar5iv.labs.arxiv.org/html/2001.08361/assets/x1.png)
+
+> 图源：[Scaling Laws for Neural Language Models](https://arxiv.org/abs/2001.08361)。这张图适合解释为什么模型规模、数据规模和计算预算扩大时，loss 会呈现可预测的下降趋势。
+
+---
+
 ## 一句话理解
 
 LLM 的能力主要来自三件事：
@@ -257,3 +265,6 @@ SFT / RLHF / DPO 的作用是：
 | 📖 DeepMind / Paper | [Chinchilla: Training Compute-Optimal LLMs](https://arxiv.org/abs/2203.15556) | 理解为什么“更多 token + 合适参数量”比单纯堆参数重要 |
 | 📺 YouTube | [李沐论文精读：Scaling Law / Chinchilla](https://www.bilibili.com/video/BV1cF411p7R5/) | 中文论文精读入口，可配合原文看 |
 | 📖 Hugging Face Papers | [Emergent Abilities of LLMs](https://huggingface.co/papers/2206.07682) | 快速查看涌现能力论文和相关模型讨论 |
+| 📺 Course | [Stanford CS336: Language Modeling from Scratch](https://stanford-cs336.github.io/spring2025/) | 系统学习预训练、scaling、数据和评估 |
+| 📖 OpenAI Blog | [Scaling Laws for Neural Language Models](https://openai.com/index/scaling-laws-for-neural-language-models/) | OpenAI 官方 scaling law 背景文章 |
+| 📖 DeepMind Blog | [Compute-optimal LLM training](https://www.deepmind.com/blog/an-empirical-analysis-of-compute-optimal-large-language-model-training) | Chinchilla 官方解读 |

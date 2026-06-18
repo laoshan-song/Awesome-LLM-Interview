@@ -10,6 +10,14 @@
 
 ---
 
+## 外部图解：MTEB 多任务评估
+
+![MTEB 原论文图：Embedding 模型的多任务评估体系](https://ar5iv.labs.arxiv.org/html/2210.07316/assets/x1.png)
+
+> 图源：[MTEB: Massive Text Embedding Benchmark](https://arxiv.org/abs/2210.07316)。虽然 MTEB 主要评估 embedding，这张图很适合说明“评估不是单一任务分数，而是跨任务、跨数据集的矩阵”。
+
+---
+
 ## 为什么需要统一评估框架
 
 **细化理解：** 统一评估框架的价值是让模型、prompt、数据和系统改动可以在同一批任务上可复现比较。它解决的是评测流程标准化，不自动保证评测集适合业务。企业里常把公开 benchmark 当粗筛，把自建业务集当主指标，把线上 A/B 和人工抽检当最终确认。
@@ -320,3 +328,7 @@ flowchart TD
 |------|------|------|
 | 📺 B站 | [浙江大学《大模型原理与技术》6-2 RAG知识检索](https://www.bilibili.com/video/BV1xPFNe1E6o/) | 1.3万播放，学术视角的评估与检索讲解 |
 | 📺 B站 | [大模型SFT/RAG调优效率翻倍！自动生成测试集+自动化评估](https://www.bilibili.com/video/BV1CRrVB7Eb4/) | 1.4万播放，评估工程化实践 |
+| 📖 Hugging Face Docs | [Evaluate](https://huggingface.co/docs/evaluate/index) | 统一指标计算和评估脚本工具 |
+| 📖 OpenCompass Docs | [OpenCompass documentation](https://opencompass.readthedocs.io/) | 中文和多模型评估生态入口 |
+| 📖 EleutherAI | [lm-evaluation-harness tasks](https://github.com/EleutherAI/lm-evaluation-harness/tree/main/lm_eval/tasks) | 查看公开 benchmark 的任务定义、prompt 和 metric |
+| 📖 OpenAI Cookbook | [Evals getting started](https://cookbook.openai.com/examples/evaluation/getting_started_with_openai_evals) | 面向应用的回归评估和自动评测示例 |

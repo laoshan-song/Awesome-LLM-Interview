@@ -269,6 +269,8 @@ Agent 的风险比普通聊天更高，因为它能执行动作。
 - [Prompt Injection Attacks against LLM-Integrated Applications](https://arxiv.org/abs/2306.05499)：早期系统讨论 LLM 应用中的 prompt injection 风险。
 - [AgentDojo: A Dynamic Environment to Evaluate Attacks and Defenses for LLM Agents](https://arxiv.org/abs/2406.13352)：面向 Agent 的攻击和防御评估环境。
 - [From Prompt Injections to Protocol Exploits: Threats in LLM-Powered AI Agents Workflows](https://arxiv.org/abs/2506.23260)：Agent 工作流、工具和协议层威胁综述。
+- [Not what you've signed up for: Compromising Real-World LLM-Integrated Applications with Indirect Prompt Injection](https://arxiv.org/abs/2302.12173)：间接提示注入经典论文，适合理解网页/邮件/文档作为攻击载体。
+- [The Instruction Hierarchy: Training LLMs to Prioritize Privileged Instructions](https://arxiv.org/abs/2404.13208)：OpenAI 关于指令层级和 prompt injection 防御的论文。
 
 ---
 
@@ -280,6 +282,9 @@ Agent 的风险比普通聊天更高，因为它能执行动作。
 - [Microsoft AI Red Teaming resources](https://www.microsoft.com/en-us/security/blog/topic/ai-red-team/)：AI 红队实践文章入口。
 - [OpenAI Safety Best Practices](https://platform.openai.com/docs/guides/safety-best-practices)：官方安全实践参考。
 - [Anthropic: Developing a third-party testing framework for AI safety](https://www.anthropic.com/research/third-party-testing)：第三方安全评估和红队相关讨论。
+- [NVIDIA: Securing LLM Systems Against Prompt Injection](https://developer.nvidia.com/blog/securing-llm-systems-against-prompt-injection/)：工程视角的 prompt injection 防护建议。
+- [garak LLM vulnerability scanner](https://github.com/NVIDIA/garak)：开源 LLM 安全扫描工具，可用于红队测试和回归。
+- [AgentDojo GitHub](https://github.com/ethz-spylab/agentdojo)：AgentDojo 官方代码和任务集。
 
 ---
 

@@ -23,7 +23,7 @@
 ### 🔥 推荐优先看这几篇
 
 - [LLM 从输入到输出](./notes/00_LLM总览/01_LLM从输入到输出.md)：用一条链路讲清 token、embedding、Transformer、logits、解码
-- [LLM 能力来源与 Scaling Law](./notes/00_LLM总览/02_LLM能力来源与Scaling_Law.md)：解释能力从数据、参数、计算和对齐中怎么来
+- [LLM 能力来源与 Scaling Law](./notes/00_LLM总览/02_LLM能力来源与Scaling_Law.md)：解释能力从数据、参数、计算和对齐中怎么来，补 Scaling Law 论文图
 - [从训练到部署：LLM 生命周期](./notes/00_LLM总览/03_训练到部署全流程.md)：串起数据、预训练、后训练、评估、部署和反馈闭环
 - [Embedding 与向量检索](./notes/06_工程实践/03_Embedding与向量检索.md)：讲清语义检索、Hybrid Search、Rerank 和向量库选型
 - [模型网关与成本治理](./notes/06_工程实践/05_模型网关与成本治理.md)：把模型路由、缓存、降级、成本监控讲成生产系统能力
@@ -54,7 +54,7 @@
 | 编号 | 主题 | 最近更新 |
 |------|------|----------|
 | 00-01 | [LLM 从输入到输出](./notes/00_LLM总览/01_LLM从输入到输出.md) | **新增**：从 tokenization 到 decoding 的完整链路 |
-| 00-02 | [LLM 能力来源与 Scaling Law](./notes/00_LLM总览/02_LLM能力来源与Scaling_Law.md) | **新增**：解释参数、数据、计算、对齐与涌现能力 |
+| 00-02 | [LLM 能力来源与 Scaling Law](./notes/00_LLM总览/02_LLM能力来源与Scaling_Law.md) | **新增**：Scaling Law 论文图、参数/数据/计算/对齐与涌现能力 |
 | 00-03 | [从训练到部署：LLM 生命周期](./notes/00_LLM总览/03_训练到部署全流程.md) | **新增**：数据、预训练、后训练、评估、部署、监控闭环 |
 
 ### 🔤 一、基础架构
@@ -84,7 +84,7 @@
 | 编号 | 主题 | 最近更新 |
 |------|------|----------|
 | 13 | [KV Cache 原理与优化](./notes/03_推理与优化/09_KV_Cache.md) | 补充 Prefill/Decode 外部图、显存公式、GQA / PagedAttention |
-| 14 | [量化（INT8 / INT4 / GPTQ / AWQ）](./notes/03_推理与优化/10_量化.md) | 补充 GPTQ / AWQ / SmoothQuant 论文 |
+| 14 | [量化（INT8 / INT4 / GPTQ / AWQ）](./notes/03_推理与优化/10_量化.md) | 补充 AWQ 论文图、GPTQ / AWQ / SmoothQuant 论文和工具链 |
 | 15 | [解码策略（Greedy / Beam / Sampling）](./notes/03_推理与优化/11_解码策略.md) | 补充 Top-p 论文 + 场景使用建议 |
 | 16 | [推理加速（Flash Attention / vLLM / 投机采样）](./notes/03_推理与优化/12_推理加速.md) | 补充 Flash Attention / 投机采样 4 篇论文 |
 | 17 | [推理框架对比（vLLM / SGLang / llama.cpp）](./notes/03_推理与优化/13_推理框架对比.md) | **新增**：RadixAttention、GGUF量化、Disaggregated P/D、选型指南 🔥 |
@@ -103,12 +103,12 @@
 | 20 | [MoE 混合专家模型](./notes/05_前沿专题/13_MoE.md) | 补充 Mixtral / Switch Transformer 论文 |
 | 21 | [RAG 检索增强生成](./notes/05_前沿专题/14_RAG.md) | 添加 Self-RAG 论文 + LangChain 视频 |
 | 22 | [Agent 与工具调用](./notes/05_前沿专题/15_Agent.md) | 补充 ReAct 外部图、Toolformer 论文和工具调用边界 |
-| 23 | [Prompt Engineering](./notes/05_前沿专题/16_Prompt_Engineering.md) | CoT / ToT / Self-Consistency / 提示注入防御 |
+| 23 | [Prompt Engineering](./notes/05_前沿专题/16_Prompt_Engineering.md) | CoT / ToT 论文图、Self-Consistency、提示注入防御和课程链接 |
 | 24 | [大模型幻觉与评估](./notes/05_前沿专题/17_大模型幻觉与评估.md) | 幻觉分类、MMLU/HumanEval、LLM-as-Judge |
 | 25 | [推理时计算扩展（Test-Time Compute）](./notes/05_前沿专题/18_推理时计算扩展.md) | DeepSeek-R1、GRPO、PRM 全面解析 |
 | 26 | [多模态大模型（VLM）](./notes/05_前沿专题/19_多模态大模型.md) | GPT-4o/InternVL 架构、视觉编码器对比 |
 | 27 | [GraphRAG 与高级 RAG](./notes/05_前沿专题/20_GraphRAG与高级RAG.md) | GraphRAG、HyDE、Self-RAG、RAGAS 评估 |
-| 28 | [评估框架与 Harness](./notes/05_前沿专题/21_评估框架与Harness.md) | **新增**：lm-eval-harness、Open LLM Leaderboard v2、OpenCompass 🔥 |
+| 28 | [评估框架与 Harness](./notes/05_前沿专题/21_评估框架与Harness.md) | **新增**：MTEB 评估图、lm-eval-harness、Open LLM Leaderboard v2、OpenCompass 🔥 |
 | 29 | [Agent 框架与 MCP 协议](./notes/05_前沿专题/22_Agent框架与MCP.md) | **新增**：LangGraph、AutoGen、OpenAI Agents SDK、MCP/A2A 协议 🔥 |
 
 ### 🧱 六、工程实践
@@ -119,8 +119,8 @@
 | 31 | [生产 RAG 排障指南](./notes/06_工程实践/02_生产RAG排障指南.md) | **新增**：NVIDIA RAG 图、生产排障 Runbook、评估集构建 |
 | 32 | [Embedding 与向量检索](./notes/06_工程实践/03_Embedding与向量检索.md) | **新增**：SBERT 双塔图、Hybrid Search、Rerank、向量库排障 |
 | 33 | [上下文工程与长上下文应用](./notes/06_工程实践/04_上下文工程与长上下文应用.md) | **新增**：Lost in the Middle 图、上下文编排、长上下文排障 |
-| 34 | [模型网关与成本治理](./notes/06_工程实践/05_模型网关与成本治理.md) | **新增**：模型路由、缓存、限流、降级、成本归因 |
-| 35 | [LLM 安全与红队](./notes/06_工程实践/06_LLM安全与红队.md) | **新增**：Prompt Injection、RAG 权限、Agent 工具安全、审计日志 |
+| 34 | [模型网关与成本治理](./notes/06_工程实践/05_模型网关与成本治理.md) | **新增**：模型路由论文、缓存、限流、降级、成本归因 |
+| 35 | [LLM 安全与红队](./notes/06_工程实践/06_LLM安全与红队.md) | **新增**：Prompt Injection 论文、RAG 权限、Agent 工具安全、红队工具 |
 
 ---
 
@@ -175,7 +175,7 @@ git push origin feat/your-topic
 | ⚡ 升级面试速记网页（cheatsheet.html）：95 道高频考题、15 大模块，支持搜索/筛选、模拟面试诊断、薄弱点测试和 GitHub notes 跳转 |
 | 🇨🇳 新增国产模型全景：DeepSeek-V3/R1、Qwen3混合思考、GLM-4、MiniMax Lightning Attention |
 | 🔧 新增前沿框架：vLLM/SGLang/llama.cpp推理框架对比、DAPO/RLVR对齐技术、lm-eval-harness评估、LangGraph/MCP协议 |
-| 🖼️ 补充外部图解和资料链接：全库 19 张外部图、400+ 外部链接，覆盖 Transformer、RAG、KV Cache、Agent、LLMOps、Embedding、长上下文等核心主题 |
+| 🖼️ 补充外部图解和资料链接：全库 24 张外部图、450+ 外部链接，覆盖 Transformer、Scaling Law、Prompt、RAG、KV Cache、Agent、LLMOps、Embedding、量化、评估、长上下文等核心主题 |
 
 ---
 

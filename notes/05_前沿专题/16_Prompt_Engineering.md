@@ -10,6 +10,18 @@
 
 ---
 
+## 外部图解：Chain-of-Thought 与 Tree-of-Thought
+
+![Chain-of-Thought 原论文图：few-shot CoT 让模型输出中间推理步骤](https://ar5iv.labs.arxiv.org/html/2201.11903/assets/x1.png)
+
+> 图源：[Chain-of-Thought Prompting](https://arxiv.org/abs/2201.11903)。这张图适合解释 CoT 为什么能把复杂推理拆成中间步骤。
+
+![Tree of Thoughts 原论文图：多路径搜索与状态评估](https://ar5iv.labs.arxiv.org/html/2305.10601/assets/x1.png)
+
+> 图源：[Tree of Thoughts](https://arxiv.org/abs/2305.10601)。这张图适合对比 CoT 的单路径推理和 ToT 的树状搜索。
+
+---
+
 ## 一、基础范式对比
 
 ```mermaid
@@ -390,3 +402,7 @@ prompt = f"""
 |------|------|------|
 | 📖 Anthropic Docs | [Prompt engineering overview](https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview) | 官方 prompt engineering 原则与示例 |
 | 📖 LangGraph Docs | [LangGraph concepts](https://langchain-ai.github.io/langgraph/concepts/) | 官方框架概念文档，补充 Agent 编排视角 |
+| 📺 DeepLearning.AI | [ChatGPT Prompt Engineering for Developers](https://www.deeplearning.ai/short-courses/chatgpt-prompt-engineering-for-developers/) | Andrew Ng 与 OpenAI 合作课程，适合快速建立 prompt 工程实践框架 |
+| 📖 OpenAI Cookbook | [Prompt engineering guide](https://cookbook.openai.com/examples/gpt4-1_prompting_guide) | prompt 组织、工具调用和长上下文建议 |
+| 📖 Anthropic Docs | [Extended thinking tips](https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/extended-thinking-tips) | 推理模型和长思考预算的 prompt 写法 |
+| 📺 YouTube | [LangChain: LangGraph Tutorials](https://www.youtube.com/@LangChain/search?query=langgraph) | Agent/Graph 编排相关视频入口 |
