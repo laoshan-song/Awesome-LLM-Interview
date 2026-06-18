@@ -45,6 +45,12 @@
 
 > 如果你觉得有用，点个 ⭐ Star 是对我最大的鼓励！
 
+### 🧪 真实面试题型
+
+> **[→ 打开真实 LLM 面试题型整理](./real_interview_questions.md)**
+>
+> 按 LLM 基础、训练对齐、推理部署、RAG、Agent、Prompt、安全、评估、系统设计和项目追问整理真实高频问法，并链接到对应 notes。
+
 ---
 
 ## 📚 知识点目录
@@ -176,6 +182,7 @@ git push origin feat/your-topic
 | 🇨🇳 新增国产模型全景：DeepSeek-V3/R1、Qwen3混合思考、GLM-4、MiniMax Lightning Attention |
 | 🔧 新增前沿框架：vLLM/SGLang/llama.cpp推理框架对比、DAPO/RLVR对齐技术、lm-eval-harness评估、LangGraph/MCP协议 |
 | 🖼️ 补充外部图解和资料链接：全库 24 张外部图、450+ 外部链接，覆盖 Transformer、Scaling Law、Prompt、RAG、KV Cache、Agent、LLMOps、Embedding、量化、评估、长上下文等核心主题 |
+| 🧪 新增真实 LLM 面试题型整理：覆盖基础原理、RAG、LoRA/RLHF/DPO、推理部署、Agent、安全、评估、系统设计和项目追问 |
 
 ---
 
