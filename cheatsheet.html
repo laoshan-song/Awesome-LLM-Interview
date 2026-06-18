@@ -306,6 +306,92 @@
       color: var(--accent2); text-decoration: none;
     }
 
+    .workspace {
+      display: grid; grid-template-columns: .85fr 1.15fr; gap: 14px;
+      margin: 0 0 24px;
+    }
+    .workspace-card {
+      background: linear-gradient(180deg, rgba(26,29,46,.9), rgba(15,17,23,.72));
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 20px; padding: 18px;
+      box-shadow: 0 18px 52px rgba(0,0,0,.18);
+    }
+    .workspace-card h2 {
+      font-size: 1.05rem; letter-spacing: -.02em; margin-bottom: 8px;
+    }
+    .workspace-card p { color: var(--text2); font-size: .84rem; line-height: 1.7; }
+    .auth-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
+    .field {
+      width: 100%; border-radius: 12px; border: 1px solid rgba(45,49,84,.95);
+      background: rgba(10,12,20,.7); color: var(--text);
+      padding: 11px 12px; outline: none; font-family: inherit;
+    }
+    .field:focus { border-color: var(--accent2); box-shadow: 0 0 0 4px rgba(94,234,212,.1); }
+    .auth-actions, .memory-actions {
+      display: flex; gap: 9px; flex-wrap: wrap; align-items: center; margin-top: 11px;
+    }
+    .user-chip {
+      display: none; align-items: center; gap: 8px;
+      padding: 8px 11px; border-radius: 999px;
+      background: rgba(94,234,212,.08); border: 1px solid rgba(94,234,212,.22);
+      color: var(--accent2); font-size: .82rem; font-weight: 800;
+    }
+    .memory-form { display: grid; gap: 9px; margin-top: 12px; }
+    .memory-form textarea { min-height: 86px; resize: vertical; }
+    .memory-toolbar {
+      display: grid; grid-template-columns: 1fr auto; gap: 9px; margin: 12px 0 8px;
+    }
+    .memory-list { display: grid; gap: 9px; max-height: 290px; overflow: auto; padding-right: 3px; }
+    .memory-item {
+      border: 1px solid rgba(255,255,255,.08); border-radius: 14px;
+      background: rgba(37,40,64,.45); padding: 12px;
+    }
+    .memory-item strong { color: var(--text); display: block; margin-bottom: 5px; }
+    .memory-meta { color: var(--text2); font-size: .76rem; margin-bottom: 7px; }
+    .memory-body {
+      color: var(--text2); font-size: .84rem; line-height: 1.65;
+      white-space: pre-wrap;
+    }
+    .memory-empty {
+      color: var(--text2); border: 1px dashed rgba(148,163,184,.32);
+      border-radius: 14px; padding: 16px; text-align: center; font-size: .84rem;
+    }
+    .paper-panel {
+      margin: 0 0 26px; padding: 18px;
+      border: 1px solid rgba(124,106,247,.24); border-radius: 22px;
+      background:
+        radial-gradient(circle at 5% 0%, rgba(124,106,247,.18), transparent 34%),
+        linear-gradient(180deg, rgba(26,29,46,.82), rgba(15,17,23,.72));
+      box-shadow: 0 20px 62px rgba(0,0,0,.2);
+      scroll-margin-top: 110px;
+    }
+    .paper-head {
+      display: flex; justify-content: space-between; gap: 14px; align-items: flex-end;
+      margin-bottom: 14px;
+    }
+    .paper-head h2 { font-size: 1.24rem; letter-spacing: -.03em; }
+    .paper-head p { color: var(--text2); font-size: .86rem; line-height: 1.7; max-width: 680px; }
+    .paper-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    .paper-card {
+      position: relative; overflow: hidden;
+      border: 1px solid rgba(255,255,255,.08); border-radius: 16px;
+      background: rgba(15,17,23,.58); padding: 14px;
+    }
+    .paper-card::before {
+      content: ''; position: absolute; inset: 0 auto 0 0; width: 4px;
+      background: linear-gradient(180deg, var(--accent), var(--accent2));
+    }
+    .paper-card h3 { font-size: .96rem; margin-bottom: 7px; padding-left: 4px; }
+    .paper-meta { color: var(--accent2); font-size: .76rem; font-weight: 800; margin-bottom: 8px; }
+    .paper-card p { color: var(--text2); font-size: .84rem; line-height: 1.68; }
+    .paper-card a {
+      display: inline-block; margin-top: 10px; color: var(--accent2);
+      text-decoration: none; border-bottom: 1px dashed rgba(94,234,212,.55);
+      font-size: .82rem; font-weight: 800;
+    }
+    .mini-danger { color: var(--red); border-color: rgba(248,113,113,.35); }
+    .mini-danger:hover { color: #fecaca; border-color: var(--red); }
+
     /* Footer */
     footer { text-align: center; padding: 40px; color: var(--text2); font-size: 0.82rem;
              border-top: 1px solid var(--border); }
@@ -313,6 +399,8 @@
     @media (max-width: 980px) {
       .stats-grid, .interview-map { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .diagnostic-panel { grid-template-columns: 1fr; }
+      .workspace { grid-template-columns: 1fr; }
+      .paper-grid { grid-template-columns: 1fr; }
     }
 
     @media (max-width: 768px) {
@@ -322,6 +410,7 @@
       .header-actions .pill { display: none; }
       .hero { padding: 22px; border-radius: 18px; }
       .stats-grid, .interview-map { grid-template-columns: 1fr; }
+      .auth-grid, .memory-toolbar { grid-template-columns: 1fr; }
       .qa-answer { padding-left: 20px; }
       .section-count { display: none; }
     }
@@ -335,6 +424,7 @@
     <div class="header-meta">95 道高频考题 · 覆盖 15 大模块 · 持续更新</div>
   </div>
   <div class="header-actions">
+    <div class="user-chip" id="headerUserChip">未登录</div>
     <div class="pill">2026 前沿版</div>
     <a class="github-link" href="https://github.com/laoshan-song/Awesome-LLM-Interview" target="_blank">⭐ GitHub</a>
   </div>
@@ -359,6 +449,7 @@
       <a href="#deploy">🚀 LLM 部署与推理加速</a>
       <a href="#advanced-retrieval">🔍 高级检索与文档处理</a>
       <a href="#production">🧱 生产化与安全治理</a>
+      <a href="#papers">📄 核心论文路线图</a>
     </div>
   </nav>
 
@@ -372,6 +463,168 @@
         <div class="stat-card"><div class="stat-value">15</div><div class="stat-label">个知识模块</div></div>
         <div class="stat-card"><div class="stat-value">30min</div><div class="stat-label">面试前冲刺</div></div>
         <div class="stat-card"><div class="stat-value">2026</div><div class="stat-label">前沿趋势补充</div></div>
+      </div>
+    </section>
+
+    <section class="workspace" id="workspace">
+      <div class="workspace-card">
+        <div class="diagnostic-kicker">Local Account</div>
+        <h2>账号与学习状态</h2>
+        <p>静态网页版本使用浏览器本地存储：账号、密码哈希、个人 notes、模拟面试记录都只保存在当前浏览器。</p>
+        <div class="auth-grid" id="authForm">
+          <input class="field" id="authUsername" type="text" placeholder="用户名，例如 llm_interviewer" autocomplete="username">
+          <input class="field" id="authPassword" type="password" placeholder="密码" autocomplete="current-password">
+        </div>
+        <div class="auth-actions">
+          <button class="ctrl-btn" type="button" id="loginBtn">登录</button>
+          <button class="ctrl-btn" type="button" id="registerBtn">注册</button>
+          <button class="ctrl-btn mini-danger" type="button" id="logoutBtn">退出</button>
+        </div>
+        <div class="result-box" id="authStatus"></div>
+      </div>
+
+      <div class="workspace-card">
+        <div class="diagnostic-kicker">Memory Notes</div>
+        <h2>个人记忆 notes</h2>
+        <p>记录薄弱点、面试回答和复习链接。登录后会按账号隔离保存，可从模拟面试或当前展开题目一键写入。</p>
+        <div class="memory-form">
+          <input class="field" id="noteTitle" type="text" placeholder="标题：例如 KV Cache 显存估算没讲清">
+          <select class="field" id="noteTopic">
+            <option value="overview">LLM 总览</option>
+            <option value="architecture">Transformer / 架构</option>
+            <option value="training">训练与对齐</option>
+            <option value="inference">推理与优化</option>
+            <option value="rag">RAG / 检索</option>
+            <option value="agent">Agent / 工具调用</option>
+            <option value="eval">评估与幻觉</option>
+            <option value="ops">工程实践 / 安全</option>
+          </select>
+          <textarea class="field" id="noteContent" placeholder="写下你的复习 notes、错题原因、下次回答模板..."></textarea>
+        </div>
+        <div class="memory-actions">
+          <button class="ctrl-btn" type="button" id="saveNoteBtn">保存 note</button>
+          <button class="ctrl-btn" type="button" id="saveMockNoteBtn">保存模拟回答</button>
+          <button class="ctrl-btn" type="button" id="saveOpenQaBtn">保存当前展开题</button>
+        </div>
+        <div class="memory-toolbar">
+          <input class="field" id="memorySearch" type="search" placeholder="搜索我的 notes">
+          <button class="ctrl-btn mini-danger" type="button" id="clearNotesBtn">清空 notes</button>
+        </div>
+        <div class="memory-list" id="memoryList"></div>
+      </div>
+    </section>
+
+    <section class="paper-panel" id="papers">
+      <div class="paper-head">
+        <div>
+          <div class="diagnostic-kicker">Original Papers</div>
+          <h2>核心论文路线图：面试官真正会追问的原始出处</h2>
+        </div>
+        <p>按“论文 -> 面试知识点 -> 工程追问”整理。复习时不要只背标题，重点讲清为什么提出、解决了什么瓶颈、代价是什么、线上系统如何落地。</p>
+      </div>
+      <div class="paper-grid">
+        <article class="paper-card">
+          <div class="paper-meta">基础架构 · 2017</div>
+          <h3>Attention Is All You Need</h3>
+          <p>Transformer、Self-Attention、Multi-Head、Position Encoding 的源头。必会追问：为什么除以 sqrt(d_k)、复杂度为什么是 O(n²)、Decoder-only 为什么适合生成。</p>
+          <a href="https://arxiv.org/abs/1706.03762" target="_blank" rel="noopener noreferrer">打开原论文</a>
+        </article>
+        <article class="paper-card">
+          <div class="paper-meta">Scaling Law · 2020</div>
+          <h3>Scaling Laws for Neural Language Models</h3>
+          <p>解释参数量、数据量、计算量如何共同影响 loss。面试重点：为什么“只堆参数”不够、Chinchilla 后为什么更重视 token 配比。</p>
+          <a href="https://arxiv.org/abs/2001.08361" target="_blank" rel="noopener noreferrer">打开原论文</a>
+        </article>
+        <article class="paper-card">
+          <div class="paper-meta">Scaling Law · 2022</div>
+          <h3>Training Compute-Optimal Large Language Models</h3>
+          <p>Chinchilla 论文，强调 compute-optimal 下模型和训练 token 要一起扩。追问：同预算下 70B 少 token 与较小模型多 token 如何取舍。</p>
+          <a href="https://arxiv.org/abs/2203.15556" target="_blank" rel="noopener noreferrer">打开原论文</a>
+        </article>
+        <article class="paper-card">
+          <div class="paper-meta">位置编码 · 2021</div>
+          <h3>RoFormer: Rotary Position Embedding</h3>
+          <p>RoPE 的原始论文，适合解释相对位置信息如何进入 Q/K 旋转。追问：长上下文外推、NTK scaling、YaRN 为什么需要。</p>
+          <a href="https://arxiv.org/abs/2104.09864" target="_blank" rel="noopener noreferrer">打开原论文</a>
+        </article>
+        <article class="paper-card">
+          <div class="paper-meta">推理优化 · 2023</div>
+          <h3>GQA: Training Generalized Multi-Query Transformer Models</h3>
+          <p>GQA 在 MHA 和 MQA 之间折中，用更少 KV head 降低 KV Cache 显存，同时尽量保质量。追问：为什么只减少 K/V head 能提速。</p>
+          <a href="https://arxiv.org/abs/2305.13245" target="_blank" rel="noopener noreferrer">打开原论文</a>
+        </article>
+        <article class="paper-card">
+          <div class="paper-meta">推理优化 · 2022/2023</div>
+          <h3>FlashAttention / FlashAttention-2</h3>
+          <p>核心不是近似 attention，而是 IO-aware tiling，减少 HBM 读写。追问：它降低显存占用还是计算复杂度？为什么长序列收益明显。</p>
+          <a href="https://arxiv.org/abs/2205.14135" target="_blank" rel="noopener noreferrer">FlashAttention</a>
+          <a href="https://arxiv.org/abs/2307.08691" target="_blank" rel="noopener noreferrer">FlashAttention-2</a>
+        </article>
+        <article class="paper-card">
+          <div class="paper-meta">Serving · 2023</div>
+          <h3>vLLM / PagedAttention</h3>
+          <p>把 KV Cache 管理类比 OS paging，减少碎片并支持 continuous batching。追问：为什么显存够但吞吐上不去、TTFT/TPOT 怎么拆。</p>
+          <a href="https://arxiv.org/abs/2309.06180" target="_blank" rel="noopener noreferrer">打开原论文</a>
+        </article>
+        <article class="paper-card">
+          <div class="paper-meta">微调 · 2021/2023</div>
+          <h3>LoRA / QLoRA</h3>
+          <p>LoRA 用低秩增量矩阵做参数高效微调；QLoRA 进一步用 4-bit NF4、double quantization、paged optimizer 降显存。</p>
+          <a href="https://arxiv.org/abs/2106.09685" target="_blank" rel="noopener noreferrer">LoRA</a>
+          <a href="https://arxiv.org/abs/2305.14314" target="_blank" rel="noopener noreferrer">QLoRA</a>
+        </article>
+        <article class="paper-card">
+          <div class="paper-meta">对齐 · 2022/2023</div>
+          <h3>InstructGPT / DPO</h3>
+          <p>InstructGPT 是 RLHF 三阶段经典来源；DPO 将偏好优化转成简单分类式 loss。追问：Reward Model、PPO、KL penalty、reference model 各自作用。</p>
+          <a href="https://arxiv.org/abs/2203.02155" target="_blank" rel="noopener noreferrer">InstructGPT</a>
+          <a href="https://arxiv.org/abs/2305.18290" target="_blank" rel="noopener noreferrer">DPO</a>
+        </article>
+        <article class="paper-card">
+          <div class="paper-meta">Prompt · 2022</div>
+          <h3>Chain-of-Thought / Self-Consistency</h3>
+          <p>CoT 解释“让模型写中间推理步骤”为何提升复杂推理；Self-Consistency 用多路径采样投票提升稳定性。追问：为什么小模型不一定有效。</p>
+          <a href="https://arxiv.org/abs/2201.11903" target="_blank" rel="noopener noreferrer">CoT</a>
+          <a href="https://arxiv.org/abs/2203.11171" target="_blank" rel="noopener noreferrer">Self-Consistency</a>
+        </article>
+        <article class="paper-card">
+          <div class="paper-meta">RAG · 2020/2023</div>
+          <h3>RAG / Self-RAG</h3>
+          <p>RAG 引入外部非参数记忆；Self-RAG 强调按需检索和自我反思。追问：为什么 RAG 不能完全消除幻觉、什么时候该检索。</p>
+          <a href="https://arxiv.org/abs/2005.11401" target="_blank" rel="noopener noreferrer">RAG</a>
+          <a href="https://arxiv.org/abs/2310.11511" target="_blank" rel="noopener noreferrer">Self-RAG</a>
+        </article>
+        <article class="paper-card">
+          <div class="paper-meta">Embedding · 2022</div>
+          <h3>MTEB: Massive Text Embedding Benchmark</h3>
+          <p>Embedding 模型不能只看 STS，MTEB 覆盖检索、聚类、分类、重排等多任务。追问：企业 RAG 选 embedding 为什么不能只看榜单。</p>
+          <a href="https://arxiv.org/abs/2210.07316" target="_blank" rel="noopener noreferrer">打开原论文</a>
+        </article>
+        <article class="paper-card">
+          <div class="paper-meta">长上下文 · 2023</div>
+          <h3>Lost in the Middle</h3>
+          <p>证明长上下文模型也可能忽略中间位置的关键信息。追问：上下文排序、引用重排、摘要压缩和 RAG 是否能替代长上下文。</p>
+          <a href="https://arxiv.org/abs/2307.03172" target="_blank" rel="noopener noreferrer">打开原论文</a>
+        </article>
+        <article class="paper-card">
+          <div class="paper-meta">Agent · 2022/2023</div>
+          <h3>ReAct / Toolformer</h3>
+          <p>ReAct 把 reasoning trace 和 action 交替组织；Toolformer 研究模型如何学习调用工具。追问：工具 schema、失败恢复、无限循环和安全白名单。</p>
+          <a href="https://arxiv.org/abs/2210.03629" target="_blank" rel="noopener noreferrer">ReAct</a>
+          <a href="https://arxiv.org/abs/2302.04761" target="_blank" rel="noopener noreferrer">Toolformer</a>
+        </article>
+        <article class="paper-card">
+          <div class="paper-meta">RAG 评估 · 2023</div>
+          <h3>RAGAS</h3>
+          <p>把 RAG 评估拆成 context precision/recall、faithfulness、answer relevancy 等维度。追问：如何区分检索失败和生成失败。</p>
+          <a href="https://arxiv.org/abs/2309.15217" target="_blank" rel="noopener noreferrer">打开原论文</a>
+        </article>
+        <article class="paper-card">
+          <div class="paper-meta">代码 Agent · 2023</div>
+          <h3>SWE-bench</h3>
+          <p>用真实 GitHub issue 评估 LLM 修 bug 能力。追问：为什么 HumanEval 高不代表能做真实软件工程、repo 级上下文如何检索。</p>
+          <a href="https://arxiv.org/abs/2310.06770" target="_blank" rel="noopener noreferrer">打开原论文</a>
+        </article>
       </div>
     </section>
 
@@ -2022,7 +2275,11 @@
   const totalCount = document.getElementById('totalCount');
   const activeFilterText = document.getElementById('activeFilterText');
   const emptyState = document.getElementById('emptyState');
+  const storagePrefix = 'awesome_llm_interview_';
+  const usersKey = `${storagePrefix}users`;
+  const sessionKey = `${storagePrefix}session`;
   let activeTag = '';
+  let currentUser = localStorage.getItem(sessionKey) || '';
 
   const mockQuestions = [
     {
@@ -2078,6 +2335,42 @@
         ['LLM 安全与红队', './notes/06_工程实践/06_LLM安全与红队.md'],
         ['Agent 框架与 MCP', './notes/05_前沿专题/22_Agent框架与MCP.md']
       ]
+    },
+    {
+      q: 'FlashAttention 解决的是计算复杂度问题还是显存 IO 问题？为什么长上下文收益明显？',
+      topic: '论文追问',
+      keywords: ['io', 'tiling', 'hbm', 'sram', 'attention', '显存', '长序列', '精确'],
+      links: [
+        ['推理加速', './notes/03_推理与优化/12_推理加速.md'],
+        ['Transformer 架构', './notes/01_基础架构/03_Transformer架构.md']
+      ]
+    },
+    {
+      q: 'LoRA 和 QLoRA 分别降低了什么成本？rank、NF4、double quantization 怎么解释？',
+      topic: '论文追问',
+      keywords: ['低秩', 'rank', 'adapter', 'nf4', '量化', '显存', '梯度', '冻结'],
+      links: [
+        ['LoRA 与 PEFT', './notes/02_训练与对齐/08_LoRA与PEFT.md'],
+        ['量化', './notes/03_推理与优化/10_量化.md']
+      ]
+    },
+    {
+      q: 'RAGAS 为什么要把 RAG 评估拆成 context precision、context recall、faithfulness？',
+      topic: '论文追问',
+      keywords: ['context', 'precision', 'recall', 'faithfulness', 'answer', '检索', '生成', '评估'],
+      links: [
+        ['生产 RAG 排障指南', './notes/06_工程实践/02_生产RAG排障指南.md'],
+        ['评估框架与 Harness', './notes/05_前沿专题/21_评估框架与Harness.md']
+      ]
+    },
+    {
+      q: 'Lost in the Middle 说明长上下文模型有什么风险？RAG 上下文排序怎么改？',
+      topic: '论文追问',
+      keywords: ['长上下文', '中间', '位置', '排序', 'rerank', '引用', '摘要', '检索'],
+      links: [
+        ['上下文工程与长上下文应用', './notes/06_工程实践/04_上下文工程与长上下文应用.md'],
+        ['RAG', './notes/05_前沿专题/14_RAG.md']
+      ]
     }
   ];
 
@@ -2106,6 +2399,245 @@
     return links.map(([label, href]) => `<a href="${toGithubNotesUrl(href)}" target="_blank" rel="noopener noreferrer">${label}</a>`).join('');
   }
 
+  function escapeHtml(text) {
+    return String(text || '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  async function hashPassword(password) {
+    if (!crypto?.subtle) {
+      let hash = 2166136261;
+      for (const char of `llm-interview:${password}`) {
+        hash ^= char.charCodeAt(0);
+        hash = Math.imul(hash, 16777619);
+      }
+      return `fallback_${(hash >>> 0).toString(16)}`;
+    }
+    const input = new TextEncoder().encode(`llm-interview:${password}`);
+    const digest = await crypto.subtle.digest('SHA-256', input);
+    return Array.from(new Uint8Array(digest)).map(byte => byte.toString(16).padStart(2, '0')).join('');
+  }
+
+  function getUsers() {
+    try {
+      return JSON.parse(localStorage.getItem(usersKey) || '{}');
+    } catch {
+      return {};
+    }
+  }
+
+  function setUsers(users) {
+    localStorage.setItem(usersKey, JSON.stringify(users));
+  }
+
+  function userNotesKey(username = currentUser) {
+    return `${storagePrefix}notes_${username}`;
+  }
+
+  function getNotes() {
+    if (!currentUser) return [];
+    try {
+      return JSON.parse(localStorage.getItem(userNotesKey()) || '[]');
+    } catch {
+      return [];
+    }
+  }
+
+  function setNotes(notes) {
+    if (!currentUser) return;
+    localStorage.setItem(userNotesKey(), JSON.stringify(notes));
+  }
+
+  function showBox(id, html) {
+    const el = document.getElementById(id);
+    el.innerHTML = html;
+    el.style.display = 'block';
+  }
+
+  function setAuthStatus(message) {
+    showBox('authStatus', message);
+  }
+
+  function requireLogin() {
+    if (currentUser) return true;
+    setAuthStatus('<strong>需要先登录</strong><br>注册或登录后才能保存个人 notes。');
+    return false;
+  }
+
+  function updateAuthUi() {
+    const chip = document.getElementById('headerUserChip');
+    chip.style.display = 'inline-flex';
+    chip.textContent = currentUser ? `当前用户：${currentUser}` : '未登录';
+    document.getElementById('logoutBtn').style.display = currentUser ? '' : 'none';
+    if (currentUser) {
+      setAuthStatus(`<strong>已登录：${escapeHtml(currentUser)}</strong><br>学习记录会保存到当前浏览器的本地存储。`);
+    } else {
+      showBox('authStatus', '<strong>演示账号系统</strong><br>注册任意用户名即可使用；这是 GitHub Pages 静态版，不会上传密码或 notes。');
+    }
+    renderMemoryList();
+  }
+
+  async function registerUser() {
+    const username = document.getElementById('authUsername').value.trim();
+    const password = document.getElementById('authPassword').value;
+    if (!username || !password) {
+      setAuthStatus('<strong>注册失败</strong><br>用户名和密码都不能为空。');
+      return;
+    }
+    if (password.length < 6) {
+      setAuthStatus('<strong>注册失败</strong><br>密码至少 6 位。');
+      return;
+    }
+    const users = getUsers();
+    if (users[username]) {
+      setAuthStatus('<strong>注册失败</strong><br>该用户名已存在，直接登录即可。');
+      return;
+    }
+    users[username] = { passwordHash: await hashPassword(password), createdAt: new Date().toISOString() };
+    setUsers(users);
+    currentUser = username;
+    localStorage.setItem(sessionKey, currentUser);
+    updateAuthUi();
+  }
+
+  async function loginUser() {
+    const username = document.getElementById('authUsername').value.trim();
+    const password = document.getElementById('authPassword').value;
+    const users = getUsers();
+    if (!users[username] || users[username].passwordHash !== await hashPassword(password)) {
+      setAuthStatus('<strong>登录失败</strong><br>用户名或密码不正确。');
+      return;
+    }
+    currentUser = username;
+    localStorage.setItem(sessionKey, currentUser);
+    updateAuthUi();
+  }
+
+  function logoutUser() {
+    currentUser = '';
+    localStorage.removeItem(sessionKey);
+    updateAuthUi();
+  }
+
+  function topicLabel(topicId) {
+    const found = weaknessTopics.find(topic => topic.id === topicId);
+    return found ? found.name : topicId;
+  }
+
+  function topicLinks(topicId) {
+    const found = weaknessTopics.find(topic => topic.id === topicId);
+    return found ? found.links : [];
+  }
+
+  function addNote({ title, topic, content, source = 'manual', links = [] }) {
+    if (!requireLogin()) return;
+    const cleanTitle = title.trim();
+    const cleanContent = content.trim();
+    if (!cleanTitle || !cleanContent) {
+      setAuthStatus('<strong>保存失败</strong><br>note 标题和内容不能为空。');
+      return;
+    }
+    const notes = getNotes();
+    notes.unshift({
+      id: `${Date.now()}_${Math.random().toString(16).slice(2)}`,
+      title: cleanTitle,
+      topic,
+      content: cleanContent,
+      source,
+      links,
+      createdAt: new Date().toISOString()
+    });
+    setNotes(notes);
+    document.getElementById('noteTitle').value = '';
+    document.getElementById('noteContent').value = '';
+    renderMemoryList();
+    setAuthStatus(`<strong>已保存 note</strong><br>${escapeHtml(cleanTitle)}`);
+  }
+
+  function saveManualNote() {
+    const topic = document.getElementById('noteTopic').value;
+    addNote({
+      title: document.getElementById('noteTitle').value,
+      topic,
+      content: document.getElementById('noteContent').value,
+      source: 'manual',
+      links: topicLinks(topic)
+    });
+  }
+
+  function saveMockNote() {
+    const answer = document.getElementById('mockAnswer').value.trim();
+    addNote({
+      title: `模拟面试：${currentMock.q}`,
+      topic: weaknessTopics.find(topic => currentMock.topic.includes(topic.name.split(' ')[0]))?.id || 'overview',
+      content: answer || '这道题还没有形成完整回答，需要回到 notes 补齐定义、原理、工程取舍和常见坑。',
+      source: 'mock',
+      links: currentMock.links
+    });
+  }
+
+  function saveOpenQaNote() {
+    const openCard = qaCards.find(card => card.classList.contains('open') && card.style.display !== 'none');
+    if (!openCard) {
+      setAuthStatus('<strong>没有可保存的题目</strong><br>先展开一道题，再保存到个人 notes。');
+      return;
+    }
+    const question = openCard.querySelector('.qa-q-text')?.textContent.replace(/\s+/g, ' ').trim() || '展开题目';
+    const answer = openCard.querySelector('.qa-answer')?.innerText.trim() || '';
+    addNote({
+      title: question,
+      topic: 'overview',
+      content: answer.slice(0, 1200),
+      source: 'qa-card',
+      links: []
+    });
+  }
+
+  function deleteNote(id) {
+    setNotes(getNotes().filter(note => note.id !== id));
+    renderMemoryList();
+  }
+
+  function clearNotes() {
+    if (!requireLogin()) return;
+    if (!confirm('确定清空当前账号的所有 notes？')) return;
+    setNotes([]);
+    renderMemoryList();
+  }
+
+  function renderMemoryList() {
+    const list = document.getElementById('memoryList');
+    if (!list) return;
+    if (!currentUser) {
+      list.innerHTML = '<div class="memory-empty">登录后显示你的个人 notes。</div>';
+      return;
+    }
+    const query = normalizeText(document.getElementById('memorySearch')?.value || '');
+    const notes = getNotes().filter(note => {
+      const text = normalizeText(`${note.title} ${note.topic} ${note.content}`);
+      return !query || text.includes(query);
+    });
+    if (!notes.length) {
+      list.innerHTML = '<div class="memory-empty">还没有匹配的 notes。可以保存模拟回答或当前展开题。</div>';
+      return;
+    }
+    list.innerHTML = notes.map(note => `
+      <article class="memory-item">
+        <strong>${escapeHtml(note.title)}</strong>
+        <div class="memory-meta">${escapeHtml(topicLabel(note.topic))} · ${new Date(note.createdAt).toLocaleString()} · ${escapeHtml(note.source)}</div>
+        <div class="memory-body">${escapeHtml(note.content)}</div>
+        ${note.links?.length ? `<div class="weak-links">${renderLinks(note.links)}</div>` : ''}
+        <div class="memory-actions">
+          <button class="ctrl-btn mini-danger" type="button" data-delete-note="${note.id}">删除</button>
+        </div>
+      </article>
+    `).join('');
+  }
+
   function pickMockQuestion() {
     currentMock = mockQuestions[Math.floor(Math.random() * mockQuestions.length)];
     document.getElementById('mockQuestion').textContent = currentMock.q;
@@ -2128,6 +2660,15 @@
       <div class="weak-links">${renderLinks(currentMock.links)}</div>
     `;
     result.style.display = 'block';
+    if (currentUser) {
+      addNote({
+        title: `模拟诊断 ${score} 分：${currentMock.q}`,
+        topic: 'overview',
+        content: `我的回答：\n${document.getElementById('mockAnswer').value.trim() || '未填写'}\n\n命中关键词：${hit.join('、') || '暂无'}\n建议补充：${missing.join('、') || '工程取舍和反例'}`,
+        source: 'mock-diagnosis',
+        links: currentMock.links
+      });
+    }
   }
 
   function renderWeaknessTest() {
@@ -2254,6 +2795,18 @@
   document.getElementById('gradeMockBtn').addEventListener('click', gradeMockAnswer);
   document.getElementById('analyzeWeakBtn').addEventListener('click', analyzeWeakness);
   document.getElementById('resetWeakBtn').addEventListener('click', resetWeakness);
+  document.getElementById('registerBtn').addEventListener('click', registerUser);
+  document.getElementById('loginBtn').addEventListener('click', loginUser);
+  document.getElementById('logoutBtn').addEventListener('click', logoutUser);
+  document.getElementById('saveNoteBtn').addEventListener('click', saveManualNote);
+  document.getElementById('saveMockNoteBtn').addEventListener('click', saveMockNote);
+  document.getElementById('saveOpenQaBtn').addEventListener('click', saveOpenQaNote);
+  document.getElementById('clearNotesBtn').addEventListener('click', clearNotes);
+  document.getElementById('memorySearch').addEventListener('input', renderMemoryList);
+  document.getElementById('memoryList').addEventListener('click', event => {
+    const button = event.target.closest('[data-delete-note]');
+    if (button) deleteNote(button.dataset.deleteNote);
+  });
   document.querySelector('.top-controls').addEventListener('click', event => {
     const button = event.target.closest('button');
     if (!button) return;
@@ -2290,6 +2843,7 @@
   });
 
   renderWeaknessTest();
+  updateAuthUi();
   pickMockQuestion();
 </script>
 </body>
