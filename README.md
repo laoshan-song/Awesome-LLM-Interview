@@ -41,9 +41,9 @@
 
 > **[→ 打开速记网页（在线访问）](https://laoshan-song.github.io/Awesome-LLM-Interview/cheatsheet.html)**
 >
-> 220+ 道高频考题，20+ 模块，支持搜索、标签筛选、一键展开、核心论文路线图、PDF 微型 RAG 知识库、模拟面试问答诊断、薄弱点判断测试、本地账号登录和个人记忆 notes。测试结果会直接跳转到 GitHub 上对应的 notes 文档。面试前 30 分钟速刷专用。
+> 220+ 道高频考题，20+ 模块，支持功能选择工作台、搜索、标签筛选、一键展开、核心论文路线图、PDF 原文检索、模拟面试问答诊断、薄弱点判断测试、本地账号登录和个人记忆 notes。测试结果会直接跳转到 GitHub 上对应的 notes 文档。面试前 30 分钟速刷专用。
 
-PDF 微型 RAG 已经静态化接入网页：无需后端、无需本地 PDF 文件，GitHub Pages 打开后即可直接输入关键词，检索 55 个授权公开 PDF 中的相关面试题片段和来源。
+PDF 原文检索已经静态化接入网页：无需后端、无需本地 PDF 文件，GitHub Pages 打开后即可直接输入关键词，检索 55 个授权公开 PDF 中的相关面试题原文片段和来源。该功能只做检索，不生成答案，避免 RAG 幻觉。
 
 > 如果你觉得有用，点个 ⭐ Star 是对我最大的鼓励！
 
@@ -139,6 +139,12 @@ PDF 微型 RAG 已经静态化接入网页：无需后端、无需本地 PDF 文
 | 34 | [模型网关与成本治理](./notes/06_工程实践/05_模型网关与成本治理.md) | **新增**：模型路由论文、缓存、限流、降级、成本归因 |
 | 35 | [LLM 安全与红队](./notes/06_工程实践/06_LLM安全与红队.md) | **新增**：Prompt Injection 论文、RAG 权限、Agent 工具安全、红队工具 |
 
+### 🗃️ 七、PDF 面试题库
+
+| 编号 | 主题 | 最近更新 |
+|------|------|----------|
+| 36 | [PDF 面试题库索引](./notes/07_PDF面试题库/README.md) | **新增**：55 个授权公开 PDF 抽取为 notes 文件夹，并接入网页 PDF 原文检索 |
+
 ---
 
 ## 🛠️ 学完可做项目
@@ -189,8 +195,9 @@ git push origin feat/your-topic
 | 🎬 添加 Karpathy / 3Blue1Brown / 李沐等优质视频资源 |
 | 🗂️ 重构目录：按主题分为 7 大模块，覆盖 LLM 总览、基础架构、训练对齐、推理优化、分布式训练、前沿专题、工程实践 |
 | 🚀 新增 2026 前沿专题：TTC/DeepSeek-R1/GRPO、多模态VLM、GraphRAG |
-| ⚡ 升级面试速记网页（cheatsheet.html）：220+ 道高频考题、20+ 模块，支持搜索/筛选、核心论文路线图、模拟面试诊断、薄弱点测试、本地账号、个人记忆 notes 和 GitHub notes 跳转 |
-| 🗃️ 接入网页即用 PDF 微型 RAG 知识库：使用 55 个授权公开大模型面试 PDF 生成静态索引，GitHub Pages 可直接检索来源片段并跳转对应 notes |
+| ⚡ 升级面试速记网页（cheatsheet.html）：220+ 道高频考题、20+ 模块，支持功能选择、搜索/筛选、核心论文路线图、模拟面试诊断、薄弱点测试、本地账号、个人记忆 notes 和 GitHub notes 跳转 |
+| 🗃️ 接入网页即用 PDF 原文检索：使用 55 个授权公开大模型面试 PDF 生成静态索引，GitHub Pages 可直接检索来源片段并跳转对应 notes，不做生成答案 |
+| 📁 新增 notes/07_PDF面试题库：将 55 个 PDF 的摘要和代表性原文片段整理成独立 notes 文件夹 |
 | 🧭 新增对标仓库启发模块：参考 llm-course、Prompt-Engineering-Guide、Awesome-LLM、applied-ml 的结构，补充三条学习路径和资源矩阵 |
 | 📄 导入核心原始论文路线图：覆盖 Transformer、Scaling Law、RoPE、GQA、FlashAttention、vLLM、LoRA/QLoRA、RLHF/DPO、CoT、RAG、MTEB、Agent、RAGAS、SWE-bench |
 | 🧪 新增公开高频面试题库扩展：基于公开 LLM/GenAI/RAG 面试题主题统一改写，覆盖基础、训练、推理、RAG、Agent、安全、评估、系统设计和项目追问 |

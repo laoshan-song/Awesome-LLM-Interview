@@ -107,6 +107,23 @@
     }
     .stat-value { color: #fff; font-size: 1.45rem; font-weight: 800; }
     .stat-label { color: var(--text2); font-size: .78rem; margin-top: 3px; }
+    .feature-launcher {
+      display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px;
+      margin: 0 0 24px;
+    }
+    .feature-btn {
+      text-align: left; border: 1px solid rgba(255,255,255,.08); border-radius: 18px;
+      background: linear-gradient(180deg, rgba(26,29,46,.9), rgba(15,17,23,.7));
+      color: var(--text); padding: 15px; cursor: pointer; transition: all .18s;
+      min-height: 112px; font-family: inherit;
+    }
+    .feature-btn:hover, .feature-btn.active {
+      border-color: rgba(94,234,212,.45); transform: translateY(-1px);
+      box-shadow: 0 18px 44px rgba(0,0,0,.18);
+    }
+    .feature-btn strong { display: block; color: var(--accent2); margin-bottom: 7px; font-size: .95rem; }
+    .feature-btn span { color: var(--text2); font-size: .8rem; line-height: 1.55; }
+    .feature-hidden { display: none !important; }
 
     /* ── Section header ── */
     .section-header {
@@ -466,7 +483,7 @@
       .diagnostic-panel { grid-template-columns: 1fr; }
       .workspace { grid-template-columns: 1fr; }
       .paper-grid { grid-template-columns: 1fr; }
-      .benchmark-grid, .path-board { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .benchmark-grid, .path-board, .feature-launcher { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     }
 
     @media (max-width: 768px) {
@@ -475,7 +492,7 @@
       header { padding: 15px 18px; align-items: flex-start; }
       .header-actions .pill { display: none; }
       .hero { padding: 22px; border-radius: 18px; }
-      .stats-grid, .interview-map, .benchmark-grid, .path-board { grid-template-columns: 1fr; }
+      .stats-grid, .interview-map, .benchmark-grid, .path-board, .feature-launcher { grid-template-columns: 1fr; }
       .rag-search { grid-template-columns: 1fr; }
       .auth-grid, .memory-toolbar { grid-template-columns: 1fr; }
       .qa-answer { padding-left: 20px; }
@@ -536,7 +553,15 @@
       </div>
     </section>
 
-    <section class="workspace" id="workspace">
+    <section class="feature-launcher" aria-label="功能选择">
+      <button class="feature-btn active" type="button" data-feature="questions"><strong>题库速查</strong><span>搜索 200+ 面试题，按高频/工程/前沿筛选。</span></button>
+      <button class="feature-btn" type="button" data-feature="rag"><strong>PDF 原文检索</strong><span>检索 55 个 PDF 的授权公开原文片段和来源。</span></button>
+      <button class="feature-btn" type="button" data-feature="practice"><strong>模拟面试</strong><span>随机抽题、回答诊断、薄弱点 notes 跳转。</span></button>
+      <button class="feature-btn" type="button" data-feature="roadmap"><strong>论文路线</strong><span>核心论文、对标仓库、学习路径。</span></button>
+      <button class="feature-btn" type="button" data-feature="account"><strong>个人 notes</strong><span>本地账号、记忆 notes、错题沉淀。</span></button>
+    </section>
+
+    <section class="workspace feature-hidden" id="workspace" data-feature-panel="account">
       <div class="workspace-card">
         <div class="diagnostic-kicker">Local Account</div>
         <h2>账号与学习状态</h2>
@@ -584,7 +609,7 @@
       </div>
     </section>
 
-    <section class="benchmark-panel" id="benchmarks">
+    <section class="benchmark-panel feature-hidden" id="benchmarks" data-feature-panel="roadmap">
       <div class="paper-head">
         <div>
           <div class="diagnostic-kicker">Benchmark Repos</div>
@@ -616,7 +641,7 @@
       </div>
     </section>
 
-    <section class="path-board" id="learning-paths">
+    <section class="path-board feature-hidden" id="learning-paths" data-feature-panel="roadmap">
       <div class="path-card">
         <h3>路径 A：LLM Fundamentals</h3>
         <p>适合一面基础题，目标是把模型从输入到输出讲清楚。</p>
@@ -646,17 +671,17 @@
       </div>
     </section>
 
-    <section class="rag-panel" id="local-rag">
+    <section class="rag-panel feature-hidden" id="local-rag" data-feature-panel="rag">
       <div class="paper-head">
         <div>
-          <div class="diagnostic-kicker">Local PDF RAG</div>
-          <h2>本地 PDF 面试题微型 RAG 知识库</h2>
+          <div class="diagnostic-kicker">PDF Source Search</div>
+          <h2>PDF 面试题原文检索</h2>
         </div>
-        <p>已接入你整理的 55 个 PDF 面试题文件，构建为静态 JSON 索引。输入问题后在浏览器本地检索相关片段，并给出来源 PDF 和对应 notes 复习入口。</p>
+        <p>这里不是生成答案，而是严格检索 55 个授权公开 PDF 的原文片段。结果只展示来源文件、片段和匹配分，避免“RAG 生成幻觉”。</p>
       </div>
       <div class="rag-search">
         <input class="field" id="ragQuery" type="search" placeholder="输入问题，例如：RAG 如何优化召回？LoRA rank 怎么选？KV Cache 显存怎么估算？">
-        <button class="ctrl-btn" type="button" id="ragSearchBtn">检索 PDF 题库</button>
+        <button class="ctrl-btn" type="button" id="ragSearchBtn">检索 PDF 原文</button>
       </div>
       <div class="rag-quick">
         <button class="ctrl-btn" type="button" data-rag-query="RAG 优化 召回 重排 评估">RAG 优化</button>
@@ -670,7 +695,7 @@
       <div class="rag-results" id="ragResults"></div>
     </section>
 
-    <section class="paper-panel" id="papers">
+    <section class="paper-panel feature-hidden" id="papers" data-feature-panel="roadmap">
       <div class="paper-head">
         <div>
           <div class="diagnostic-kicker">Original Papers</div>
@@ -784,6 +809,7 @@
       </div>
     </section>
 
+    <section data-feature-panel="questions">
     <input class="search-bar" type="search" id="searchInput" placeholder="🔍 搜索考题（如：KV Cache、RAG、Agent、模型网关、安全红队、LoRA...）" autocomplete="off">
 
     <div class="top-controls">
@@ -803,13 +829,13 @@
       换一个关键词，或点击“重置筛选”查看全部内容。
     </div>
 
-    <div class="interview-map">
+    <div class="interview-map feature-hidden" data-feature-panel="roadmap">
       <div class="map-card"><strong>基础必答</strong><span>Attention 公式、复杂度、Pre-LN、RoPE、KV Cache 是最容易被追问的底层题。</span></div>
       <div class="map-card"><strong>工程落地</strong><span>重点准备 vLLM、PagedAttention、RAG 召回/重排、模型网关、成本治理和评估闭环。</span></div>
       <div class="map-card"><strong>前沿加分</strong><span>能讲清 GRPO、MoE、长上下文、LiveBench、数据合成，会明显拉开差距。</span></div>
     </div>
 
-    <section class="diagnostic-panel" id="diagnostic">
+    <section class="diagnostic-panel feature-hidden" id="diagnostic" data-feature-panel="practice">
       <div class="diagnostic-card">
         <div class="diagnostic-kicker">Mock Interview</div>
         <h2>模拟面试问答诊断</h2>
@@ -2417,6 +2443,7 @@
       <div class="tip-box">这些题基于公开 LLM/GenAI/RAG 面试题库、岗位 JD 和社区面经的高频主题统一改写，重点覆盖真实面试追问方式；不是逐字复制外站题库。</div>
       <div id="publicQuestionList"></div>
     </div>
+    </section>
 
     <!-- Footer section -->
     <div style="margin-top: 60px; padding: 28px; background: linear-gradient(135deg, rgba(26,29,46,.92), rgba(37,40,64,.78)); border: 1px solid rgba(124,106,247,.25); border-radius: 20px; text-align: center; box-shadow: 0 20px 48px rgba(0,0,0,.18);">
@@ -2435,7 +2462,7 @@
 <script>
   const searchInput = document.getElementById('searchInput');
   let qaCards = Array.from(document.querySelectorAll('.qa-card'));
-  let contentSections = Array.from(document.querySelectorAll('main > div[id]')).filter(section => section.querySelector('.qa-card'));
+  let contentSections = Array.from(document.querySelectorAll('main [id]')).filter(section => section.querySelector('.qa-card'));
   const navLinks = Array.from(document.querySelectorAll('nav a'));
   const visibleCount = document.getElementById('visibleCount');
   const totalCount = document.getElementById('totalCount');
@@ -2870,7 +2897,7 @@
 
   function refreshQaCollections() {
     qaCards = Array.from(document.querySelectorAll('.qa-card'));
-    contentSections = Array.from(document.querySelectorAll('main > div[id]')).filter(section => section.querySelector('.qa-card'));
+    contentSections = Array.from(document.querySelectorAll('main [id]')).filter(section => section.querySelector('.qa-card'));
     totalCount.textContent = qaCards.length;
     visibleCount.textContent = qaCards.length;
     document.querySelectorAll('.stat-card .stat-value')[0].textContent = `${qaCards.length}+`;
@@ -3226,9 +3253,9 @@
       const response = await fetch('./assets/local_pdf_rag_index.json');
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
       localRagIndex = await response.json();
-      meta.textContent = `已加载 ${localRagIndex.documentCount} 个 PDF、${localRagIndex.chunkCount} 个文本片段。数据来自本地整理的 2026 大模型面试题目录。`;
+      meta.textContent = `已加载 ${localRagIndex.documentCount} 个 PDF、${localRagIndex.chunkCount} 个原文片段。当前功能只做片段检索，不生成答案。`;
     } catch (error) {
-      meta.textContent = `索引加载失败：${error.message}。如果直接 file:// 打开页面，浏览器可能会拦截 fetch；部署到 GitHub Pages 后可正常使用。`;
+      meta.textContent = `索引加载失败：${error.message}。请通过 GitHub Pages 在线地址访问；直接 file:// 打开时浏览器可能拦截静态 JSON。`;
     }
   }
 
@@ -3334,7 +3361,23 @@
     applyFilters();
   }
 
+  function switchFeature(feature) {
+    document.querySelectorAll('[data-feature]').forEach(button => {
+      button.classList.toggle('active', button.dataset.feature === feature);
+    });
+    document.querySelectorAll('[data-feature-panel]').forEach(panel => {
+      panel.classList.toggle('feature-hidden', panel.dataset.featurePanel !== feature);
+    });
+    if (feature === 'questions') applyFilters();
+    if (feature === 'rag' && !localRagIndex) loadLocalRagIndex();
+  }
+
   searchInput.addEventListener('input', applyFilters);
+  document.querySelector('.feature-launcher').addEventListener('click', event => {
+    const button = event.target.closest('[data-feature]');
+    if (!button) return;
+    switchFeature(button.dataset.feature);
+  });
   document.getElementById('nextMockBtn').addEventListener('click', pickMockQuestion);
   document.getElementById('gradeMockBtn').addEventListener('click', gradeMockAnswer);
   document.getElementById('analyzeWeakBtn').addEventListener('click', analyzeWeakness);
@@ -3401,6 +3444,7 @@
   renderWeaknessTest();
   updateAuthUi();
   loadLocalRagIndex();
+  switchFeature('questions');
   applyFilters();
   pickMockQuestion();
 </script>
