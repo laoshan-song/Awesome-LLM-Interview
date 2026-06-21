@@ -25,6 +25,15 @@ uvicorn app:app --host 0.0.0.0 --port 8000
 
 `bge-small-zh-v1.5` 查询侧默认使用 `QUERY_PREFIX=为这个句子生成表示以用于检索相关文章：`，用于贴近 BGE 的检索式 embedding 用法。
 
+Windows 注意：如果 `python` 指向 `C:\Users\<你>\AppData\Local\Microsoft\WindowsApps\python.exe`，那只是 Microsoft Store 的 App Execution Alias，不是真正的 Python。建议安装 python.org 的标准 CPython，并用真实路径创建虚拟环境；本项目已验证 Python 3.11 可运行。
+
+验证命令：
+
+```bash
+python -m py_compile app.py
+python -c "import fastapi, sentence_transformers, numpy; print('imports ok')"
+```
+
 ## API
 
 ```bash

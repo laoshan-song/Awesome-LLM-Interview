@@ -55,6 +55,8 @@ uvicorn app:app --host 0.0.0.0 --port 8000
 
 网页中填写 `http://localhost:8000` 或部署后的 API 地址即可调用完整 RAG；API 不可用时自动回退到浏览器端检索。
 
+如果 Windows 下 `python/py/pip` 报 “指定的登录会话不存在” 或打开 Microsoft Store，通常是系统只安装了 WindowsApps 占位启动器。安装 python.org 标准 CPython 后，用真实 `python.exe` 路径创建虚拟环境即可。
+
 > 如果你觉得有用，点个 ⭐ Star 是对我最大的鼓励！
 
 ### 🧭 对标优秀仓库后的结构升级
