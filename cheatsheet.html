@@ -2471,6 +2471,7 @@
   const storagePrefix = 'awesome_llm_interview_';
   const usersKey = `${storagePrefix}users`;
   const sessionKey = `${storagePrefix}session`;
+  const pdfIndexVersion = '20260621-pdf-hash-v2';
   let localRagIndex = null;
   let activeTag = '';
   let currentUser = localStorage.getItem(sessionKey) || '';
@@ -3259,10 +3260,10 @@
   async function loadLocalRagIndex() {
     const meta = document.getElementById('ragMeta');
     try {
-      const response = await fetch('./assets/local_pdf_rag_index.json');
+      const response = await fetch(`./assets/local_pdf_rag_index.json?v=${pdfIndexVersion}`, { cache: 'no-store' });
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
       localRagIndex = await response.json();
-      meta.textContent = `已加载 ${localRagIndex.documentCount} 个 PDF、${localRagIndex.chunkCount} 个原文片段。当前功能只做片段检索，不生成答案。`;
+      meta.textContent = `已加载 ${localRagIndex.documentCount} 个 PDF、${localRagIndex.chunkCount} 个原文片段。索引版本：${pdfIndexVersion}。当前功能只做片段检索，不生成答案。`;
     } catch (error) {
       meta.textContent = `索引加载失败：${error.message}。请通过 GitHub Pages 在线地址访问；直接 file:// 打开时浏览器可能拦截静态 JSON。`;
     }
@@ -3301,17 +3302,21 @@
       resultsEl.innerHTML = '<div class="memory-empty">没有检索到匹配片段。换成更具体的关键词，例如 RAG、LoRA、KV Cache、RLHF。</div>';
       return;
     }
-    resultsEl.innerHTML = results.map(item => `
-      <article class="rag-result">
-        <strong>${escapeHtml(item.docTitle)}</strong>
-        <div class="rag-source">主题：${escapeHtml(item.topic)} · 来源：${escapeHtml(item.docPath || item.docTitle)} · 片段 #${item.chunkIndex + 1} · 匹配分 ${item.score}</div>
-        <p>${escapeHtml(item.text.slice(0, 620))}${item.text.length > 620 ? '...' : ''}</p>
-        <div class="weak-links">
-          <a href="${escapeHtml(toStaticAssetUrl(item.pdfUrl))}#page=${Number(item.page) || 1}" target="_blank" rel="noopener noreferrer">打开原 PDF 第 ${Number(item.page) || 1} 页核对</a>
-        </div>
-        <div class="weak-links">${renderLinks(ragTopicLinks[item.topic] || ragTopicLinks.general)}</div>
-      </article>
-    `).join('');
+    resultsEl.innerHTML = results.map(item => {
+      const pdfLink = `${toStaticAssetUrl(item.pdfUrl)}#page=${Number(item.page) || 1}`;
+      return `
+        <article class="rag-result">
+          <strong>${escapeHtml(item.docTitle)}</strong>
+          <div class="rag-source">主题：${escapeHtml(item.topic)} · 来源：${escapeHtml(item.docPath || item.docTitle)} · 片段 #${item.chunkIndex + 1} · 匹配分 ${item.score}</div>
+          <p>${escapeHtml(item.text.slice(0, 620))}${item.text.length > 620 ? '...' : ''}</p>
+          <div class="weak-links">
+            <a href="${escapeHtml(pdfLink)}" target="_blank" rel="noopener noreferrer">打开原 PDF 第 ${Number(item.page) || 1} 页核对</a>
+          </div>
+          <div class="rag-source">直链：${escapeHtml(pdfLink)}</div>
+          <div class="weak-links">${renderLinks(ragTopicLinks[item.topic] || ragTopicLinks.general)}</div>
+        </article>
+      `;
+    }).join('');
   }
 
   function updateTagButtons() {
