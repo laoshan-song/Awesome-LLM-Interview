@@ -43,7 +43,17 @@
 >
 > 220+ 道高频考题，20+ 模块，支持功能选择工作台、搜索、标签筛选、一键展开、核心论文路线图、PDF 轻量 RAG、模拟面试问答诊断、薄弱点判断测试、本地账号登录和个人记忆 notes。测试结果会直接跳转到 GitHub 上对应的 notes 文档。面试前 30 分钟速刷专用。
 
-PDF 轻量 RAG 已静态化接入网页：无需后端、无需本地 PDF 文件，GitHub Pages 打开后即可检索 55 个授权公开 PDF 的相关面试题片段。网页在浏览器端执行关键词/主题扩展、BM25 风格打分、标题与主题重排，并基于命中的原文片段生成证据式回答；每条结论都附带 PDF 页码用于核对。原 PDF 已提交到 `notes/07_PDF面试题库/pdfs/`，文件名使用纯哈希以避免 GitHub Pages 路径问题。
+PDF RAG 已接入网页：GitHub Pages 默认提供浏览器端轻量 RAG；如果配置后端 API，则升级为标准 RAG 流程。后端读取 55 个授权公开 PDF 的 chunk 索引，使用 `BAAI/bge-small-zh-v1.5` 生成 embedding，执行向量检索 + BM25 混合召回，可选 `BAAI/bge-reranker-v2-m3` 重排，并返回带 PDF 页码引用的答案。原 PDF 已提交到 `notes/07_PDF面试题库/pdfs/`，文件名使用纯哈希以避免 GitHub Pages 路径问题。
+
+后端启动入口见 [rag_api](./rag_api)：
+
+```bash
+cd rag_api
+pip install -r requirements.txt
+uvicorn app:app --host 0.0.0.0 --port 8000
+```
+
+网页中填写 `http://localhost:8000` 或部署后的 API 地址即可调用完整 RAG；API 不可用时自动回退到浏览器端检索。
 
 > 如果你觉得有用，点个 ⭐ Star 是对我最大的鼓励！
 
@@ -191,7 +201,7 @@ git push origin feat/your-topic
 |------|------|
 | 系统化 notes | 覆盖 LLM 总览、基础架构、训练对齐、推理优化、分布式训练、前沿专题、工程实践和 PDF 面试题库 |
 | 网页速查 | 支持题库搜索、标签筛选、功能分区、论文路线图、模拟面试、薄弱点测试和本地记忆 notes |
-| PDF 轻量 RAG | 静态 GitHub Pages 可用，基于 55 个授权公开 PDF 做浏览器端检索、重排、证据回答和页码跳转 |
+| PDF RAG | 默认浏览器端检索，配置 `rag_api` 后支持 `bge-small-zh-v1.5` embedding、hybrid retrieval、可选 reranker 和引用答案 |
 | 外部资料 | 补充论文、公开视频、官方文档和科研图解，方便从面试答案追到原始出处 |
 | 作品集项目 | 内置商业级 RAG 工单助手和面试模拟实验室，可直接作为简历项目讲解 |
 

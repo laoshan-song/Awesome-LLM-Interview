@@ -460,6 +460,9 @@
       color: var(--text2); font-size: .82rem; line-height: 1.7;
       display: flex; gap: 10px; flex-wrap: wrap;
     }
+    .rag-api-config {
+      display: grid; grid-template-columns: 1fr auto; gap: 10px; margin: 10px 0 4px;
+    }
     .rag-quick {
       display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0 4px;
     }
@@ -693,6 +696,10 @@
       <div class="rag-search">
         <input class="field" id="ragQuery" type="search" placeholder="输入问题，例如：RAG 如何优化召回？LoRA rank 怎么选？KV Cache 显存怎么估算？">
         <button class="ctrl-btn" type="button" id="ragSearchBtn">检索并生成证据回答</button>
+      </div>
+      <div class="rag-api-config">
+        <input class="field" id="ragApiUrl" type="url" placeholder="可选：后端 RAG API 地址，例如 http://localhost:8000">
+        <button class="ctrl-btn" type="button" id="saveRagApiBtn">保存 API</button>
       </div>
       <div class="rag-quick">
         <button class="ctrl-btn" type="button" data-rag-query="RAG 优化 召回 重排 评估">RAG 优化</button>
@@ -2482,6 +2489,7 @@
   const storagePrefix = 'awesome_llm_interview_';
   const usersKey = `${storagePrefix}users`;
   const sessionKey = `${storagePrefix}session`;
+  const ragApiKey = 'awesome_llm_rag_api_url';
   const pdfIndexVersion = '20260621-pdf-hash-v2';
   let localRagIndex = null;
   let activeTag = '';
@@ -3420,9 +3428,60 @@
     `;
   }
 
-  function searchLocalRag() {
-    const query = document.getElementById('ragQuery').value.trim();
-    const resultsEl = document.getElementById('ragResults');
+  function getRagApiBaseUrl() {
+    return (localStorage.getItem(ragApiKey) || '').trim().replace(/\/+$/, '');
+  }
+
+  function saveRagApiUrl() {
+    const input = document.getElementById('ragApiUrl');
+    const value = input.value.trim().replace(/\/+$/, '');
+    if (value) localStorage.setItem(ragApiKey, value);
+    else localStorage.removeItem(ragApiKey);
+    const meta = document.getElementById('ragMeta');
+    meta.textContent = value
+      ? `已保存后端 RAG API：${value}。后续查询会优先调用 API，失败则回退到浏览器端检索。`
+      : '已清空后端 RAG API。后续查询使用浏览器端轻量 RAG。';
+  }
+
+  function renderApiRagResponse(data) {
+    const citations = data.citations || [];
+    const answer = `
+      <section class="rag-answer">
+        <h3>后端 RAG 回答 · ${escapeHtml(data.embedding_model || 'unknown embedding')}</h3>
+        <ul>${escapeHtml(data.answer || '').split('\n').filter(Boolean).map(line => `<li>${line}</li>`).join('')}</ul>
+        <div class="rag-warning">模式：${escapeHtml(data.mode || 'rag')} · Reranker：${escapeHtml(data.reranker_model || '未启用')} · 结果来自后端 embedding 检索和引用片段。</div>
+      </section>
+    `;
+    const resultHtml = citations.map((item, index) => {
+      const pdfLink = `${toStaticAssetUrl(item.pdf_url)}#page=${Number(item.page) || 1}`;
+      return `
+        <article class="rag-result">
+          <strong>${escapeHtml(item.title)}</strong>
+          <div class="rag-source">引用 #${index + 1} · 主题：${escapeHtml(item.topic)} · 第 ${Number(item.page) || 1} 页 · hybrid ${Number(item.score).toFixed(3)} · vector ${Number(item.vector_score).toFixed(3)} · bm25 ${Number(item.bm25_score).toFixed(3)}</div>
+          <p>${escapeHtml((item.text || '').slice(0, 760))}${(item.text || '').length > 760 ? '...' : ''}</p>
+          <div class="weak-links">
+            <a href="${escapeHtml(pdfLink)}" target="_blank" rel="noopener noreferrer">打开原 PDF 第 ${Number(item.page) || 1} 页核对</a>
+          </div>
+          <div class="rag-source">直链：${escapeHtml(pdfLink)}</div>
+        </article>
+      `;
+    }).join('');
+    return `${answer}${resultHtml}`;
+  }
+
+  async function queryBackendRag(query) {
+    const apiBase = getRagApiBaseUrl();
+    if (!apiBase) return null;
+    const response = await fetch(`${apiBase}/api/rag/query`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ query, top_k: 8, candidate_k: 80, use_llm: true })
+    });
+    if (!response.ok) throw new Error(`RAG API HTTP ${response.status}`);
+    return response.json();
+  }
+
+  function searchLocalRagFallback(query, resultsEl) {
     if (!localRagIndex) {
       resultsEl.innerHTML = '<div class="memory-empty">索引还没加载完成，稍后再试。</div>';
       return;
@@ -3466,6 +3525,26 @@
       `;
     }).join('');
     resultsEl.innerHTML = `${answerHtml}${resultHtml}`;
+  }
+
+  async function searchLocalRag() {
+    const query = document.getElementById('ragQuery').value.trim();
+    const resultsEl = document.getElementById('ragResults');
+    if (!query) {
+      resultsEl.innerHTML = '<div class="memory-empty">先输入一个要查的面试问题。</div>';
+      return;
+    }
+    resultsEl.innerHTML = '<div class="memory-empty">正在检索后端 RAG / 本地索引...</div>';
+    try {
+      const apiData = await queryBackendRag(query);
+      if (apiData) {
+        resultsEl.innerHTML = renderApiRagResponse(apiData);
+        return;
+      }
+    } catch (error) {
+      resultsEl.innerHTML = `<div class="memory-empty">后端 RAG API 调用失败：${escapeHtml(error.message)}。已回退到浏览器端轻量 RAG。</div>`;
+    }
+    searchLocalRagFallback(query, resultsEl);
   }
 
   function updateTagButtons() {
@@ -3555,6 +3634,7 @@
   document.getElementById('saveMockNoteBtn').addEventListener('click', saveMockNote);
   document.getElementById('saveOpenQaBtn').addEventListener('click', saveOpenQaNote);
   document.getElementById('clearNotesBtn').addEventListener('click', clearNotes);
+  document.getElementById('saveRagApiBtn').addEventListener('click', saveRagApiUrl);
   document.getElementById('ragSearchBtn').addEventListener('click', searchLocalRag);
   document.getElementById('ragQuery').addEventListener('keydown', event => {
     if (event.key === 'Enter') searchLocalRag();
@@ -3609,6 +3689,7 @@
   refreshQaCollections();
   renderWeaknessTest();
   updateAuthUi();
+  document.getElementById('ragApiUrl').value = getRagApiBaseUrl();
   loadLocalRagIndex();
   switchFeature('questions');
   applyFilters();

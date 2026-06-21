@@ -6,3 +6,6 @@ __pycache__/
 interview_simulator_lab/outputs/
 interview_simulator_lab/data/sft_interview_diagnosis.jsonl
 .tmp_pdf_extract/
+rag_api/.venv/
+rag_api/data/
+rag_api/__pycache__/
