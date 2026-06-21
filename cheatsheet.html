@@ -389,6 +389,71 @@
       text-decoration: none; border-bottom: 1px dashed rgba(94,234,212,.55);
       font-size: .82rem; font-weight: 800;
     }
+    .benchmark-panel {
+      margin: 0 0 26px; padding: 18px;
+      border: 1px solid rgba(94,234,212,.2); border-radius: 22px;
+      background:
+        radial-gradient(circle at 85% 0%, rgba(94,234,212,.14), transparent 32%),
+        linear-gradient(180deg, rgba(26,29,46,.82), rgba(15,17,23,.72));
+      scroll-margin-top: 110px;
+    }
+    .benchmark-grid {
+      display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px;
+      margin-top: 14px;
+    }
+    .benchmark-card {
+      background: rgba(15,17,23,.56); border: 1px solid rgba(255,255,255,.08);
+      border-radius: 16px; padding: 14px;
+    }
+    .benchmark-card strong { display: block; color: var(--accent2); margin-bottom: 6px; }
+    .benchmark-card span { color: var(--text2); font-size: .82rem; line-height: 1.65; }
+    .benchmark-card a {
+      display: inline-block; margin-top: 10px; color: var(--accent2); font-size: .8rem;
+      text-decoration: none; border-bottom: 1px dashed rgba(94,234,212,.55);
+    }
+    .path-board {
+      display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px;
+      margin: 12px 0 30px;
+    }
+    .path-card {
+      position: relative; overflow: hidden;
+      background: linear-gradient(180deg, rgba(26,29,46,.86), rgba(15,17,23,.66));
+      border: 1px solid rgba(255,255,255,.08); border-radius: 18px; padding: 16px;
+    }
+    .path-card::after {
+      content: ''; position: absolute; width: 130px; height: 130px; right: -70px; top: -70px;
+      border-radius: 999px; background: rgba(124,106,247,.12);
+    }
+    .path-card h3 { color: #fff; font-size: 1rem; margin-bottom: 8px; }
+    .path-card p { color: var(--text2); font-size: .84rem; line-height: 1.7; }
+    .path-card ul { color: var(--text2); font-size: .83rem; line-height: 1.8; margin: 10px 0 0 18px; }
+    .path-card a { color: var(--accent2); text-decoration: none; }
+    .rag-panel {
+      margin: 0 0 26px; padding: 18px;
+      border: 1px solid rgba(251,191,36,.22); border-radius: 22px;
+      background:
+        radial-gradient(circle at 8% 0%, rgba(251,191,36,.14), transparent 30%),
+        linear-gradient(180deg, rgba(26,29,46,.84), rgba(15,17,23,.72));
+      scroll-margin-top: 110px;
+    }
+    .rag-search {
+      display: grid; grid-template-columns: 1fr auto; gap: 10px; margin: 14px 0 10px;
+    }
+    .rag-meta {
+      color: var(--text2); font-size: .82rem; line-height: 1.7;
+      display: flex; gap: 10px; flex-wrap: wrap;
+    }
+    .rag-quick {
+      display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0 4px;
+    }
+    .rag-results { display: grid; gap: 10px; margin-top: 12px; }
+    .rag-result {
+      background: rgba(15,17,23,.58); border: 1px solid rgba(255,255,255,.08);
+      border-radius: 16px; padding: 13px;
+    }
+    .rag-result strong { color: var(--accent2); display: block; margin-bottom: 6px; }
+    .rag-result p { color: var(--text2); font-size: .84rem; line-height: 1.72; white-space: pre-wrap; }
+    .rag-source { color: var(--yellow); font-size: .76rem; margin-bottom: 7px; }
     .mini-danger { color: var(--red); border-color: rgba(248,113,113,.35); }
     .mini-danger:hover { color: #fecaca; border-color: var(--red); }
 
@@ -401,6 +466,7 @@
       .diagnostic-panel { grid-template-columns: 1fr; }
       .workspace { grid-template-columns: 1fr; }
       .paper-grid { grid-template-columns: 1fr; }
+      .benchmark-grid, .path-board { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     }
 
     @media (max-width: 768px) {
@@ -409,7 +475,8 @@
       header { padding: 15px 18px; align-items: flex-start; }
       .header-actions .pill { display: none; }
       .hero { padding: 22px; border-radius: 18px; }
-      .stats-grid, .interview-map { grid-template-columns: 1fr; }
+      .stats-grid, .interview-map, .benchmark-grid, .path-board { grid-template-columns: 1fr; }
+      .rag-search { grid-template-columns: 1fr; }
       .auth-grid, .memory-toolbar { grid-template-columns: 1fr; }
       .qa-answer { padding-left: 20px; }
       .section-count { display: none; }
@@ -450,6 +517,8 @@
       <a href="#advanced-retrieval">🔍 高级检索与文档处理</a>
       <a href="#production">🧱 生产化与安全治理</a>
       <a href="#papers">📄 核心论文路线图</a>
+      <a href="#benchmarks">🧭 对标仓库启发</a>
+      <a href="#local-rag">🗃️ PDF 微型 RAG</a>
       <a href="#public-questions">🧪 公开题库扩展</a>
     </div>
   </nav>
@@ -513,6 +582,92 @@
         </div>
         <div class="memory-list" id="memoryList"></div>
       </div>
+    </section>
+
+    <section class="benchmark-panel" id="benchmarks">
+      <div class="paper-head">
+        <div>
+          <div class="diagnostic-kicker">Benchmark Repos</div>
+          <h2>相似优秀仓库启发：把面试题库做成学习产品</h2>
+        </div>
+        <p>参考公开优秀仓库的组织方式：课程化路径、论文导航、Prompt/RAG 专题、生产案例和 Awesome 资源索引。这里做的是结构借鉴和二次整理，不复制外站内容。</p>
+      </div>
+      <div class="benchmark-grid">
+        <div class="benchmark-card">
+          <strong>mlabonne/llm-course</strong>
+          <span>借鉴 Fundamentals / Scientist / Engineer 的路径分层，把零散知识点组织成学习路线。</span>
+          <a href="https://github.com/mlabonne/llm-course" target="_blank" rel="noopener noreferrer">查看仓库</a>
+        </div>
+        <div class="benchmark-card">
+          <strong>dair-ai/Prompt-Engineering-Guide</strong>
+          <span>借鉴 Prompt 技巧、论文、应用案例的聚合方式，强化 Prompt、RAG、Agent 专题入口。</span>
+          <a href="https://github.com/dair-ai/Prompt-Engineering-Guide" target="_blank" rel="noopener noreferrer">查看仓库</a>
+        </div>
+        <div class="benchmark-card">
+          <strong>Awesome-LLM / Awesome-RAG</strong>
+          <span>借鉴 Awesome 列表的资源导航，把论文、框架、评测、工具链按面试主题归类。</span>
+          <a href="https://github.com/Hannibal046/Awesome-LLM" target="_blank" rel="noopener noreferrer">查看仓库</a>
+        </div>
+        <div class="benchmark-card">
+          <strong>applied-ml / production cases</strong>
+          <span>借鉴生产案例视角，把“能不能上线”作为项目追问核心：指标、成本、监控、回滚。</span>
+          <a href="https://github.com/eugeneyan/applied-ml" target="_blank" rel="noopener noreferrer">查看仓库</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="path-board" id="learning-paths">
+      <div class="path-card">
+        <h3>路径 A：LLM Fundamentals</h3>
+        <p>适合一面基础题，目标是把模型从输入到输出讲清楚。</p>
+        <ul>
+          <li><a href="#transformer">Attention / Transformer</a></li>
+          <li><a href="#position">RoPE / 长上下文</a></li>
+          <li><a href="#kvcache">KV Cache / 解码</a></li>
+        </ul>
+      </div>
+      <div class="path-card">
+        <h3>路径 B：LLM Scientist</h3>
+        <p>适合算法岗和研究追问，目标是讲清训练、对齐、论文和评估。</p>
+        <ul>
+          <li><a href="#data">数据工程 / 预训练</a></li>
+          <li><a href="#rlhf">RLHF / DPO</a></li>
+          <li><a href="#papers">核心论文路线图</a></li>
+        </ul>
+      </div>
+      <div class="path-card">
+        <h3>路径 C：LLM Engineer</h3>
+        <p>适合应用工程和平台岗，目标是把 RAG、Agent 和生产系统讲成项目。</p>
+        <ul>
+          <li><a href="#rag">RAG / 检索增强</a></li>
+          <li><a href="#agent">Agent / Tool Use</a></li>
+          <li><a href="#production">生产化与安全治理</a></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="rag-panel" id="local-rag">
+      <div class="paper-head">
+        <div>
+          <div class="diagnostic-kicker">Local PDF RAG</div>
+          <h2>本地 PDF 面试题微型 RAG 知识库</h2>
+        </div>
+        <p>已接入你整理的 55 个 PDF 面试题文件，构建为静态 JSON 索引。输入问题后在浏览器本地检索相关片段，并给出来源 PDF 和对应 notes 复习入口。</p>
+      </div>
+      <div class="rag-search">
+        <input class="field" id="ragQuery" type="search" placeholder="输入问题，例如：RAG 如何优化召回？LoRA rank 怎么选？KV Cache 显存怎么估算？">
+        <button class="ctrl-btn" type="button" id="ragSearchBtn">检索 PDF 题库</button>
+      </div>
+      <div class="rag-quick">
+        <button class="ctrl-btn" type="button" data-rag-query="RAG 优化 召回 重排 评估">RAG 优化</button>
+        <button class="ctrl-btn" type="button" data-rag-query="LoRA PEFT rank 微调">LoRA 微调</button>
+        <button class="ctrl-btn" type="button" data-rag-query="KV Cache 显存 推理 加速">KV Cache</button>
+        <button class="ctrl-btn" type="button" data-rag-query="Transformer Attention 位置编码">Transformer</button>
+        <button class="ctrl-btn" type="button" data-rag-query="RLHF PPO DPO 强化学习">RLHF/DPO</button>
+        <button class="ctrl-btn" type="button" data-rag-query="PDF 解析 文档对话 向量库">PDF 文档问答</button>
+      </div>
+      <div class="rag-meta" id="ragMeta">索引加载中...</div>
+      <div class="rag-results" id="ragResults"></div>
     </section>
 
     <section class="paper-panel" id="papers">
@@ -2289,6 +2444,7 @@
   const storagePrefix = 'awesome_llm_interview_';
   const usersKey = `${storagePrefix}users`;
   const sessionKey = `${storagePrefix}session`;
+  let localRagIndex = null;
   let activeTag = '';
   let currentUser = localStorage.getItem(sessionKey) || '';
 
@@ -2643,6 +2799,17 @@
     { id: 'ops', name: '工程实践 / 安全', links: [['LLMOps', './notes/06_工程实践/01_LLM应用架构与LLMOps.md'], ['模型网关与成本治理', './notes/06_工程实践/05_模型网关与成本治理.md'], ['LLM 安全与红队', './notes/06_工程实践/06_LLM安全与红队.md']] }
   ];
   let currentMock = mockQuestions[0];
+
+  const ragTopicLinks = {
+    transformer: [['Transformer 架构', './notes/01_基础架构/03_Transformer架构.md'], ['位置编码', './notes/01_基础架构/04_位置编码.md']],
+    rag: [['RAG', './notes/05_前沿专题/14_RAG.md'], ['生产 RAG 排障', './notes/06_工程实践/02_生产RAG排障指南.md']],
+    training: [['预训练与微调', './notes/02_训练与对齐/05_预训练与微调.md'], ['LoRA 与 PEFT', './notes/02_训练与对齐/08_LoRA与PEFT.md']],
+    alignment: [['RLHF / DPO / PPO', './notes/02_训练与对齐/07_RLHF_DPO_PPO.md'], ['前沿对齐技术', './notes/02_训练与对齐/10_前沿对齐技术.md']],
+    inference: [['KV Cache', './notes/03_推理与优化/09_KV_Cache.md'], ['推理加速', './notes/03_推理与优化/12_推理加速.md']],
+    agent: [['Agent', './notes/05_前沿专题/15_Agent.md'], ['Agent 框架与 MCP', './notes/05_前沿专题/22_Agent框架与MCP.md']],
+    eval: [['大模型幻觉与评估', './notes/05_前沿专题/17_大模型幻觉与评估.md'], ['评估框架与 Harness', './notes/05_前沿专题/21_评估框架与Harness.md']],
+    general: [['LLM 从输入到输出', './notes/00_LLM总览/01_LLM从输入到输出.md'], ['LLM 核心名词解释', './notes/01_基础架构/01_名词解释.md']]
+  };
 
   function toGithubNotesUrl(href) {
     if (!href.startsWith('./notes/')) return href;
@@ -3041,6 +3208,73 @@
     return text.toLowerCase().replace(/\s+/g, ' ').trim();
   }
 
+  function tokenizeQuery(text) {
+    const normalized = normalizeText(text);
+    const latin = normalized.match(/[a-z0-9_+-]{2,}/g) || [];
+    const cjk = (normalized.match(/[\u4e00-\u9fa5]{2,}/g) || [])
+      .flatMap(word => {
+        const grams = [];
+        for (let i = 0; i < word.length - 1; i += 1) grams.push(word.slice(i, i + 2));
+        return grams;
+      });
+    return Array.from(new Set([...latin, ...cjk])).slice(0, 30);
+  }
+
+  async function loadLocalRagIndex() {
+    const meta = document.getElementById('ragMeta');
+    try {
+      const response = await fetch('./assets/local_pdf_rag_index.json');
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      localRagIndex = await response.json();
+      meta.textContent = `已加载 ${localRagIndex.documentCount} 个 PDF、${localRagIndex.chunkCount} 个文本片段。数据来自本地整理的 2026 大模型面试题目录。`;
+    } catch (error) {
+      meta.textContent = `索引加载失败：${error.message}。如果直接 file:// 打开页面，浏览器可能会拦截 fetch；部署到 GitHub Pages 后可正常使用。`;
+    }
+  }
+
+  function scoreChunk(chunk, query, terms) {
+    const haystack = normalizeText(`${chunk.docTitle} ${chunk.topic} ${chunk.text}`);
+    let score = 0;
+    terms.forEach(term => {
+      if (haystack.includes(term)) score += term.length >= 4 ? 3 : 1;
+    });
+    if (haystack.includes(query)) score += 12;
+    if (normalizeText(chunk.docTitle).includes(query)) score += 8;
+    return score;
+  }
+
+  function searchLocalRag() {
+    const query = document.getElementById('ragQuery').value.trim();
+    const resultsEl = document.getElementById('ragResults');
+    if (!localRagIndex) {
+      resultsEl.innerHTML = '<div class="memory-empty">索引还没加载完成，稍后再试。</div>';
+      return;
+    }
+    if (!query) {
+      resultsEl.innerHTML = '<div class="memory-empty">先输入一个要查的面试问题。</div>';
+      return;
+    }
+    const normalizedQuery = normalizeText(query);
+    const terms = tokenizeQuery(query);
+    const results = localRagIndex.chunks
+      .map(chunk => ({ ...chunk, score: scoreChunk(chunk, normalizedQuery, terms) }))
+      .filter(chunk => chunk.score > 0)
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 6);
+    if (!results.length) {
+      resultsEl.innerHTML = '<div class="memory-empty">没有检索到匹配片段。换成更具体的关键词，例如 RAG、LoRA、KV Cache、RLHF。</div>';
+      return;
+    }
+    resultsEl.innerHTML = results.map(item => `
+      <article class="rag-result">
+        <strong>${escapeHtml(item.docTitle)}</strong>
+        <div class="rag-source">主题：${escapeHtml(item.topic)} · 来源：${escapeHtml(item.docPath || item.docTitle)} · 片段 #${item.chunkIndex + 1} · 匹配分 ${item.score}</div>
+        <p>${escapeHtml(item.text.slice(0, 620))}${item.text.length > 620 ? '...' : ''}</p>
+        <div class="weak-links">${renderLinks(ragTopicLinks[item.topic] || ragTopicLinks.general)}</div>
+      </article>
+    `).join('');
+  }
+
   function updateTagButtons() {
     document.querySelectorAll('[data-tag]').forEach(btn => {
       btn.classList.toggle('active', btn.dataset.tag === activeTag);
@@ -3112,6 +3346,16 @@
   document.getElementById('saveMockNoteBtn').addEventListener('click', saveMockNote);
   document.getElementById('saveOpenQaBtn').addEventListener('click', saveOpenQaNote);
   document.getElementById('clearNotesBtn').addEventListener('click', clearNotes);
+  document.getElementById('ragSearchBtn').addEventListener('click', searchLocalRag);
+  document.getElementById('ragQuery').addEventListener('keydown', event => {
+    if (event.key === 'Enter') searchLocalRag();
+  });
+  document.querySelector('.rag-quick').addEventListener('click', event => {
+    const button = event.target.closest('[data-rag-query]');
+    if (!button) return;
+    document.getElementById('ragQuery').value = button.dataset.ragQuery;
+    searchLocalRag();
+  });
   document.getElementById('memorySearch').addEventListener('input', renderMemoryList);
   document.getElementById('memoryList').addEventListener('click', event => {
     const button = event.target.closest('[data-delete-note]');
@@ -3156,6 +3400,7 @@
   refreshQaCollections();
   renderWeaknessTest();
   updateAuthUi();
+  loadLocalRagIndex();
   applyFilters();
   pickMockQuestion();
 </script>

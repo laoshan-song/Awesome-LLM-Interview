@@ -5,3 +5,4 @@ __pycache__/
 .pytest_cache/
 interview_simulator_lab/outputs/
 interview_simulator_lab/data/sft_interview_diagnosis.jsonl
+.tmp_pdf_extract/
