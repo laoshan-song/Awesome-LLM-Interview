@@ -464,6 +464,17 @@
       display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0 4px;
     }
     .rag-results { display: grid; gap: 10px; margin-top: 12px; }
+    .rag-answer {
+      border: 1px solid rgba(94,234,212,.25); border-radius: 18px;
+      background: linear-gradient(135deg, rgba(94,234,212,.12), rgba(15,17,23,.62));
+      padding: 15px; margin-top: 12px;
+    }
+    .rag-answer h3 { color: var(--accent2); font-size: .98rem; margin-bottom: 8px; }
+    .rag-answer ul { margin-left: 18px; color: var(--text); line-height: 1.75; font-size: .86rem; }
+    .rag-answer li { margin: 5px 0; }
+    .rag-warning {
+      color: var(--yellow); font-size: .78rem; line-height: 1.7; margin-top: 8px;
+    }
     .rag-result {
       background: rgba(15,17,23,.58); border: 1px solid rgba(255,255,255,.08);
       border-radius: 16px; padding: 13px;
@@ -555,7 +566,7 @@
 
     <section class="feature-launcher" aria-label="功能选择">
       <button class="feature-btn active" type="button" data-feature="questions"><strong>题库速查</strong><span>搜索 200+ 面试题，按高频/工程/前沿筛选。</span></button>
-      <button class="feature-btn" type="button" data-feature="rag"><strong>PDF 原文检索</strong><span>检索 55 个 PDF 的授权公开原文片段和来源。</span></button>
+      <button class="feature-btn" type="button" data-feature="rag"><strong>PDF 轻量 RAG</strong><span>检索 55 个 PDF，生成可核对的证据式回答。</span></button>
       <button class="feature-btn" type="button" data-feature="practice"><strong>模拟面试</strong><span>随机抽题、回答诊断、薄弱点 notes 跳转。</span></button>
       <button class="feature-btn" type="button" data-feature="roadmap"><strong>论文路线</strong><span>核心论文、对标仓库、学习路径。</span></button>
       <button class="feature-btn" type="button" data-feature="account"><strong>个人 notes</strong><span>本地账号、记忆 notes、错题沉淀。</span></button>
@@ -674,14 +685,14 @@
     <section class="rag-panel feature-hidden" id="local-rag" data-feature-panel="rag">
       <div class="paper-head">
         <div>
-          <div class="diagnostic-kicker">PDF Source Search</div>
-          <h2>PDF 面试题原文检索</h2>
+          <div class="diagnostic-kicker">Browser-side Mini RAG</div>
+          <h2>PDF 面试题轻量 RAG</h2>
         </div>
-        <p>这里不是生成答案，而是严格检索 55 个授权公开 PDF 的原文片段。结果只展示来源文件、片段和匹配分，避免“RAG 生成幻觉”。</p>
+        <p>纯静态线上可用：浏览器加载 PDF 索引，执行关键词 + 主题扩展 + BM25/标题重排，最后只基于命中的原文片段生成证据式回答，并返回 PDF 页码核对。</p>
       </div>
       <div class="rag-search">
         <input class="field" id="ragQuery" type="search" placeholder="输入问题，例如：RAG 如何优化召回？LoRA rank 怎么选？KV Cache 显存怎么估算？">
-        <button class="ctrl-btn" type="button" id="ragSearchBtn">检索 PDF 原文</button>
+        <button class="ctrl-btn" type="button" id="ragSearchBtn">检索并生成证据回答</button>
       </div>
       <div class="rag-quick">
         <button class="ctrl-btn" type="button" data-rag-query="RAG 优化 召回 重排 评估">RAG 优化</button>
@@ -3257,27 +3268,156 @@
     return Array.from(new Set([...latin, ...cjk])).slice(0, 30);
   }
 
+  const ragTopicBoostTerms = {
+    transformer: ['attention', 'self-attention', 'multi-head', 'mha', 'encoder', 'decoder', 'position', 'rope', 'layernorm', 'rmsnorm', '注意力', '多头', '位置编码', '编码器', '解码器'],
+    rag: ['retrieval', 'retrieve', 'rerank', 'hybrid', 'embedding', 'vector', 'chunk', 'citation', '检索', '召回', '重排', '向量', '切分', '引用'],
+    training: ['pretrain', 'pretraining', 'sft', 'finetune', 'fine-tuning', 'lora', 'qlora', 'peft', '训练', '预训练', '微调', '样本'],
+    alignment: ['rlhf', 'dpo', 'ppo', 'reward', 'preference', '奖励', '偏好', '对齐', '强化学习'],
+    inference: ['kv', 'cache', 'pagedattention', 'vllm', 'quantization', 'gqa', 'mqa', '推理', '显存', '量化', '吞吐'],
+    agent: ['agent', 'tool', 'function', 'mcp', 'react', '工具', '智能体', '规划'],
+    eval: ['eval', 'benchmark', 'ragas', 'mmlu', 'humaneval', '评估', '指标', '幻觉']
+  };
+
+  function inferQueryTopic(query, terms) {
+    const q = `${normalizeText(query)} ${terms.join(' ')}`;
+    const rules = [
+      ['transformer', ['transformer', 'attention', 'self-attention', 'multi-head', '多头', '注意力', '位置编码', 'rope', 'layernorm', 'rmsnorm']],
+      ['rag', ['rag', 'retrieval', '检索', '召回', '重排', 'rerank', '向量库', '文档问答', 'pdf', 'chunk', '知识库']],
+      ['training', ['pretrain', 'pretraining', 'sft', 'finetune', 'fine-tuning', '微调', '预训练', '训练', 'lora', 'peft', 'qlora']],
+      ['alignment', ['rlhf', 'dpo', 'ppo', 'reward', '强化学习', '偏好', '奖励模型', '对齐']],
+      ['inference', ['kv', 'cache', '推理', '显存', '量化', '部署', 'vllm', '加速', 'flashattention']],
+      ['agent', ['agent', 'tool', 'function', 'mcp', '智能体', '工具调用']],
+      ['eval', ['eval', 'benchmark', '评估', '幻觉', '指标']]
+    ];
+    let best = { topic: '', score: 0 };
+    rules.forEach(([topic, keywords]) => {
+      const score = keywords.reduce((sum, keyword) => sum + (q.includes(keyword) ? 1 : 0), 0);
+      if (score > best.score) best = { topic, score };
+    });
+    return best.score ? best.topic : '';
+  }
+
+  function expandRagTerms(terms, queryTopic) {
+    const expanded = [...terms];
+    if (queryTopic && ragTopicBoostTerms[queryTopic]) {
+      expanded.push(...ragTopicBoostTerms[queryTopic]);
+    }
+    return Array.from(new Set(expanded)).slice(0, 48);
+  }
+
   async function loadLocalRagIndex() {
     const meta = document.getElementById('ragMeta');
     try {
       const response = await fetch(`./assets/local_pdf_rag_index.json?v=${pdfIndexVersion}`, { cache: 'no-store' });
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
       localRagIndex = await response.json();
-      meta.textContent = `已加载 ${localRagIndex.documentCount} 个 PDF、${localRagIndex.chunkCount} 个原文片段。索引版本：${pdfIndexVersion}。当前功能只做片段检索，不生成答案。`;
+      meta.textContent = `已加载 ${localRagIndex.documentCount} 个 PDF、${localRagIndex.chunkCount} 个原文片段。索引版本：${pdfIndexVersion}。当前功能在浏览器端完成检索、重排和证据式回答。`;
     } catch (error) {
       meta.textContent = `索引加载失败：${error.message}。请通过 GitHub Pages 在线地址访问；直接 file:// 打开时浏览器可能拦截静态 JSON。`;
     }
   }
 
-  function scoreChunk(chunk, query, terms) {
-    const haystack = normalizeText(`${chunk.docTitle} ${chunk.topic} ${chunk.text}`);
+  function countOccurrences(text, term) {
+    if (!term) return 0;
+    let count = 0;
+    let pos = text.indexOf(term);
+    while (pos !== -1) {
+      count += 1;
+      pos = text.indexOf(term, pos + term.length);
+    }
+    return count;
+  }
+
+  function bm25TermScore(text, term) {
+    const tf = countOccurrences(text, term);
+    if (!tf) return 0;
+    const k1 = 1.4;
+    const lengthNorm = Math.max(0.65, Math.min(1.8, text.length / 620));
+    return ((tf * (k1 + 1)) / (tf + k1 * lengthNorm)) * Math.log(1 + term.length);
+  }
+
+  function scoreChunk(chunk, query, terms, queryTopic) {
+    const title = normalizeText(chunk.docTitle);
+    const topic = normalizeText(chunk.topic);
+    const body = normalizeText(chunk.text);
     let score = 0;
+
+    const exactTerms = tokenizeQuery(query);
     terms.forEach(term => {
-      if (haystack.includes(term)) score += term.length >= 4 ? 3 : 1;
+      const isExpandedOnly = !exactTerms.includes(term);
+      const weight = isExpandedOnly ? 0.45 : 1;
+      score += bm25TermScore(title, term) * 18;
+      score += bm25TermScore(topic, term) * 10 * weight;
+      score += bm25TermScore(body, term) * 2.2 * weight;
     });
-    if (haystack.includes(query)) score += 12;
-    if (normalizeText(chunk.docTitle).includes(query)) score += 8;
+
+    if (query && title.includes(query)) score += 80;
+    if (query && body.includes(query)) score += 18;
+    if (queryTopic && chunk.topic === queryTopic) score *= 1.85;
+    if (queryTopic && chunk.topic !== queryTopic) score *= 0.42;
+
+    // Prevent broad training/pretraining PDFs from outranking exact architecture matches.
+    if (queryTopic === 'transformer' && /pretrain|训练|微调|lora|sft/i.test(title) && !/transformer|attention|layer|norm|rope/i.test(title)) {
+      score *= 0.25;
+    }
+    if (queryTopic === 'training' && /lora|peft|qlora/i.test(query) && /lora|peft|qlora/i.test(title)) {
+      score += 90;
+    }
+    if (queryTopic === 'inference' && /kv|cache/i.test(query) && /kv|cache|attention|推理/i.test(`${title} ${body.slice(0, 220)}`)) {
+      score += 28;
+    }
     return score;
+  }
+
+  function splitEvidenceSentences(text) {
+    return text
+      .replace(/[\u0000-\u001f]+/g, ' ')
+      .split(/(?<=[。！？?；;])\s+|\n+|(?:\s{2,})/)
+      .map(sentence => sentence.trim())
+      .filter(sentence => sentence.length >= 24 && sentence.length <= 220);
+  }
+
+  function pickEvidenceSentence(text, terms) {
+    const sentences = splitEvidenceSentences(text);
+    if (!sentences.length) return text.slice(0, 180);
+    return sentences
+      .map(sentence => {
+        const normalized = normalizeText(sentence);
+        const score = terms.reduce((sum, term) => sum + countOccurrences(normalized, term), 0);
+        return { sentence, score };
+      })
+      .sort((a, b) => b.score - a.score || a.sentence.length - b.sentence.length)[0].sentence;
+  }
+
+  function buildMiniRagAnswer(results, query, terms, queryTopic) {
+    const top = results.slice(0, 4);
+    const evidence = top.map((item, index) => {
+      const sentence = pickEvidenceSentence(item.text, terms);
+      return {
+        label: `[${index + 1}]`,
+        title: item.docTitle,
+        page: Number(item.page) || 1,
+        sentence,
+        pdfLink: `${toStaticAssetUrl(item.pdfUrl)}#page=${Number(item.page) || 1}`
+      };
+    });
+    const topicText = {
+      transformer: 'Transformer/Attention 架构',
+      rag: 'RAG 检索增强',
+      training: '训练与微调',
+      alignment: '对齐与偏好优化',
+      inference: '推理部署与性能优化',
+      agent: 'Agent 与工具调用',
+      eval: '评估与 benchmark'
+    }[queryTopic] || '综合主题';
+    const bullets = evidence.map(item => `<li>${escapeHtml(item.label)} ${escapeHtml(item.sentence)} <a href="${escapeHtml(item.pdfLink)}" target="_blank" rel="noopener noreferrer">核对：${escapeHtml(item.title)} 第 ${item.page} 页</a></li>`).join('');
+    return `
+      <section class="rag-answer">
+        <h3>基于 PDF 证据的轻量回答：${escapeHtml(query)} · ${escapeHtml(topicText)}</h3>
+        <ul>${bullets}</ul>
+        <div class="rag-warning">说明：这是浏览器端轻量 RAG，答案只抽取和组织命中 PDF 原文，不调用外部 LLM，也不会编造未检索到的内容。建议点开 PDF 页码复核。</div>
+      </section>
+    `;
   }
 
   function searchLocalRag() {
@@ -3292,22 +3432,30 @@
       return;
     }
     const normalizedQuery = normalizeText(query);
-    const terms = tokenizeQuery(query);
+    const exactTerms = tokenizeQuery(query);
+    const queryTopic = inferQueryTopic(query, exactTerms);
+    const terms = expandRagTerms(exactTerms, queryTopic);
     const results = localRagIndex.chunks
-      .map(chunk => ({ ...chunk, score: scoreChunk(chunk, normalizedQuery, terms) }))
-      .filter(chunk => chunk.score > 0)
+      .map(chunk => ({ ...chunk, score: scoreChunk(chunk, normalizedQuery, terms, queryTopic) }))
+      .filter(chunk => chunk.score >= 1.2)
       .sort((a, b) => b.score - a.score)
-      .slice(0, 6);
+      .reduce((items, item) => {
+        const sameDocCount = items.filter(existing => existing.docId === item.docId).length;
+        if (sameDocCount < 2) items.push(item);
+        return items;
+      }, [])
+      .slice(0, 8);
     if (!results.length) {
       resultsEl.innerHTML = '<div class="memory-empty">没有检索到匹配片段。换成更具体的关键词，例如 RAG、LoRA、KV Cache、RLHF。</div>';
       return;
     }
-    resultsEl.innerHTML = results.map(item => {
+    const answerHtml = buildMiniRagAnswer(results, query, terms, queryTopic);
+    const resultHtml = results.map(item => {
       const pdfLink = `${toStaticAssetUrl(item.pdfUrl)}#page=${Number(item.page) || 1}`;
       return `
         <article class="rag-result">
           <strong>${escapeHtml(item.docTitle)}</strong>
-          <div class="rag-source">主题：${escapeHtml(item.topic)} · 来源：${escapeHtml(item.docPath || item.docTitle)} · 片段 #${item.chunkIndex + 1} · 匹配分 ${item.score}</div>
+          <div class="rag-source">主题：${escapeHtml(item.topic)} · 来源：${escapeHtml(item.docPath || item.docTitle)} · 片段 #${item.chunkIndex + 1} · 匹配分 ${Number(item.score).toFixed(1)}</div>
           <p>${escapeHtml(item.text.slice(0, 620))}${item.text.length > 620 ? '...' : ''}</p>
           <div class="weak-links">
             <a href="${escapeHtml(pdfLink)}" target="_blank" rel="noopener noreferrer">打开原 PDF 第 ${Number(item.page) || 1} 页核对</a>
@@ -3317,6 +3465,7 @@
         </article>
       `;
     }).join('');
+    resultsEl.innerHTML = `${answerHtml}${resultHtml}`;
   }
 
   function updateTagButtons() {

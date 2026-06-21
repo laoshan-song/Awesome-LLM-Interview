@@ -41,9 +41,9 @@
 
 > **[→ 打开速记网页（在线访问）](https://laoshan-song.github.io/Awesome-LLM-Interview/cheatsheet.html)**
 >
-> 220+ 道高频考题，20+ 模块，支持功能选择工作台、搜索、标签筛选、一键展开、核心论文路线图、PDF 原文检索、模拟面试问答诊断、薄弱点判断测试、本地账号登录和个人记忆 notes。测试结果会直接跳转到 GitHub 上对应的 notes 文档。面试前 30 分钟速刷专用。
+> 220+ 道高频考题，20+ 模块，支持功能选择工作台、搜索、标签筛选、一键展开、核心论文路线图、PDF 轻量 RAG、模拟面试问答诊断、薄弱点判断测试、本地账号登录和个人记忆 notes。测试结果会直接跳转到 GitHub 上对应的 notes 文档。面试前 30 分钟速刷专用。
 
-PDF 原文检索已经静态化接入网页：无需后端、无需本地 PDF 文件，GitHub Pages 打开后即可直接输入关键词，检索 55 个授权公开 PDF 中的相关面试题原文片段和来源。原 PDF 已提交到 `notes/07_PDF面试题库/pdfs/`，文件名使用纯哈希以避免 GitHub PDF 预览器路径问题；网页检索结果会走 GitHub Pages 静态直链并跳转到对应 PDF 页码核对。该功能只做检索，不生成答案，避免 RAG 幻觉。
+PDF 轻量 RAG 已静态化接入网页：无需后端、无需本地 PDF 文件，GitHub Pages 打开后即可检索 55 个授权公开 PDF 的相关面试题片段。网页在浏览器端执行关键词/主题扩展、BM25 风格打分、标题与主题重排，并基于命中的原文片段生成证据式回答；每条结论都附带 PDF 页码用于核对。原 PDF 已提交到 `notes/07_PDF面试题库/pdfs/`，文件名使用纯哈希以避免 GitHub Pages 路径问题。
 
 > 如果你觉得有用，点个 ⭐ Star 是对我最大的鼓励！
 
@@ -185,26 +185,15 @@ git push origin feat/your-topic
 
 ---
 
-## 🗓️ 更新日志
+## ✅ 项目能力
 
-| 更新内容 |
-|----------|
-| 🎉 初始化仓库，完成 LLM 核心名词解释 |
-| 📚 补全核心知识点（基础 / 训练 / 推理 / 工程） |
-| 📄 为所有知识点补充原始论文 arxiv 链接 |
-| 🎬 添加 Karpathy / 3Blue1Brown / 李沐等优质视频资源 |
-| 🗂️ 重构目录：按主题分为 7 大模块，覆盖 LLM 总览、基础架构、训练对齐、推理优化、分布式训练、前沿专题、工程实践 |
-| 🚀 新增 2026 前沿专题：TTC/DeepSeek-R1/GRPO、多模态VLM、GraphRAG |
-| ⚡ 升级面试速记网页（cheatsheet.html）：220+ 道高频考题、20+ 模块，支持功能选择、搜索/筛选、核心论文路线图、模拟面试诊断、薄弱点测试、本地账号、个人记忆 notes 和 GitHub notes 跳转 |
-| 🗃️ 接入网页即用 PDF 原文检索：使用 55 个授权公开大模型面试 PDF 生成静态索引，GitHub Pages 可直接检索来源片段并跳转原 PDF 页码，不做生成答案 |
-| 📁 新增 notes/07_PDF面试题库：将 55 个 PDF 的摘要、代表性原文片段和原 PDF 文件整理成独立 notes 文件夹 |
-| 🧭 新增对标仓库启发模块：参考 llm-course、Prompt-Engineering-Guide、Awesome-LLM、applied-ml 的结构，补充三条学习路径和资源矩阵 |
-| 📄 导入核心原始论文路线图：覆盖 Transformer、Scaling Law、RoPE、GQA、FlashAttention、vLLM、LoRA/QLoRA、RLHF/DPO、CoT、RAG、MTEB、Agent、RAGAS、SWE-bench |
-| 🧪 新增公开高频面试题库扩展：基于公开 LLM/GenAI/RAG 面试题主题统一改写，覆盖基础、训练、推理、RAG、Agent、安全、评估、系统设计和项目追问 |
-| 🇨🇳 新增国产模型全景：DeepSeek-V3/R1、Qwen3混合思考、GLM-4、MiniMax Lightning Attention |
-| 🔧 新增前沿框架：vLLM/SGLang/llama.cpp推理框架对比、DAPO/RLVR对齐技术、lm-eval-harness评估、LangGraph/MCP协议 |
-| 🖼️ 补充外部图解和资料链接：全库 24 张外部图、450+ 外部链接，覆盖 Transformer、Scaling Law、Prompt、RAG、KV Cache、Agent、LLMOps、Embedding、量化、评估、长上下文等核心主题 |
-| 🧪 新增真实 LLM 面试题型整理：覆盖基础原理、RAG、LoRA/RLHF/DPO、推理部署、Agent、安全、评估、系统设计和项目追问 |
+| 能力 | 说明 |
+|------|------|
+| 系统化 notes | 覆盖 LLM 总览、基础架构、训练对齐、推理优化、分布式训练、前沿专题、工程实践和 PDF 面试题库 |
+| 网页速查 | 支持题库搜索、标签筛选、功能分区、论文路线图、模拟面试、薄弱点测试和本地记忆 notes |
+| PDF 轻量 RAG | 静态 GitHub Pages 可用，基于 55 个授权公开 PDF 做浏览器端检索、重排、证据回答和页码跳转 |
+| 外部资料 | 补充论文、公开视频、官方文档和科研图解，方便从面试答案追到原始出处 |
+| 作品集项目 | 内置商业级 RAG 工单助手和面试模拟实验室，可直接作为简历项目讲解 |
 
 ---
 
