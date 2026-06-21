@@ -3297,6 +3297,9 @@
         <strong>${escapeHtml(item.docTitle)}</strong>
         <div class="rag-source">主题：${escapeHtml(item.topic)} · 来源：${escapeHtml(item.docPath || item.docTitle)} · 片段 #${item.chunkIndex + 1} · 匹配分 ${item.score}</div>
         <p>${escapeHtml(item.text.slice(0, 620))}${item.text.length > 620 ? '...' : ''}</p>
+        <div class="weak-links">
+          <a href="${escapeHtml(item.pdfUrl)}#page=${Number(item.page) || 1}" target="_blank" rel="noopener noreferrer">打开原 PDF 第 ${Number(item.page) || 1} 页核对</a>
+        </div>
         <div class="weak-links">${renderLinks(ragTopicLinks[item.topic] || ragTopicLinks.general)}</div>
       </article>
     `).join('');

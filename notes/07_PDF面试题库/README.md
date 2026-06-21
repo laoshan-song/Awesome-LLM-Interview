@@ -1,13 +1,17 @@
 # PDF 面试题库索引
 
 > 本目录由 `D:\BaiduNetdiskDownload\2026大模型最全面试题` 中 55 个授权公开 PDF 抽取生成。  
-> 网页 `cheatsheet.html` 使用同源静态索引 `assets/local_pdf_rag_index.json` 提供 PDF 原文检索。
+> 网页 `cheatsheet.html` 使用同源静态索引 `assets/local_pdf_rag_index.json` 提供 PDF 原文检索，并可跳转到 `pdfs/` 中原 PDF 的对应页码。
 
 ## 统计
 
 - PDF 数量：55
 - 原文检索片段：1152
 - 生成时间：2026-06-21T04:15:17.473Z
+
+## 原 PDF
+
+原始 PDF 已提交到 [pdfs](./pdfs/) 子目录。网页检索结果会优先提供 `PDF#page=N` 链接，方便直接核对原文，避免只看抽取片段造成误解。
 
 ## 文件列表
 
